@@ -35,7 +35,7 @@ class VoicingsController < ApplicationController
   end
 
   def find_chord
-    @chord = Chord.find(params[:chord_id])
+    @chord = Chord.find_by(slug: params[:chord_id])
     @chord = @chord.in_key_of(@key) if @key
   end
 
