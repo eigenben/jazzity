@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Mode do
+RSpec.describe Mode, type: :model do
   context "associations" do
     it { should belong_to(:scale) }
     it { should have_many(:chord_scales) }

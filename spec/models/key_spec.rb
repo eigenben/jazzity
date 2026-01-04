@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Key do
+RSpec.describe Key, type: :model do
   it "should expose #to_s as name"
   
   it "should expose #default as the key of C" do

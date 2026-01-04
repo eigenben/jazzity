@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Form do
+RSpec.describe Form, type: :model do
   context "associations" do
     it { should have_many(:progressions) }
     it { should have_many(:tunes) }

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ChordSymbol do
+RSpec.describe ChordSymbol, type: :model do
   context "associations" do
     it { should belong_to(:chord) }
   end

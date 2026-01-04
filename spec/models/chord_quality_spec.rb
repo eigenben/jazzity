@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ChordQuality do
+RSpec.describe ChordQuality, type: :model do
   context "associations" do
     it { should have_many(:chords) }
   end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Searchable do
+RSpec.describe Searchable, type: :model do
   describe "associations" do
     it { should belong_to(:model) }
     it { should belong_to(:parent) }

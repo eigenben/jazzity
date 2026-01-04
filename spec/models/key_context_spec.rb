@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe KeyContext do
+RSpec.describe KeyContext, type: :model do
   subject do
     Class.new do
       include KeyContext

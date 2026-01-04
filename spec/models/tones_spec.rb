@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Tones do
+RSpec.describe Tones, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

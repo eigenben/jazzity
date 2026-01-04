@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ChordSequence do
+RSpec.describe ChordSequence, type: :model do
   # describe "initializing" do
   #   it "should accept an array of chords and set chord_names" do
   #     described_class.new(["C7", "Bb7"]).chord_names.should == ["C7", "Bb7"]

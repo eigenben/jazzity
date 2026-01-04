@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Chords do
+RSpec.describe Chords, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

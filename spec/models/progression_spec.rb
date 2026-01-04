@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Progression do
+RSpec.describe Progression, type: :model do
   it { should belong_to(:progression_family) }
   it { should belong_to(:meter) }
   it { should belong_to(:form) }

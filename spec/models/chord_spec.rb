@@ -1,4 +1,4 @@
-describe Chord do
+RSpec.describe Chord, type: :model do
   context "associations" do
     it { should belong_to(:chord_quality) }
     it { should have_many(:chord_scales) }

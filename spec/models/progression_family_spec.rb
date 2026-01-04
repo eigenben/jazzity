@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ProgressionFamily do
+RSpec.describe ProgressionFamily, type: :model do
   describe "associations" do
     it { should have_many(:progressions) }
   end

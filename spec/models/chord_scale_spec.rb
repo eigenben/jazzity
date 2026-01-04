@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ChordScale do
+RSpec.describe ChordScale, type: :model do
   context "associations" do
     it { should belong_to(:chord) }
     it { should belong_to(:mode) }

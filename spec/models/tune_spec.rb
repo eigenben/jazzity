@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Tune do
+RSpec.describe Tune, type: :model do
   context "associations" do
     it { should belong_to(:meter) }
     it { should belong_to(:form) }

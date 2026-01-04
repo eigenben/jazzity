@@ -113,9 +113,13 @@ end
 
 ### Testing (RSpec)
 
+**Configuration:**
+- shoulda-matchers is configured in `spec/spec_helper.rb`
+- Model specs must use `RSpec.describe ModelName, type: :model do` for shoulda-matchers to work properly
+
 **Model Tests:**
 ```ruby
-describe Model do
+RSpec.describe Model, type: :model do
   context "associations" do
     it { should belong_to(:parent) }
     it { should have_many(:children) }
