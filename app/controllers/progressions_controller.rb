@@ -13,7 +13,6 @@ class ProgressionsController < ApplicationController
   end
 
   def show
-    flash.now[:warning] = "We're still seeding content for this page. <a href='/contribute'>Want to contribute</a>?" if @progression.seeding?
     params[:v] ||= {}
     respond_with @progression
   end
