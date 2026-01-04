@@ -171,6 +171,7 @@ body {
 #header h1 {
   font-size: 4.5em;
   margin-bottom: 15px;
+  margin-top: 0;
 }
 
 #header nav ul li a {
