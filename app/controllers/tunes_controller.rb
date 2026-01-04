@@ -26,7 +26,7 @@ class TunesController < ApplicationController
   protected
 
   def find_tune
-    @tune = Tune.find(params[:id])
+    @tune = Tune.find_by(slug: params[:id])
   end
 
   def find_filters
