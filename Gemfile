@@ -1,53 +1,38 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 # Core Gems
-gem "rails", "3.2.21"
-gem "mysql2"
+ruby "3.4.4"
 
-# Asset Template Engines
-gem "sass-rails"
-gem "coffee-rails"
-gem "uglifier"
-gem "jquery-rails"
-gem "jquery-ui-rails"
-gem "rails3-jquery-autocomplete"
+gem "rails", "~> 8.0.0"
+gem "sqlite3"
+gem "responders"
+gem "puma"
+gem "bootsnap", require: false
+gem "propshaft"
+
+# Assets / Frontend
+gem "importmap-rails"
+gem "turbo-rails"
+gem "stimulus-rails"
 
 # Views
-gem "haml"
-gem "haml-rails"
-gem "html5-rails"
-gem "compass-rails"
-gem "compass-h5bp"
-gem "compass-susy-plugin", :require => "susy"
 
 # Bread & Butter Gems
 gem "acts_as_list"
 gem "acts_as_tree"
-gem "fancy-buttons"
 gem "simple_form"
-gem "paperclip"
 gem "friendly_id"
 gem "awesome_nested_set"
-gem "kaminari"
+gem "kaminari", "~> 1.2"
 gem "mini_magick"
-gem "carrierwave"
 gem "RedCloth"
 
-# API Integration
-gem "twitter"
-gem "itunes"
-gem "amazon-ecs", :require => "amazon/ecs"
-
-# Temporary: Fixes
-gem "curb", "0.7.15"
-
 group :development do
-  gem "thin"
-  gem "capistrano", "2.12.0"
+  gem "capistrano", "~> 3.17"
 end
 
 group :test do
-  gem "turn", :require => false
+  gem "turn", require: false
   gem "minitest"
   gem "faker"
   gem "rspec-rails"
@@ -60,6 +45,5 @@ group :test do
 end
 
 group :development, :test do
-  gem "factory_girl_rails"
+  gem "factory_bot_rails"
 end
-

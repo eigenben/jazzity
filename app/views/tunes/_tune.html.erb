@@ -1,0 +1,28 @@
+<article id="tune_<%= tune.id %>">
+  <h3><%= link_to tune.title, tune %></h3>
+  <cite>by <%= tune.composer %></cite>
+
+  <ul class="attributes">
+    <% if tune.style? %>
+      <li><%= tune.style %></li>
+    <% end %>
+    <% if tune.meter %>
+      <li><%= tune.meter %></li>
+    <% end %>
+    <% if tune.primary_key %>
+      <li>
+        in
+        <%= tune.primary_key %>
+        <%= tune.tonality %>
+        <%= " (Also #{tune.secondary_key})" if tune.secondary_key %>
+      </li>
+    <% end %>
+    <% if tune.form %>
+      <li>
+        <%= tune.form %>
+        <%= "#{tune.form_length} Bars" if tune.form_length %>
+        <%= tune.form_lengths if tune.form_lengths %>
+      </li>
+    <% end %>
+  </ul>
+</article>

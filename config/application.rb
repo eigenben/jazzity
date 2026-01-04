@@ -4,10 +4,15 @@ require 'rails/all'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require(*Rails.groups) if defined?(Bundler)
 
 module Jazzity
   class Application < Rails::Application
+    config.load_defaults 8.0
+
+    # Make belongs_to associations optional by default (Rails 4 behavior)
+    config.active_record.belongs_to_required_by_default = false
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -30,39 +35,19 @@ module Jazzity
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Please note that JavaScript expansions are *ignored altogether* if the asset
-    # pipeline is enabled (see config.assets.enabled below). Put your defaults in
-    # app/assets/javascripts/application.js in that case.
-    #
-    # JavaScript files you want as :defaults (application.js is always included).
-    # config.action_view.javascript_expansions[:defaults] = %w(jquery jquery_ujs)
-
-    # Configure ActiveRecord::Base to never include root (for Backbone.js integration)
-    config.active_record.include_root_in_json = false
-
-    # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
-
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    # Enable IdentityMap for Active Record, to disable set to false or remove the line below.
-    config.active_record.identity_map = false  # We can't enable this due to KeyContext and other mechanisms of changing state on individual objects which might have the same "identity"
+    # Zeitwerk autoloading for lib/
+    config.autoload_lib(ignore: %w[assets tasks])
 
-    # Enable the asset pipeline
-    config.assets.enabled = true
-    config.assets.precompile += ["handheld.css.scss", "ie6.css.scss"]
-
-    # Sass Config
-    config.compass.require "susy"
-    
     # Configure Tools
     config.generators do |g|
       g.orm :active_record
-      g.template_engine :haml
-      g.test_framework :rspec, :fixture => true, :views => false
+      g.template_engine :erb
+      g.test_framework :rspec, fixture: true, views: false
       g.integration_tool :rspec
-      g.fixture_replacement :factory_girl, :dir => "spec/factories"
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
   end
 end

@@ -1,5 +1,0 @@
-- unless flash.empty?
-  #flash
-    - flash.each do |key, value|
-      %div{ :title => key.to_s.humanize, :class => key }
-        %p= raw value

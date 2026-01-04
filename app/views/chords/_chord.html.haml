@@ -1,6 +1,0 @@
-- chord = chord.in_key_of(key) if local_assigns[:key]
-
-%li[chord]
-  = link_to chord do
-    %h3= chord.title
-    .staff.chord-staff{"data-id" => chord.id, "data-staff" => chord.octavized_notes.to_json, "data-staff-clef" => "treble", "width" => 150}

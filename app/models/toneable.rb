@@ -2,7 +2,7 @@ module Toneable
   extend ActiveSupport::Concern
 
   included do
-    serialize :tone_values, JSON
+    serialize :tone_values, coder: JSON
 
     delegate :notes, :to => :tones
     delegate :octavized_notes, :to => :tones

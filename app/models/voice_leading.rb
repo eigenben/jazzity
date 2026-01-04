@@ -1,9 +1,9 @@
 class VoiceLeading < ActiveRecord::Base
-  belongs_to :from_voicing, :class_name => "Voicing"
-  belongs_to :to_voicing, :class_name => "Voicing"
+  belongs_to :from_voicing, class_name: "Voicing"
+  belongs_to :to_voicing, class_name: "Voicing"
 
-  scope :from_chord, lambda {|c| joins("INNER JOIN voicings AS from_voicings ON from_voicings.id = voice_leadings.from_voicing_id").where(:from_voicings => {:chord_id => c.id}) }
-  scope :to_chord,   lambda {|c| joins("INNER JOIN voicings AS to_voicings ON to_voicings.id = voice_leadings.to_voicing_id").where(:to_voicings => {:chord_id => c.id}) }
+  scope :from_chord, ->(c) { joins("INNER JOIN voicings AS from_voicings ON from_voicings.id = voice_leadings.from_voicing_id").where(from_voicings: { chord_id: c.id }) }
+  scope :to_chord, ->(c) { joins("INNER JOIN voicings AS to_voicings ON to_voicings.id = voice_leadings.to_voicing_id").where(to_voicings: { chord_id: c.id }) }
 
   def self.define_all(leadings)
     leadings.each do |leading|
@@ -13,7 +13,7 @@ class VoiceLeading < ActiveRecord::Base
 
   def self.define(offset, from_voicing, to_voicing, changed_tones = nil)
     if from_voicing and to_voicing
-      create!(:offset => offset, :from_voicing => from_voicing, :to_voicing => to_voicing, :changed_tones => changed_tones || 1)
+      create!(offset: offset, from_voicing: from_voicing, to_voicing: to_voicing, changed_tones: changed_tones || 1)
     end
   end
 
@@ -46,7 +46,7 @@ class VoiceLeading < ActiveRecord::Base
   def self.for_chord_after(chord, previous_voicing)
     if chord && previous_voicing
       offset = (chord.key.index - previous_voicing.key.index) % 12
-      previous_voicing.voice_leadings_from.where(:offset => offset).to_chord(chord)
+      previous_voicing.voice_leadings_from.where(offset: offset).to_chord(chord)
     end
   end
 

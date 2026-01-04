@@ -1,0 +1,30 @@
+<header>
+  <h1>
+    <%= "#{@progression.title}: " %>
+    <%= raw @progression.chords.map { |c| link_to(c.short_name, [c.key, c].compact) }.join(", ") %>
+  </h1>
+
+  <% if @progression.meter %>
+    <p>
+      <label>Meter:</label>
+      <%= @progression.meter %>
+    </p>
+  <% end %>
+  <% if @progression.form %>
+    <p>
+      <label>Form:</label>
+      <%= @progression.form %>
+    </p>
+  <% end %>
+  <% if @progression.full_tune? %>
+    <p>
+      <label>Full Tune</label>
+    </p>
+  <% end %>
+  <% if @progression.bars %>
+    <p>
+      <label>Bars:</label>
+      <%= @progression.bars %>
+    </p>
+  <% end %>
+</header>

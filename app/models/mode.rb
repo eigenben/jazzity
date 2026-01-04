@@ -6,25 +6,25 @@ class Mode < ActiveRecord::Base
   belongs_to :scale
 
   has_many :chord_scales
-  has_many :chords, :through => :chord_scales, :extend => Chords
+  has_many :chords, through: :chord_scales, extend: Chords
 
-  friendly_id :name, :use => :slugged
+  friendly_id :name, use: :slugged
 
-  delegate :notes, :to => :tones
-  delegate :octavized_notes, :to => :tones
-  delegate :intervals, :to => :tones
-  delegate :step_names, :to => :tones
-  delegate :interval_names, :to => :tones
+  delegate :notes, to: :tones
+  delegate :octavized_notes, to: :tones
+  delegate :intervals, to: :tones
+  delegate :step_names, to: :tones
+  delegate :interval_names, to: :tones
 
-  validates :name, :presence => true
-  validates :mode, :presence => true, :numericality => true
-  validates :scale, :presence => true
+  validates :name, presence: true
+  validates :mode, presence: true, numericality: true
+  validates :scale, presence: true
 
   define_searchables do
-    searchables.create(:name => "#{name} Scale")
+    searchables.create(name: "#{name} Scale")
 
     Key.primaries.each do |key|
-      searchables.create(:name => "#{dup.in_key_of(key).mode_key} #{name} Scale", :key_name => key.name)
+      searchables.create(name: "#{dup.in_key_of(key).mode_key} #{name} Scale", key_name: key.name)
     end
   end
 
@@ -78,7 +78,7 @@ class Mode < ActiveRecord::Base
       end
     end
   
-    mode = find_by_name(symbol)
+    mode = find_by(name: symbol)
   
     # Perhaps the matched key was really part of the name, try that:
     if mode.nil? && !in_key.nil?

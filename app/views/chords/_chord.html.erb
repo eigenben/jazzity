@@ -1,0 +1,8 @@
+<% chord = chord.in_key_of(key) if local_assigns[:key] %>
+
+<li id="chord_<%= chord.id %>">
+  <%= link_to chord do %>
+    <h3><%= chord.title %></h3>
+    <div class="staff chord-staff" data-id="<%= chord.id %>" data-staff='<%= chord.octavized_notes.to_json %>' data-staff-clef="treble" width="150"></div>
+  <% end %>
+</li>

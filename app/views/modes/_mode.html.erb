@@ -1,0 +1,9 @@
+<% mode = mode.in_key_of(key) if local_assigns[:key] %>
+
+<li id="mode_<%= mode.id %>">
+  <%= link_to [local_assigns[:key], mode.scale, mode].compact do %>
+    <div class="staff scale-staff" data-id="<%= mode.id %>" data-staff='<%= mode.octavized_notes.map { |n| [n] }.to_json %>' data-staff-clef="treble" width="380"></div>
+    <h3><%= mode.title %></h3>
+    <p><%= truncate mode.information, length: 80 %></p>
+  <% end %>
+</li>

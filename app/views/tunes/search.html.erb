@@ -1,0 +1,9 @@
+<%= render "search_box" %>
+
+<section id="tunes">
+  <%= paginate @tunes %>
+  <%= render @tunes %>
+  <%= paginate @tunes %>
+</section>
+
+<div id="tune-resources"></div>

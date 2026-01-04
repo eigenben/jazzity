@@ -1,0 +1,18 @@
+<section id="search">
+  <%= form_tag searches_path do %>
+    <%= label_tag :query, "Search Progressions: " %>
+    <%= text_field_tag :query %>
+    <%= submit_tag "Go" %>
+  <% end %>
+</section>
+
+<section id="progressions">
+  <% @progression_families.each_with_index do |family, i| %>
+    <article class="progression-family" style="<%= "clear: left" if i % 3 == 0 %>">
+      <h2><%= family %></h2>
+      <ul class="progressions-list">
+        <%= render family.progressions %>
+      </ul>
+    </article>
+  <% end %>
+</section>

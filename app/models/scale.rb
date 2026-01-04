@@ -5,19 +5,19 @@ class Scale < ActiveRecord::Base
   include Toneable
   include Searchable::Model
   
-  has_many :modes, :dependent => :destroy
+  has_many :modes, dependent: :destroy
 
-  friendly_id :name, :use => :slugged
+  friendly_id :name, use: :slugged
 
-  delegate :chords, :to => :main_mode
+  delegate :chords, to: :main_mode
 
-  validates :name, :presence => true
+  validates :name, presence: true
 
   define_searchables do
-    searchables.create(:name => "#{name} Scale")
+    searchables.create(name: "#{name} Scale")
 
     Key.primaries.each do |key|
-      searchables.create(:name => "#{key.name} #{name} Scale", :key_name => key.name)
+      searchables.create(name: "#{key.name} #{name} Scale", key_name: key.name)
     end
   end
 
@@ -53,7 +53,7 @@ class Scale < ActiveRecord::Base
       end
     end
   
-    scale = find_by_name(symbol)
+    scale = find_by(name: symbol)
   
     # Perhaps the matched key was really part of the name, try that:
     if scale.nil? && !in_key.nil?
@@ -73,7 +73,7 @@ class Scale < ActiveRecord::Base
   end
 
   def main_mode
-    modes.find_by_mode(1)
+    modes.find_by(mode: 1)
   end
 
   def symmetric?
@@ -81,7 +81,7 @@ class Scale < ActiveRecord::Base
   end
 
   def to_json
-    super(:methods => [:notes])
+    super(methods: [:notes])
   end
 
 end

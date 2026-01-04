@@ -1,0 +1,53 @@
+<article id="scale">
+  <header>
+    <h1><%= @scale.title %></h1>
+    <p><%= @scale.information %></p>
+  </header>
+
+  <nav id="modes-list">
+    <ul>
+      <% @scale.modes.each do |mode| %>
+        <li><%= link_to_unless mode == @mode, mode, [@key, @scale, mode] %></li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <nav id="key-selector">
+    <h2>Key:</h2>
+    <ul>
+      <% Key.primaries.each do |key| %>
+        <li class="<%= "current" if @key == key %>">
+          <%= link_to_unless @key == key, key, [key, @scale, @mode] %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <div id="mode">
+    <h2><%= @mode.title %></h2>
+    <h3><%= @mode.notes.join(", ") %></h3>
+    <p>
+      <label>Steps:</label>
+      <%= @mode.step_names.join(", ") %>
+    </p>
+    <p>
+      <label>Intervals:</label>
+      <%= @mode.interval_names.join(", ") %>
+    </p>
+
+    <section id="staff">
+      <div class="staff scale-staff" data-id="<%= @scale.id %>" data-staff='<%= @mode.octavized_notes.map { |n| [n] }.to_json %>' data-staff-clef="treble" width="500"></div>
+    </section>
+
+    <% unless @mode.chord_scales.empty? %>
+      <nav class="related-chords">
+        <h3>Related Chords:</h3>
+        <ul class="chords-list">
+          <% @mode.chord_scales.each do |chord_scale| %>
+            <%= render chord_scale.chord, key: (@scale.key || Key.default).shifted(-1 * chord_scale.offset) %>
+          <% end %>
+        </ul>
+      </nav>
+    <% end %>
+  </div>
+</article>

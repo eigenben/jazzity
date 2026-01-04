@@ -5,7 +5,7 @@ module ModeContext
     
       def in_mode(value)
         if value.is_a?(String)
-          mode_object = self.respond_to?(:modes) ? self.modes.find_by_name(value) : Mode.find_by_name(value)
+          mode_object = self.respond_to?(:modes) ? self.modes.find_by(name: value) : Mode.find_by(name: value)
           self.mode = mode_object.mode unless mode_object.nil?
         else
           self.mode = value

@@ -1,0 +1,9 @@
+<li id="progression_<%= progression.id %>">
+  <%= link_to [progression.key, progression].compact do %>
+    <h3><%= progression.title %></h3>
+    <% unless progression.full_tune? %>
+      <h4><%= raw progression.chords.map(&:short_name).join(", ") %></h4>
+    <% end %>
+    <p><%= progression.summary %></p>
+  <% end %>
+</li>

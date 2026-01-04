@@ -1,0 +1,9 @@
+<article id="chord">
+  <%= render "chords/header" %>
+
+  <article id="voicing">
+    <%= render "chords/key_selector" %>
+    <h1><%= @voicing.title %></h1>
+    <div class="staff voicing-staff" data-id="<%= @voicing.id %>" data-clef="treble,bass" data-staff='<%= @voicing.octavized_notes(3).to_json %>' width="150" height="160"></div>
+  </article>
+</article>

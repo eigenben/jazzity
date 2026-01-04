@@ -1,0 +1,22 @@
+<article id="chord">
+  <%= render "chords/header" %>
+  <%= render "chords/key_selector" %>
+
+  <nav class="related-modes">
+    <h3>Related Scales/Modes:</h3>
+    <ul class="modes-list">
+      <% @chord.chord_scales.each do |chord_scale| %>
+        <%= render chord_scale.mode, key: (@chord.key || Key.default).shifted(chord_scale.offset) %>
+      <% end %>
+    </ul>
+  </nav>
+
+  <% if @chord.voicings.present? %>
+    <nav class="related-voicings">
+      <h3>Popular Voicings for <%= @chord %> (<%= link_to "See All #{@chord.voicings.count}", [@chord, :voicings] %>):</h3>
+      <ul class="voicings-list">
+        <%= render @chord.voicings, key: @key %>
+      </ul>
+    </nav>
+  <% end %>
+</article>

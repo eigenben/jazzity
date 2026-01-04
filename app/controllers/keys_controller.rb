@@ -1,5 +1,5 @@
 class KeysController < ApplicationController
-  before_filter :find_key, :except => [:index, :new, :create]
+  before_action :find_key, except: [:index, :new, :create]
 
   respond_to :html, :json
 

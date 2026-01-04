@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <%= render partial: "layouts/head" %>
+
+  <body class="<%= "#{controller.class.name.sub(/Controller$/, '').underscore.gsub('/', '_').dasherize} #{@body_class}" %>">
+    <div id="container">
+      <header id="header">
+        <%= render partial: "layouts/header" %>
+      </header>
+
+      <%= render partial: "layouts/flashes" %>
+
+      <div id="main">
+        <%= yield %>
+      </div>
+
+      <footer id="footer">
+        <%= render partial: "layouts/footer" %>
+      </footer>
+    </div>
+
+    <%# Javascript at the bottom for fast page loading %>
+    <%= render partial: "layouts/javascripts" %>
+    <%= render partial: "layouts/analytics" %>
+  </body>
+</html>

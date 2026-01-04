@@ -1,0 +1,41 @@
+<header>
+  <h1><%= @tune.title %></h1>
+  <dl>
+    <% if @tune.style %>
+      <dd>Style:</dd>
+      <dt><%= @tune.style %></dt>
+    <% end %>
+    <% if @tune.meter %>
+      <dd>Meter:</dd>
+      <dt><%= @tune.meter %></dt>
+    <% end %>
+    <% if @tune.primary_key %>
+      <dd>Key:</dd>
+      <dt>
+        <%= @tune.primary_key %>
+        <%= @tune.tonality %>
+        <%= " (Also #{@tune.secondary_key})" if @tune.secondary_key %>
+      </dt>
+    <% end %>
+    <% if @tune.form %>
+      <dd>Form:</dd>
+      <dt>
+        <%= @tune.form %>
+        <%= "#{@tune.form_length} Bars" if @tune.form_length %>
+        <%= @tune.form_lengths if @tune.form_lengths %>
+      </dt>
+    <% end %>
+    <% if @tune.based_on_progression %>
+      <dd>Based on Progression:</dd>
+      <dt><%= link_to @tune.based_on_progression, @tune.based_on_progression %></dt>
+    <% end %>
+    <% if @tune.starting_chord %>
+      <dd>Starts On:</dd>
+      <dt><%= @tune.starting_chord %></dt>
+    <% end %>
+    <% if @tune.ending_chord %>
+      <dd>Ends On:</dd>
+      <dt><%= @tune.ending_chord %></dt>
+    <% end %>
+  </dl>
+</header>

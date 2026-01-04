@@ -1,7 +1,7 @@
 class ScalesController < ApplicationController
-  before_filter :find_key
-  before_filter :find_scale, :except => [:index, :new, :create]
-  before_filter :find_scales
+  before_action :find_key
+  before_action :find_scale, except: [:index, :new, :create]
+  before_action :find_scales
 
   respond_to :html, :json
 
@@ -15,7 +15,7 @@ class ScalesController < ApplicationController
 
   def staff
     respond_with @scale do |format|
-      format.html { render :layout => "staff" }
+      format.html { render layout: "staff" }
     end
   end
 
@@ -30,13 +30,13 @@ class ScalesController < ApplicationController
   end
 
   def find_scale
-    @scale = Scale.find(params[:id])
+    @scale = Scale.find_by(slug: params[:id])
     @scale = @scale.in_key_of(@key) if @key
     @mode = @scale.main_mode
     @mode = @mode.in_key_of(@key) if @key
   end
 
   def find_scales
-    @scales = Scale.scoped(:include => [:modes])
+    @scales = Scale.includes(:modes)
   end
 end

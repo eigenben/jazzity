@@ -1,11 +1,11 @@
 class TunesController < ApplicationController
-  before_filter :find_tune, :except => [:index, :search, :new, :create]
-  before_filter :find_filters, :only => [:index]
+  before_action :find_tune, except: [:index, :search, :new, :create]
+  before_action :find_filters, :only => [:index]
 
   respond_to :html, :json
 
   def index
-    @tunes = Tune.scoped.page(params[:page]).per(100)
+    @tunes = Tune.all.page(params[:page]).per(100)
     @tunes = @tunes.with_style(@style) if @style
     @tunes = @tunes.with_form(@form) if @form
     @tunes = @tunes.with_meter(@meter) if @meter

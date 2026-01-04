@@ -1,0 +1,11 @@
+<section id="search">
+  <%= form_tag tunes_path, method: :get do %>
+    <%= label_tag :query, "Search: " %>
+    <%= text_field_tag :query, params[:query], placeholder: "Tune Name or Composer..." %>
+    <%= select_tag :style, options_for_select([['All Styles', '']]) + options_for_select(Tune.unique_styles, params[:style]) %>
+    <%= select_tag :form, options_for_select([['All Forms', '']]) + options_from_collection_for_select(Form.all, :to_param, :name, params[:form]) %>
+    <%= select_tag :meter, options_for_select([['All Meters', '']]) + options_from_collection_for_select(Meter.all, :to_param, :name, params[:meter]) %>
+    <%= select_tag :progression, options_for_select([['All Progressions', '']]) + options_from_collection_for_select(Progression.full_tune, :to_param, :name, params[:progression]) %>
+    <%= submit_tag "Go", name: nil %>
+  <% end %>
+</section>

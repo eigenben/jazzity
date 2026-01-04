@@ -26,7 +26,7 @@
   voicings
   searchables
 ).each do |table|
-  ActiveRecord::Base.connection.execute "TRUNCATE TABLE `#{table}`"
+  ActiveRecord::Base.connection.execute "DELETE FROM #{table}"
 end
 
 %w(

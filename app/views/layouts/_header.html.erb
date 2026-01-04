@@ -1,0 +1,16 @@
+<h1>
+  Jazzity
+  <span>The Jazz Knowledge Engine...</span>
+</h1>
+
+<nav>
+  <ul>
+    <%= navigation_link_to "Home", root_path, DashboardsController %>
+    <%= navigation_link_to "Tunes", tunes_path, TunesController %>
+    <%= navigation_link_to "Scales", scales_path, [ScalesController, ModesController] %>
+    <%= navigation_link_to "Chords/Voicings", chords_path, [ChordsController, VoicingsController, ChordSequencesController, NoteSequencesController] %>
+    <%= navigation_link_to "Progressions/Form", progressions_path, [ProgressionsController, ChordNoteSequencesController] %>
+  </ul>
+</nav>
+
+<aside></aside>

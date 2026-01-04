@@ -1,6 +1,6 @@
 class NoteSequencesController < ApplicationController
-  before_filter :find_key
-  before_filter :find_note_sequence, :except => [:index]
+  before_action :find_key
+  before_action :find_note_sequence, except: [:index]
 
   respond_to :html
 
@@ -12,7 +12,7 @@ class NoteSequencesController < ApplicationController
 
   def staff
     respond_with @note_sequence do |format|
-      format.html { render :layout => "staff" }
+      format.html { render layout: "staff" }
     end
   end
 

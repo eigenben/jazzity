@@ -1,0 +1,26 @@
+<article id="chord-note-sequence">
+  <header>
+    <h1>
+      Chord Note Sequence:
+      <%= @chord_note_sequence.title %>
+    </h1>
+    <h3>
+      <%= raw @chord_note_sequence.chords.reject(&:empty?).map { |g| g.map { |c| link_to(c.short_name, [c.key, c].compact) }.join(" or ") }.join(", &nbsp;&nbsp;") %>
+    </h3>
+  </header>
+
+  <nav id="key-selector">
+    <h2>Key:</h2>
+    <ul>
+      <% Key.primaries.each do |key| %>
+        <li class="<%= "current" if @key == key %>">
+          <%= link_to_unless @key == key, key, [key, @chord_sequence] %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <section id="staff">
+    <div class="staff progression-staff" data-staff='<%= @chord_note_sequence.octavized_notes.to_json %>' data-staff-clef="treble"></div>
+  </section>
+</article>

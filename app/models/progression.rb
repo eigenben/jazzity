@@ -4,26 +4,26 @@ class Progression < ActiveRecord::Base
   include Searchable::Model
   include KeyContext
   
-  friendly_id :name, :use => :slugged
+  friendly_id :name, use: :slugged
 
-  has_many :searchables, :as => :model
+  has_many :searchables, as: :model
   belongs_to :progression_family
   belongs_to :meter
   belongs_to :form
-  belongs_to :variant_of, :class_name => "Progression"
-  has_many :variants, :class_name => "Progression", :foreign_key => "variant_of_id"
-  has_many :components, :class_name => "ProgressionComponent", :order => "progression_components.position"
-  has_many :tunes_based_on, :class_name => "Tune", :foreign_key => "based_on_progression_id"
-  has_many :tune_progressions, :dependent => :destroy
-  has_many :tunes, :through => :tune_progressions
+  belongs_to :variant_of, class_name: "Progression"
+  has_many :variants, class_name: "Progression", foreign_key: "variant_of_id"
+  has_many :components, -> { order("progression_components.position") }, class_name: "ProgressionComponent"
+  has_many :tunes_based_on, class_name: "Tune", foreign_key: "based_on_progression_id"
+  has_many :tune_progressions, dependent: :destroy
+  has_many :tunes, through: :tune_progressions
 
-  scope :full_tune, where(:full_tune => true)
-  scope :partial, where(:full_tune => false)
+  scope :full_tune, -> { where(full_tune: true) }
+  scope :partial, -> { where(full_tune: false) }
 
-  validates :name, :presence => true
+  validates :name, presence: true
 
   define_searchables do
-    searchables.create(:name => name)
+    searchables.create(name: name)
   end
 
   attr_accessor :chord_voicing_options
@@ -95,7 +95,7 @@ class Progression < ActiveRecord::Base
   end
 
   def self.resolve(name)
-    find_by_name(name)
+    find_by(name: name)
   end
 
   class << self

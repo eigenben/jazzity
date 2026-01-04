@@ -1,0 +1,14 @@
+<%= javascript_importmap_tags %>
+
+<%= render "layouts/javascript_data" %>
+
+<!--[if lt IE 7 ]>
+<script>
+  $.getScript("/javascripts/dd_belatedpng.js", function(){ DD_belatedPNG.fix('img, .png_bg'); });
+</script>
+<![endif]-->
+
+<%#  Append your own using content_for :javascripts %>
+<%= yield :javascripts %>
+
+<%# analytics removed %>

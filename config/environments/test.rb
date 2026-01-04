@@ -6,13 +6,11 @@ Jazzity::Application.configure do
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
   config.cache_classes = true
+  config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_assets = true
-  config.static_cache_control = "public, max-age=3600"
-
-  # Log error messages when you accidentally call methods on nil
-  config.whiny_nils = true
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { "Cache-Control" => "public, max-age=3600" }
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -28,6 +26,7 @@ Jazzity::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.active_storage.service = :test
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,

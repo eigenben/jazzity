@@ -1,10 +1,10 @@
 class Searchable < ActiveRecord::Base
-  belongs_to :model, :polymorphic => true
-  belongs_to :key
-  belongs_to :parent, :class_name => "Searchable"
-  has_many :children, :class_name => "Searchable", :foreign_key => "parent_id"
+  belongs_to :model, polymorphic: true
+  belongs_to :key, optional: true
+  belongs_to :parent, class_name: "Searchable", optional: true
+  has_many :children, class_name: "Searchable", foreign_key: "parent_id"
 
-  default_scope :order => "priority"
+  default_scope { order("priority") }
 
   def to_s
     display_name || name
@@ -34,7 +34,7 @@ class Searchable < ActiveRecord::Base
     extend ActiveSupport::Concern
 
     included do
-      has_many :searchables, :as => :model
+      has_many :searchables, as: :model
     end
 
     module ClassMethods

@@ -1,9 +1,9 @@
 class ModesController < ApplicationController
-  before_filter :set_body_class
-  before_filter :find_key
-  before_filter :find_scale
-  before_filter :find_mode
-  before_filter :find_scales
+  before_action :set_body_class
+  before_action :find_key
+  before_action :find_scale
+  before_action :find_mode
+  before_action :find_scales
 
   respond_to :html, :json
 
@@ -23,7 +23,7 @@ class ModesController < ApplicationController
 
   def staff
     respond_with @scale do |format|
-      format.html { render :template => "scales/staff", :layout => "staff" }
+      format.html { render template: "scales/staff", layout: "staff" }
     end
   end
 
@@ -42,16 +42,16 @@ class ModesController < ApplicationController
   end
 
   def find_scale
-    @scale = Scale.find(params[:scale_id])
+    @scale = Scale.find_by(slug: params[:scale_id])
     @scale = @scale.in_key_of(@key) if @key
   end
 
   def find_mode
-    @mode = @scale.modes.find(params[:id])
+    @mode = @scale.modes.find_by(slug: params[:id])
     @mode = @mode.in_key_of(@key) if @key
   end
 
   def find_scales
-    @scales = Scale.scoped(:include => [:modes])
+    @scales = Scale.includes(:modes)
   end
 end

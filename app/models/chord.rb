@@ -3,35 +3,35 @@ class Chord < ActiveRecord::Base
   include KeyContext
   include Toneable
   include Searchable::Model
-  
-  acts_as_tree
-  friendly_id :name, :use => :slugged
+
+  acts_as_tree optional: true
+  friendly_id :name, use: :slugged
   
   belongs_to :chord_quality
 
-  has_many :symbols, :class_name => 'ChordSymbol'
-  has_one :primary_symbol, :class_name => 'ChordSymbol', :conditions => {:primary => true}
+  has_many :symbols, class_name: "ChordSymbol"
+  has_one :primary_symbol, -> { where(primary: true) }, class_name: "ChordSymbol"
 
   has_many :chord_scales
-  has_many :modes, :through => :chord_scales
+  has_many :modes, through: :chord_scales
   has_many :voicings
-  has_many :voice_leadings_to, :through => :voicings
-  has_many :voice_leadings_from, :through => :voicings
+  has_many :voice_leadings_to, through: :voicings
+  has_many :voice_leadings_from, through: :voicings
 
-  validates :name, :presence => true
-  validates :chord_quality, :presence => true
+  validates :name, presence: true
+  validates :chord_quality, presence: true
 
   define_searchables do
-    searchables.create(:name => "#{name} Chord")
+    searchables.create(name: "#{name} Chord")
 
-    symbols.each {|symbol| searchables.create(:name => "#{symbol} Chord") }
+    symbols.each { |symbol| searchables.create(name: "#{symbol} Chord") }
 
     Key.primaries.each do |key|
-      searchables.create(:name => "#{key.name} #{name} Chord", :key_name => key.name)
-      symbols.each {|symbol| searchables.create(:name => "#{key.name}#{symbol} Chord", :key_name => key.name) }
+      searchables.create(name: "#{key.name} #{name} Chord", key_name: key.name)
+      symbols.each { |symbol| searchables.create(name: "#{key.name}#{symbol} Chord", key_name: key.name) }
 
       in_key_of(key).tap do |chord|
-        searchables.create(:name => chord.notes.join(", "), :display_name => "#{chord.notes.join(', ')} (#{title})", :key_name => key.name, :priority => 2)
+        searchables.create(name: chord.notes.join(", "), display_name: "#{chord.notes.join(', ')} (#{title})", key_name: key.name, priority: 2)
       end
     end
   end
@@ -102,6 +102,6 @@ class Chord < ActiveRecord::Base
   end
 
   def to_json(options = {})
-    super({:methods => [:notes]}.merge(options))
+    super({ methods: [:notes] }.merge(options))
   end
 end

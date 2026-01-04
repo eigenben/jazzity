@@ -1,9 +1,9 @@
 class VoicingsController < ApplicationController
-  before_filter :set_body_class
-  before_filter :find_key
-  before_filter :find_chord
-  before_filter :find_chord_qualities
-  before_filter :find_voicing, :except => [:index, :new, :create]
+  before_action :set_body_class
+  before_action :find_key
+  before_action :find_chord
+  before_action :find_chord_qualities
+  before_action :find_voicing, except: [:index, :new, :create]
 
   respond_to :html, :json
 

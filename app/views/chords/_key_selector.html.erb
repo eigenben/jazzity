@@ -1,0 +1,10 @@
+<nav id="key-selector">
+  <h2>Key:</h2>
+  <ul>
+    <% Key.primaries.each do |key| %>
+      <li class="<%= "current" if @key == key %>">
+        <%= link_to_unless @key == key, key, controller.is_a?(VoicingsController) ? [key, @chord, @voicing || :voicings] : [key, @chord] %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

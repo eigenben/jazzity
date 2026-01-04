@@ -1,0 +1,1077 @@
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin-bottom: 8px;
+}
+
+h3 {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+strong, th {
+  font-weight: bold;
+}
+
+label {
+  font-weight: bold;
+}
+
+a:visited {
+  color: #000;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+a {
+  color: #000;
+}
+
+p {
+  font-size: 0.9em;
+  margin-bottom: 0.5em;
+}
+
+section {
+  margin: 10px 0;
+}
+
+nav {
+  margin: 10px 0;
+}
+
+article {
+  margin: 10px 0;
+}
+
+header p.actions {
+  margin-top: 10px;
+}
+
+header {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #CCC;
+}
+
+ul li {
+  padding: 3px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+dl dd {
+  display: inline;
+}
+
+dl dt {
+  display: inline;
+  margin-right: 20px;
+  color: #666;
+}
+
+.avatar img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.avatar {
+  float: left;
+  width: 50px;
+  margin-right: 10px;
+}
+
+cite {
+  color: #666;
+  font-weight: bold;
+  font-style: normal;
+  float: right;
+}
+
+ul.social-media {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+nav.tabs {
+  margin-left: 0;
+  margin-right: 0;
+  width: auto;
+  clear: none;
+}
+
+ul.attributes li {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #666;
+}
+
+ul.attributes {
+  float: right;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+body.staff-container {
+  background: #FFF;
+  margin: 0;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0 40px;
+  background: url("/images/layout/black_linen.png");
+}
+
+#container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  background: #FFF;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 25px;
+  border: 2px solid #DDD;
+}
+
+#header h1 span {
+  padding-left: 20px;
+  font-size: 0.5em;
+  color: #AAA;
+}
+
+#header h1 {
+  font-size: 4.5em;
+  margin-bottom: 15px;
+}
+
+#header nav ul li a {
+  text-decoration: none;
+}
+
+#header nav ul li.current a {
+  color: white;
+}
+
+#header nav ul li.current {
+  background: #333;
+  font-weight: bold;
+  border-bottom: none;
+}
+
+#header nav ul li {
+  margin: 0 10px 0 0;
+  padding: 10px 15px;
+}
+
+#header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #333;
+}
+
+#header nav {
+  padding: 4px;
+  margin-bottom: 0;
+}
+
+#header aside .avatar img {
+  max-width: 25px;
+  max-height: 25px;
+}
+
+#header aside .avatar {
+  float: none;
+  margin-right: 4px;
+}
+
+#header aside {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+
+#header {
+  width: 100%;
+  display: block;
+  margin-bottom: 0;
+  padding-top: 10px;
+  padding-bottom: 0;
+  border-bottom: 0;
+  position: relative;
+}
+
+#flash ul.notice {
+  background-color: #3B9C3B;
+}
+
+#flash ul.warn {
+  background-color: #A11010;
+}
+
+#flash ul {
+  border-radius: 4px;
+  padding: 10px;
+  margin: 0 0 10px 0;
+  color: #FFFFFF;
+}
+
+#flash {
+  width: 100%;
+  display: block;
+}
+
+#main {
+  display: flow-root;
+  width: 100%;
+  margin-top: 0;
+}
+
+#sidebar {
+  float: left;
+  width: 25%;
+  box-sizing: border-box;
+  margin-right: 0;
+}
+
+#footer {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 0.7em;
+  border-top: 1px solid black;
+}
+
+form p.input {
+  margin-bottom: 10px;
+}
+
+form input {
+  font-size: 16px;
+}
+
+form textarea {
+  color: #333;
+  padding: 3px;
+}
+
+form p.field_with_errors input, textarea {
+  border: 1px solid #ccc;
+}
+
+form p.field_with_errors span.error {
+  margin-left: 10px;
+  color: #ccc;
+  font-weight: bold;
+}
+
+form label {
+  display: block;
+  color: #666;
+  font-weight: bold;
+  margin: 0 0 0 0;
+}
+
+form input[type=submit] {
+  margin-top: 10px;
+  background: #1d5fa3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+form {
+  display: flow-root;
+}
+
+.simple_form div.input {
+  margin-bottom: 10px;
+}
+
+.simple_form label {
+  float: left;
+  width: 150px;
+  text-align: right;
+  margin: 2px 10px;
+}
+
+.simple_form .error {
+  clear: left;
+  color: black;
+  display: block;
+  margin-left: 170px;
+  font-size: 12px;
+}
+
+.simple_form .hint {
+  clear: left;
+  margin-top: 3px;
+  margin-left: 170px;
+  font-size: 12px;
+  color: #555;
+  display: block;
+  font-style: italic;
+}
+
+.simple_form div.boolean, input[type='submit'] {
+  margin-left: 170px;
+}
+
+.simple_form div.boolean label, label.collection_radio {
+  float: none;
+  margin: 0;
+  width: 300px;
+  text-align: left;
+  display: inline;
+}
+
+.simple_form label.collection_radio {
+  margin-right: 10px;
+  vertical-align: -2px;
+  margin-left:   2px;
+}
+
+.simple_form .field_with_errors {
+  background-color: #ff3333;
+}
+
+.simple_form input.radio {
+  margin-right: 5px;
+  vertical-align: -3px;
+}
+
+.simple_form input.check_boxes {
+  margin-left: 3px;
+  vertical-align: -3px;
+}
+
+.simple_form label.collection_check_boxes {
+  float: none;
+  margin: 0;
+  vertical-align: -2px;
+  margin-left:   2px;
+}
+
+.simple_form {
+  margin-top: 10px;
+}
+
+nav.pagination {
+  clear: both;
+  margin: 10px 0;
+  background: #CCC;
+  padding: 5px;
+}
+
+#flash div.notice {
+  background: #1D5FA3 url(/images/flash/notice.png) 16px 12px no-repeat;
+}
+
+#flash div.warning {
+  background: #1D5FA3 url(/images/flash/warning.png) 16px 12px no-repeat;
+}
+
+#flash div.alert {
+  background: #EC160E url(/images/flash/alert.png) 16px 12px no-repeat;
+}
+
+#flash div a:hover {
+  color: #FFF;
+}
+
+#flash div a:visited {
+  color: #FFF;
+}
+
+#flash div a {
+  color: #FFF;
+}
+
+#flash div {
+  border-radius: 6px;
+  text-shadow: #000, 1px, 1px, 2px;
+  padding: 16px 0 16px 60px;
+}
+
+#flash {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #EEE;
+}
+
+#key-selector ul li.current {
+  background: #FFF;
+}
+
+#key-selector ul li {
+  padding: 5px;
+}
+
+#key-selector ul {
+  list-style-type: none;
+  margin: 0;
+}
+
+#key-selector {
+  width: 5%;
+  float: right;
+  margin-top: 15px;
+  background: #CCC;
+  padding: 10px;
+  font-size: 1.2em;
+}
+
+#voice-leading ul li {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+#voice-leading ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+#voice-leading {
+  background: #CCC;
+  padding: 10px;
+  margin-top: 15px;
+  width: 90%;
+}
+
+#search form label {
+  display: inline;
+  margin-right: 10px;
+}
+
+#search form input, select {
+  margin-top: 0;
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+#search form input#query {
+  width: 400px;
+}
+
+#search form a {
+  margin-left: 20px;
+}
+
+#search form {
+  padding: 15px;
+}
+
+#search {
+  background: #CCC;
+}
+
+.activity ul.activity-list li cite {
+  font-style: normal;
+  float: none;
+}
+
+.activity ul.activity-list li p {
+  font-size: 0.85em;
+  color: #333;
+}
+
+.activity ul.activity-list li {
+  display: flow-root;
+  margin-bottom: 10px;
+}
+
+.activity ul.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+nav.tabs ul li.current {
+  font-weight: bold;
+  background: #EEE;
+  border-radius: 4px;
+}
+
+nav.tabs ul li {
+  margin: 0 15px 0 0;
+  padding: 4px 8px !important;
+}
+
+nav.tabs ul a:visited {
+  color: #000;
+}
+
+nav.tabs ul a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+nav.tabs ul a {
+  color: #000;
+}
+
+nav.tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #CCC;
+  padding: 5px;
+}
+
+nav.tabs {
+  margin: 10px 0 15px 0;
+  font-size: 0.9em;
+}
+
+body.dashboards section#search-examples h2 {
+  float: left;
+  width: 20%;
+}
+
+body.dashboards section#search-examples ul li {
+  font-size: 0.8em;
+  padding: 3px;
+}
+
+body.dashboards section#search-examples ul {
+  width: 20%;
+  float: left;
+}
+
+body.dashboards section#search-examples {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 5px solid #CCC;
+  padding-bottom: 0.8em;
+}
+
+body.dashboards section#features-overview h1 {
+  font-size: 3em;
+}
+
+body.dashboards section#features-overview article img {
+  float: right;
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+body.dashboards section#features-overview article p {
+  color: #333;
+  font-size: 1.05em;
+  line-height: 1.2em;
+}
+
+body.dashboards section#features-overview article.introduction p {
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+body.dashboards section#features-overview article.introduction {
+  margin-bottom: 20px;
+}
+
+body.dashboards section#features-overview article {
+  display: flow-root;
+  margin-bottom: 15px;
+}
+
+body.dashboards section#features-overview {
+  float: left;
+  width: 66.6667%;
+  box-sizing: border-box;
+}
+
+body.dashboards section#searchable-examples ul.searchables-list li h2 {
+  clear: left;
+}
+
+body.dashboards section#searchable-examples ul.searchables-list li .staff {
+  margin-bottom: -20px;
+}
+
+body.dashboards section#searchable-examples ul.searchables-list li .scale-staff {
+  float: left;
+  text-align: right;
+}
+
+body.dashboards section#searchable-examples {
+  float: left;
+  width: 33.3333%;
+  box-sizing: border-box;
+  margin-right: 0;
+}
+
+ul.searchables-list > li a {
+  text-decoration: none;
+}
+
+ul.searchables-list > li h2 {
+  font-size: 1.2em;
+}
+
+ul.searchables-list > li cite {
+  float: left;
+  font-size: 0.8em;
+  padding-left: 15px;
+}
+
+ul.searchables-list > li .staff {
+  float: right;
+  margin-top: -20px;
+}
+
+ul.searchables-list > li {
+  border-radius: 5px;
+  display: flow-root;
+  position: relative;
+  border: 1px solid #CCC;
+  margin: 0 10px 10px 0;
+  padding: 8px;
+  cursor: hand;
+}
+
+ul.searchables-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin: 0;
+}
+
+body.tunes #search form input#query {
+  width: 250px;
+}
+
+body.tunes #search form input[type=submit] {
+  margin-left: 20px;
+}
+
+body.tunes section#tunes {
+  float: left;
+  width: 75%;
+  box-sizing: border-box;
+}
+
+body.tunes article.tune h3 {
+  float: left;
+  font-size: 1.0em;
+  font-weight: normal;
+}
+
+body.tunes article.tune cite {
+  float: left;
+  font-size: 0.8em;
+  padding-left: 15px;
+}
+
+body.tunes article.tune {
+  display: flow-root;
+  position: relative;
+  padding: 4px;
+  margin: 0;
+}
+
+body.tunes article#tune header h1 {
+  margin-bottom: 5px;
+}
+
+body.tunes article#tune header p {
+  border-top: 1px solid #666;
+  margin-top: 10px;
+  padding-top: 5px;
+  clear: left;
+}
+
+body.tunes article#tune header {
+  border-radius: 6px;
+  background: #CCC;
+  padding: 10px;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+body.tunes article#tune #tune-description p {
+  margin-bottom: 0.8em;
+}
+
+body.tunes article#tune #tune-description ul {
+  margin-left: 1em;
+  margin-bottom: 0.8em;
+}
+
+body.tunes article#tune {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  display: flow-root;
+}
+
+body.chords section#chords ul.chords-list .staff {
+  margin-top: -20px;
+}
+
+body.chords section#chords ul.chords-list {
+  margin-bottom: 0;
+}
+
+body.chords article.chord-quality:first-child {
+  margin-top: 0;
+}
+
+body.chords article.chord-quality:last-child {
+  margin-bottom: 0;
+}
+
+body.chords article.chord-quality {
+  border-bottom: 3px solid #CCC;
+  padding: 10px 0;
+}
+
+body.chords article#chord header h1 span {
+  color: #666;
+}
+
+body.chords article#chord header .staff {
+  position: absolute;
+  top: -20px;
+  right: 20px;
+}
+
+body.chords article#chord header {
+  position: relative;
+}
+
+body.chords article#chord nav.related-modes, nav.related-voicings h3 {
+  margin-bottom: 0.4em;
+}
+
+body.chords article#chord nav.related-modes, nav.related-voicings {
+  margin-top: 1em;
+}
+
+body.chords article#chord nav.related-modes ul.modes-list li.mode {
+  float: left;
+  width: 45%;
+}
+
+ul.chords-list li.chord h3 {
+  margin: 0;
+  padding: 4px;
+}
+
+ul.chords-list li.chord a {
+  text-decoration: none;
+}
+
+ul.chords-list li.chord {
+  border-radius: 5px;
+  position: relative;
+  float: left;
+  border: 1px solid #CCC;
+  margin: 0 10px 10px 0;
+  padding: 4px;
+  width: 155px;
+}
+
+ul.chords-list {
+  display: flow-root;
+}
+
+body.scales article.scale:first-child {
+  margin-top: 0;
+}
+
+body.scales article.scale:last-child {
+  margin-bottom: 0;
+}
+
+body.scales article.scale h4 {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+
+body.scales article.scale ul.modes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 0 20px;
+}
+
+body.scales article.scale .scale-staff {
+  float: right;
+  margin-top: -34px;
+}
+
+body.scales article.scale {
+  display: flow-root;
+  position: relative;
+  border-bottom: 3px solid #CCC;
+  padding: 10px 0;
+}
+
+body.scales article#scale #modes-list ul li {
+  margin: 0 10px 0 0;
+}
+
+body.scales article#scale #modes-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+body.scales article#scale #modes-list {
+  border-radius: 6px;
+  margin-top: 10px;
+  background: #CCC;
+  padding: 5px;
+}
+
+body.scales article#scale #mode {
+  float: left;
+  width: 92%;
+  margin-top: 15px;
+}
+
+body.scales article#scale nav.related-chords h3 {
+  margin-bottom: 0.4em;
+}
+
+body.scales article#scale nav.related-chords {
+  display: flow-root;
+}
+
+ul.modes-list li.mode h3 {
+  margin: 0;
+}
+
+ul.modes-list li.mode .scale-staff {
+  float: right;
+  margin-top: -20px;
+}
+
+ul.modes-list li.mode a {
+  text-decoration: none;
+}
+
+ul.modes-list li.mode {
+  display: flow-root;
+  border-radius: 5px;
+  position: relative;
+  border: 1px solid #CCC;
+  margin: 0 10px 10px 0;
+  padding: 10px;
+  width: auto;
+}
+
+ul.modes-list {
+  display: flow-root;
+}
+
+body.voicings article#voicing .voicing-staff {
+  float: left;
+  margin-right: 10px;
+}
+
+ul.voicings-list li.voicing h3 {
+  margin: 0;
+  padding: 4px;
+}
+
+ul.voicings-list li.voicing .staff {
+  margin-top: -30px;
+}
+
+ul.voicings-list li.voicing a {
+  text-decoration: none;
+}
+
+ul.voicings-list li.voicing {
+  border-radius: 5px;
+  position: relative;
+  float: left;
+  border: 1px solid #CCC;
+  margin: 0 10px 10px 0;
+  padding: 4px;
+  width: 184px;
+}
+
+ul.voicings-list {
+  display: flow-root;
+}
+
+body.progressions article.progression-family h2 {
+  margin-bottom: 8px;
+  font-size: 1.2em;
+}
+
+body.progressions article.progression-family {
+  border-top: 3px solid #CCC;
+  padding: 10px 0;
+  margin-top: 10px;
+  margin-right: 10px;
+  float: left;
+  width: 31%;
+}
+
+body.progressions article#progression #tunes-based-on {
+  margin: 10px 0;
+}
+
+ul.progressions-list li.progression h3 {
+  margin: 0;
+  padding: 4px;
+}
+
+ul.progressions-list li.progression h4 a, a:hover {
+  color: #666;
+}
+
+ul.progressions-list li.progression h4 {
+  padding: 4px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+ul.progressions-list li.progression p {
+  padding: 4px;
+}
+
+ul.progressions-list li.progression a {
+  text-decoration: none;
+}
+
+ul.progressions-list li.progression {
+  border-radius: 5px;
+  position: relative;
+  border: 1px solid #CCC;
+  margin: 0 10px 10px 0;
+}
+
+ul.progressions-list {
+  display: flow-root;
+}
+
+body.note-sequences article.note-sequence {
+  border: 1px solid #666;
+  padding: 15px;
+}
+
+body.note-sequences article#note-sequence nav.related-chords, nav.related-modes {
+  float: left;
+  width: 92%;
+  margin-top: 30px;
+}
+
+body.note-sequences article#note-sequence nav.related-modes ul.modes-list li.mode {
+  float: left;
+  width: 45%;
+}
+
+body.chord-sequences article.chord-sequence {
+  border: 1px solid #666;
+  padding: 15px;
+}
+
+body.chord-sequences article#chord-sequence nav.related-progressions {
+  float: left;
+  width: 92%;
+  margin-top: 30px;
+}
+
+body.chord-note-sequences article.chord-note-sequence {
+  border: 1px solid #666;
+  padding: 15px;
+}
+
+body.chord-note-sequences article#chord-note-sequence nav.related-progressions {
+  float: left;
+  width: 92%;
+  margin-top: 30px;
+}
+
+div.vex-tabdiv {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  padding: 10px;
+  color: #554;
+  white-space: pre;
+}
+
+div.vex-tabdiv .vex-canvas {
+  background: #eed;
+  border: 10px solid #ddc;
+}
+
+div.vex-tabdiv .editor {
+  background: #cfc;
+  border: 10px solid #afa;
+  font-family: Courier;
+  font-size: 14px;
+}
+
+div.vex-tabdiv .editor-error .text {
+  background: #faa;
+  border: 5px solid #f88;
+  font-family: Courier;
+  font-size: 14px;
+  padding: 3px;
+}
+
+div.vex-tabdiv .title {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  padding: 10px;
+  color: #554;
+}

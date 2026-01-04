@@ -1,13 +1,13 @@
 class ChordsController < ApplicationController
-  before_filter :find_key
-  before_filter :find_chord, :except => [:index, :new, :create]
-  before_filter :find_chord_qualities
+  before_action :find_key
+  before_action :find_chord, except: [:index, :new, :create]
+  before_action :find_chord_qualities
 
   respond_to :html, :json
 
   def index
     respond_with @chord_qualities do |format|
-      format.json { render :json => @chord_qualities.to_json(:include => [:chords]) }
+      format.json { render json: @chord_qualities.to_json(include: [:chords]) }
     end
   end
 
@@ -17,7 +17,7 @@ class ChordsController < ApplicationController
 
   def staff
     respond_with @chord do |format|
-      format.html { render :layout => "staff" }
+      format.html { render layout: "staff" }
     end
   end
 
@@ -32,7 +32,7 @@ class ChordsController < ApplicationController
   end
 
   def find_chord
-    @chord = Chord.find(params[:id])
+    @chord = Chord.find_by(slug: params[:id])
     @chord = @chord.in_key_of(@key) if @key
   end
 

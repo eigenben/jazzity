@@ -5,16 +5,16 @@ class Voicing < ActiveRecord::Base
   include OctaveContext
   include Toneable
 
-  acts_as_tree
-  friendly_id :name, :use => :scoped, :scope => :chord
+  acts_as_tree optional: true
+  friendly_id :name, use: :scoped, scope: :chord
 
   belongs_to :voicing_family
   belongs_to :chord
-  has_many :voice_leadings_to, :class_name => "VoiceLeading", :foreign_key => "to_voicing_id"
-  has_many :voice_leadings_from, :class_name => "VoiceLeading", :foreign_key => "from_voicing_id"
-  belongs_to :upper_structure_chord, :class_name => "Chord"
+  has_many :voice_leadings_to, class_name: "VoiceLeading", foreign_key: "to_voicing_id"
+  has_many :voice_leadings_from, class_name: "VoiceLeading", foreign_key: "from_voicing_id"
+  belongs_to :upper_structure_chord, class_name: "Chord"
 
-  validates :name, :presence => true
+  validates :name, presence: true
 
   def to_s
     name
@@ -33,7 +33,7 @@ class Voicing < ActiveRecord::Base
   end
 
   def self.resolve(name)
-    find_by_name(name)
+    find_by(name: name)
   end
 
   class << self
@@ -41,7 +41,6 @@ class Voicing < ActiveRecord::Base
   end
 
   def to_json(options = {})
-    super({:methods => [:notes]}.merge(options))
+    super({ methods: [:notes] }.merge(options))
   end
 end
-

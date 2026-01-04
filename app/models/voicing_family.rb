@@ -3,9 +3,9 @@ class VoicingFamily < ActiveRecord::Base
 
   has_many :voicings
 
-  friendly_id :name, :use => :slugged
+  friendly_id :name, use: :slugged
 
-  scope :at_least_tones, lambda {|n| where("voicing_tones_count > ?", n) }
+  scope :at_least_tones, ->(n) { where("voicing_tones_count > ?", n) }
 
   def to_s
     name

@@ -1,0 +1,84 @@
+<section id="search">
+  <%= form_tag searches_path do %>
+    <%= label_tag :query, "Explore Jazz: " %>
+    <%= text_field_tag :query, params[:query], "data-autocomplete" => "/searches/autocomplete" %>
+    <%= submit_tag "Go" %>
+  <% end %>
+</section>
+
+<div id="sidebar"></div>
+
+<section id="search-examples">
+  <h2>Search Examples:</h2>
+  <ul>
+    <li><%= link_to_search_example "Alone Together" %></li>
+    <li><%= link_to_search_example "Autumn Leaves" %></li>
+    <li><%= link_to_search_example "Rhythm Changes" %></li>
+    <li><%= link_to_search_example "Blues" %></li>
+  </ul>
+  <ul>
+    <li><%= link_to_search_example "Eb Dorian" %></li>
+    <li><%= link_to_search_example "C Major Scale" %></li>
+    <li><%= link_to_search_example "Eb Lydian Augmented" %></li>
+    <li><%= link_to_search_example "Tri-Tone Substitution" %></li>
+  </ul>
+  <ul>
+    <li><%= link_to_search_example "Ebmaj7" %></li>
+    <li><%= link_to_search_example "C7alt" %></li>
+    <li><%= link_to_search_example "G7#11" %></li>
+    <li><%= link_to_search_example "F G B D" %></li>
+  </ul>
+  <ul>
+    <li><%= link_to_search_example "Eb G Bb D" %></li>
+    <li><%= link_to_search_example "A C E G" %></li>
+    <li><%= link_to_search_example "Dmin7, G7, Cmaj7" %></li>
+    <li><%= link_to_search_example "D F A C, F G B D, C E G B" %></li>
+  </ul>
+</section>
+
+<section id="features-overview">
+  <h1>What is Jazzity?</h1>
+  <article class="introduction">
+    <p>Jazzity is a knowledge engine for students of jazz.</p>
+  </article>
+
+  <article>
+    <h2>Explore Chord/Scale/Voicing Relationships</h2>
+    <p>
+      Jazzity extensively understands chords, scales, and voicings. Learn and explore these relationships, and see them plotted in staff notation.
+    </p>
+  </article>
+  <article>
+    <h2>Analyze a Note Sequence</h2>
+    <p>
+      Search for a list of notes separated by commas, and Jazzity will analyze your input against it's knowledge of chords, scales, and progressions.
+    </p>
+  </article>
+  <article>
+    <h2>Explore &amp; Track Jazz Tunes</h2>
+    <p>
+      Jazzity's database of jazz standards connects you with the tunes you know and love.
+    </p>
+  </article>
+  <article>
+    <h2>So, how is this done?</h2>
+    <p>
+      The core of Jazzity is a mathematical model of jazz theory, allowing us to fully analyze - in real time - your input, sort of like
+      <%= link_to "Wolfram Alpha", "http://www.wolframalpha.com/" %>, but specific to Jazz!
+    </p>
+  </article>
+</section>
+
+<section id="searchable-examples">
+  <ul class="searchables-list">
+    <% @searchables.each do |result| %>
+      <% model = result.respond_to?(:target) ? result.target : result %>
+
+      <li class="searchable">
+        <%= link_to path_to_searchable(result) do %>
+          <%= render "searches/searchables/#{model.class.name.underscore}", model: model, result: result %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

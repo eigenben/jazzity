@@ -1,0 +1,47 @@
+<article id="progression">
+  <%= render "progressions/header" %>
+
+  <nav id="key-selector">
+    <h2>Key:</h2>
+    <ul>
+      <% Key.primaries.each do |key| %>
+        <li class="<%= "current" if @key == key %>">
+          <%= link_to_unless @key == key, key, [key, @progression] %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <p><%= @progression.summary %></p>
+  <p><%= @progression.information %></p>
+
+  <section id="staff">
+    <div class="staff progression-staff" data-staff='<%= { notes: @staff_notes }.to_json %>' data-clef="treble,bass" height="160" width="1000"></div>
+  </section>
+
+  <section id="voice-leading">
+    <%= form_tag({}, method: :get) do %>
+      <h2>Voice Leading:</h2>
+      <ul>
+        <% @progression.chords.each_with_index do |chord, i| %>
+          <li>
+            <%= chord.short_name %>
+            (<%= select_tag("v[#{i}]", voice_leading_options_for_select(chord, i)) %>)
+          </li>
+        <% end %>
+      </ul>
+      <%= submit_tag "Update Voicings", name: nil %>
+    <% end %>
+  </section>
+
+  <% if @progression.tunes_based_on.exists? %>
+    <section id="tunes-based-on">
+      <h2>Tunes Based on this Progression:</h2>
+      <ul>
+        <% @progression.tunes_based_on.each do |tune| %>
+          <li><%= link_to tune, tune %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+</article>

@@ -1,0 +1,8 @@
+<% voicing = voicing.in_key_of(key) if local_assigns[:key] %>
+
+<li id="voicing_<%= voicing.id %>">
+  <%= link_to [@key, voicing.chord, voicing].compact do %>
+    <h3><%= voicing.name %></h3>
+    <div class="staff voicing-staff" data-id="<%= voicing.id %>" data-clef="treble,bass" data-staff='<%= voicing.octavized_notes(3).to_json %>' width="150" height="160"></div>
+  <% end %>
+</li>

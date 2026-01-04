@@ -1,0 +1,23 @@
+<section id="search">
+  <%= form_tag searches_path do %>
+    <%= label_tag :query, "Explore Jazz: " %>
+    <%= text_field_tag :query, params[:query], "data-autocomplete" => "/searches/autocomplete" %>
+    <%= submit_tag "Go" %>
+  <% end %>
+</section>
+
+<section id="search-results">
+  <h1><%= @results.count %> Search Results for "<%= params[:id] %>":</h1>
+
+  <ul class="searchables-list">
+    <% @results.each do |result| %>
+      <% model = result.respond_to?(:target) ? result.target : result %>
+
+      <li class="searchable">
+        <%= link_to path_to_searchable(result) do %>
+          <%= render "searches/searchables/#{model.class.name.underscore}", model: model, result: result %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

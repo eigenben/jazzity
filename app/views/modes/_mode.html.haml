@@ -1,7 +1,0 @@
-- mode = mode.in_key_of(key) if local_assigns[:key]
-
-%li[mode]
-  = link_to [local_assigns[:key], mode.scale, mode].compact do
-    .staff.scale-staff{"data-id" => mode.id, "data-staff" => mode.octavized_notes.map {|n| [n]}.to_json, "data-staff-clef" => "treble", "width" => 380}
-    %h3= mode.title
-    %p= truncate mode.information, :length => 80

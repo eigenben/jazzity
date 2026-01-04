@@ -3,7 +3,7 @@ class ProgressionFamily < ActiveRecord::Base
 
   has_many :progressions
 
-  friendly_id :name, :use => :slugged
+  friendly_id :name, use: :slugged
 
   def to_s
     name

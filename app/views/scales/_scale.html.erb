@@ -1,0 +1,11 @@
+<article id="scale_<%= scale.id %>">
+  <div class="staff scale-staff" data-id="<%= scale.id %>" data-staff='<%= scale.staff_notes.to_json %>' data-staff-clef="treble" width="420" height="100"></div>
+  <h2><%= link_to scale.title, scale %></h2>
+  <p><%= scale.information %></p>
+  <h4>Modes:</h4>
+  <ul class="modes">
+    <% scale.modes.each do |mode| %>
+      <li><%= link_to mode.title, [scale, mode] %></li>
+    <% end %>
+  </ul>
+</article>

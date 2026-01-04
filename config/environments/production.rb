@@ -3,17 +3,14 @@ Jazzity::Application.configure do
 
   # Code is not reloaded between requests
   config.cache_classes = true
+  config.eager_load = true
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
-
-  # Compress both stylesheets and JavaScripts
-  config.assets.js_compressor  = :uglifier
-  config.assets.css_compressor = :scss
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Specifies the header that your server uses for sending files
   # (comment out if your front-end server doesn't support this)
@@ -36,6 +33,8 @@ Jazzity::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
+
+  config.active_storage.service = :local
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
