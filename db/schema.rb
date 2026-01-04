@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2015_01_04_200448) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_04_235616) do
   create_table "chord_qualities", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -156,51 +156,6 @@ ActiveRecord::Schema[8.0].define(version: 2015_01_04_200448) do
     t.index ["model_type", "model_id"], name: "index_searchables_on_model_type_and_model_id"
     t.index ["name"], name: "index_searchables_on_name"
     t.index ["parent_id"], name: "index_searchables_on_parent_id"
-  end
-
-  create_table "tune_progressions", force: :cascade do |t|
-    t.integer "tune_id"
-    t.integer "progression_id"
-    t.string "comment"
-    t.integer "start_measure"
-    t.integer "end_measure"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["progression_id"], name: "index_tune_progressions_on_progression_id"
-    t.index ["tune_id"], name: "index_tune_progressions_on_tune_id"
-  end
-
-  create_table "tunes", force: :cascade do |t|
-    t.string "name"
-    t.string "alternate_name"
-    t.integer "based_on_progression_id"
-    t.integer "meter_id"
-    t.string "primary_key_name", limit: 3
-    t.string "secondary_key_name", limit: 3
-    t.string "tonality", default: "Major"
-    t.integer "form_id"
-    t.integer "form_length"
-    t.string "form_lengths"
-    t.integer "starting_chord_id"
-    t.integer "ending_chord_id"
-    t.integer "contrafact_of_tune_id"
-    t.integer "tempo"
-    t.integer "aebersold_playalong_number"
-    t.text "description"
-    t.boolean "seeding", default: false
-    t.boolean "featured", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "slug"
-    t.text "changes_json"
-    t.string "composer"
-    t.string "style"
-    t.index ["aebersold_playalong_number"], name: "index_tunes_on_aebersold_playalong_number"
-    t.index ["form_id"], name: "index_tunes_on_form_id"
-    t.index ["meter_id"], name: "index_tunes_on_meter_id"
-    t.index ["primary_key_name"], name: "index_tunes_on_primary_key_name"
-    t.index ["secondary_key_name"], name: "index_tunes_on_secondary_key_name"
-    t.index ["slug"], name: "index_tunes_on_slug"
   end
 
   create_table "voice_leadings", force: :cascade do |t|

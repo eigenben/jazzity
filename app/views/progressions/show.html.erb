@@ -33,15 +33,4 @@
       <%= submit_tag "Update Voicings", name: nil %>
     <% end %>
   </section>
-
-  <% if @progression.tunes_based_on.exists? %>
-    <section id="tunes-based-on">
-      <h2>Tunes Based on this Progression:</h2>
-      <ul>
-        <% @progression.tunes_based_on.each do |tune| %>
-          <li><%= link_to tune, tune %></li>
-        <% end %>
-      </ul>
-    </section>
-  <% end %>
 </article>

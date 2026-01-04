@@ -1,21 +1,18 @@
 class Progression < ActiveRecord::Base
   extend FriendlyId
-  
+
   include Searchable::Model
   include KeyContext
-  
+
   friendly_id :name, use: :slugged
 
   has_many :searchables, as: :model
   belongs_to :progression_family
   belongs_to :meter
   belongs_to :form
-  belongs_to :variant_of, class_name: "Progression"
-  has_many :variants, class_name: "Progression", foreign_key: "variant_of_id"
-  has_many :components, -> { order("progression_components.position") }, class_name: "ProgressionComponent"
-  has_many :tunes_based_on, class_name: "Tune", foreign_key: "based_on_progression_id"
-  has_many :tune_progressions, dependent: :destroy
-  has_many :tunes, through: :tune_progressions
+  belongs_to :variant_of, class_name: 'Progression'
+  has_many :variants, class_name: 'Progression', foreign_key: 'variant_of_id'
+  has_many :components, -> { order('progression_components.position') }, class_name: 'ProgressionComponent'
 
   scope :full_tune, -> { where(full_tune: true) }
   scope :partial, -> { where(full_tune: false) }
@@ -43,10 +40,9 @@ class Progression < ActiveRecord::Base
   def component_index_offsets
     @component_index_offsets ||= begin
       last_i = nil
-      components.map(&:index).inject([]) do |offsets, i|
+      components.map(&:index).each_with_object([]) do |i, offsets|
         offsets << (i - last_i) % 12 if last_i
         last_i = i
-        offsets
       end
     end
   end
@@ -54,10 +50,9 @@ class Progression < ActiveRecord::Base
   def component_durations
     @component_durations ||= begin
       last_i = nil
-      final = components.map(&:position).inject([]) do |durations, i|
+      final = components.map(&:position).each_with_object([]) do |i, durations|
         durations << (i - last_i) if last_i
         last_i = i
-        durations
       end
 
       # final << (bars) ? bars * positions_per_bar - last_i + 1 : 1
@@ -84,12 +79,15 @@ class Progression < ActiveRecord::Base
   def notes
     chords.map(&:notes)
   end
+
   def octavized_notes
     chords.map(&:octavized_notes)
   end
+
   def staff_notes(voicing_ids = {})
     chord_voicing_notes(voicing_ids)
   end
+
   def beats
     bars * meter.beats
   end
@@ -99,7 +97,6 @@ class Progression < ActiveRecord::Base
   end
 
   class << self
-    alias_method :[], :resolve
+    alias [] resolve
   end
-
 end

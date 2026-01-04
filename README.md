@@ -9,7 +9,6 @@ Jazzity provides an interactive platform for studying jazz theory concepts inclu
 - **Chords** - Explore chord qualities, voicings, and symbols in all keys
 - **Scales & Modes** - Browse musical scales and their modes with staff notation
 - **Progressions** - Study common chord progressions and their voice leading
-- **Tunes** - Reference jazz standards with their harmonic structures
 - **Voice Leading** - Analyze smooth transitions between chord voicings
 
 The application allows you to explore these concepts in any key, providing both theoretical knowledge and practical musical examples.
@@ -85,7 +84,6 @@ bundle exec rspec spec/models/chord_spec.rb
 - **Scale**: Musical scales with modes
 - **Mode**: Scale modes with chord relationships
 - **Progression**: Chord progressions with components
-- **Tune**: Jazz standards with harmonic analysis
 - **Voicing**: Chord voicings with voice leading analysis
 - **VoiceLeading**: Analysis of transitions between voicings
 

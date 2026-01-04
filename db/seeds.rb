@@ -6,13 +6,10 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-
 ### CLEAR EXISTING JAZZ MODEL TABLE ###
-%w(
+%w[
   meters
   forms
-  tunes
-  tune_progressions
   progression_families
   progressions
   progression_components
@@ -25,11 +22,11 @@
   voicing_families
   voicings
   searchables
-).each do |table|
+].each do |table|
   ActiveRecord::Base.connection.execute "DELETE FROM #{table}"
 end
 
-%w(
+%w[
   meters
   forms
   scales
@@ -37,8 +34,6 @@ end
   voicings
   voice_leadings
   progressions
-  tunes
-).each {|f| require Rails.root.join("db/seeds/#{f}.rb") }
+].each { |f| require Rails.root.join("db/seeds/#{f}.rb") }
 
 Searchable.regenerate_all
-

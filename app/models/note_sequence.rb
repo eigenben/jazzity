@@ -2,6 +2,7 @@ require "set"
 
 class NoteSequence
   extend ActiveModel::Naming
+  include ActiveModel::Conversion
   include Enumerable
   include KeyContext
 

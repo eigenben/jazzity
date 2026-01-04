@@ -1,8 +1,7 @@
 class Form < ActiveRecord::Base
   extend FriendlyId
-  
+
   has_many :progressions
-  has_many :tunes
 
   friendly_id :name, use: :slugged
 
@@ -17,7 +16,6 @@ class Form < ActiveRecord::Base
   end
 
   class << self
-    alias_method :[], :resolve
+    alias [] resolve
   end
-
 end
