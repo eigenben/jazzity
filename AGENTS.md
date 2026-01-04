@@ -187,6 +187,7 @@ end
 - Use descriptive names that reveal intent
 - Only add comments for complex business logic, not obvious code
 - Domain objects should be rich with behavior, not just data containers
+- **String literals must use double quotes ("string"), not single quotes ('string')**
 
 ### Rails-Specific
 
