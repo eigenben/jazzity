@@ -1,2 +1,0 @@
-$(document).bind "ready", ->
-  

@@ -1,3 +1,23 @@
+<%# Load jQuery and vendor libraries via script tags before importmap %>
+<%# jQuery from CDN (no integrity check to avoid issues) %>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+<%# jQuery UI from CDN %>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" crossorigin="anonymous"></script>
+<%# Rails UJS - using unpkg which has the non-ESM version %>
+<script src="https://unpkg.com/@rails/ujs@7.1.3/lib/assets/compiled/rails-ujs.js"></script>
+
+<%# Load non-ESM vendor libraries via script tags %>
+<%= javascript_include_tag "vendor/underscore", defer: false %>
+<%= javascript_include_tag "vendor/backbone", defer: false %>
+<%= javascript_include_tag "vendor/moment", defer: false %>
+<%= javascript_include_tag "vendor/vexflow", defer: false %>
+<%= javascript_include_tag "vendor/vexflow-json", defer: false %>
+<%= javascript_include_tag "vendor/jquery-qtip", defer: false %>
+<%= javascript_include_tag "vendor/jquery-autoresize", defer: false %>
+<%= javascript_include_tag "vendor/jquery-scrollto", defer: false %>
+<%= javascript_include_tag "vendor/jquery-vexflow", defer: false %>
+<%= javascript_include_tag "vendor/nested_form", defer: false %>
+
 <%= javascript_importmap_tags %>
 
 <%= render "layouts/javascript_data" %>
@@ -10,5 +30,3 @@
 
 <%#  Append your own using content_for :javascripts %>
 <%= yield :javascripts %>
-
-<%# analytics removed %>
