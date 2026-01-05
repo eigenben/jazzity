@@ -9,6 +9,10 @@ class NoteSequence
   attr_accessor :keys
   attr_accessor :invalid_keys
 
+  def persisted?
+    true
+  end
+
   def initialize(value = [])
     @value_as_given = value
     @keys = []

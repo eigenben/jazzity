@@ -188,6 +188,7 @@ end
 - Only add comments for complex business logic, not obvious code
 - Domain objects should be rich with behavior, not just data containers
 - **String literals must use double quotes ("string"), not single quotes ('string')**
+- **NEVER change single quotes to double quotes or double quotes to single quotes when editing files**
 
 ### Rails-Specific
 
