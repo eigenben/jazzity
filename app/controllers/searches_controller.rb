@@ -6,9 +6,9 @@ class SearchesController < ApplicationController
   end
 
   def show
-    params[:query] = params[:id]
+    @query = CGI.unescape(params[:id])
 
-    @search = Search.new(CGI.unescape(params[:id]))
+    @search = Search.new(@query)
     @results = @search.all
 
     respond_with @results do |format|

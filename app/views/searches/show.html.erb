@@ -1,13 +1,13 @@
 <section id="search">
   <%= form_tag searches_path do %>
     <%= label_tag :query, "Explore Jazz: " %>
-    <%= text_field_tag :query, params[:query], "data-autocomplete" => "/searches/autocomplete" %>
+    <%= text_field_tag :query, @query, "data-autocomplete" => "/searches/autocomplete" %>
     <%= submit_tag "Go" %>
   <% end %>
 </section>
 
 <section id="search-results">
-  <h1><%= @results.count %> Search Results for "<%= params[:id] %>":</h1>
+  <h1><%= @results.count %> Search Results for "<%= @query %>":</h1>
 
   <ul class="searchables-list">
     <% @results.each do |result| %>
