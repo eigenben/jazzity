@@ -6,6 +6,7 @@ gem "rails", "~> 8.1.0"
 gem "sqlite3"
 gem "puma"
 gem "bootsnap", require: false
+gem "thruster", require: false
 
 # Assets / Frontend
 gem "propshaft"
