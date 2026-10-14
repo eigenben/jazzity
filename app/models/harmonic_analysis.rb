@@ -39,6 +39,8 @@ class HarmonicAnalysis
 
   TONIC_KINDS = {:major => %i[major], :minor => %i[minor]}.freeze
 
+  PLAIN_DOMINANTS = ["Dominant 7", "Dominant 9", "Dominant 13"].freeze
+
   # The families whose progressions are looked for inside the chords.
   PATTERN_FAMILIES = ["Cadences", "Turnarounds", "Cycles & Chains"].freeze
 
@@ -89,7 +91,7 @@ class HarmonicAnalysis
   def analyzed_chords
     @analyzed_chords ||= chords.each_index.map do |i|
       numeral, role = label(i)
-      AnalyzedChord.new(chord: chords[i], numeral: numeral, role: role, scale: scale_for(chords[i]))
+      AnalyzedChord.new(chord: chords[i], numeral: numeral, role: role, scale: scale_for(i, numeral))
     end
   end
 
@@ -305,9 +307,30 @@ class HarmonicAnalysis
     LOWERCASE_KINDS.include?(kind(chord)) ? symbol.sub(/\Am(?!aj)/, "") : symbol
   end
 
-  # The mode among the chord's own scales that fits the key best, placed
-  # in the key of its parent scale (D Dorian is in C).
-  def scale_for(chord)
+  # The mode for a chord, placed in the key of its parent scale (D Dorian
+  # is in C): for a plain dominant 7th, the one its part calls for, and
+  # otherwise the one among the chord's own scales that fits the key best.
+  def scale_for(i, numeral)
+    chord = chords[i]
+    functional_scale(chord, i, numeral) || fitting_scale(chord)
+  end
+
+  # Lydian dominant for a tritone substitute and Mixolydian b6 for a
+  # dominant resolving to a minor chord, as players choose them.
+  def functional_scale(chord, i, numeral)
+    return unless PLAIN_DOMINANTS.include?(chord.name)
+
+    target = resolution_target(i)
+    name, offset = if numeral.start_with?("subV")
+      ["Lydian Dominant", -5]
+    elsif target && interval(chord, target) == 5 && %i[minor half_diminished].include?(kind(target))
+      ["Mixolydian b6", 5]
+    end
+
+    Mode.find_by(:name => name)&.clone&.in_key_of(chord.key.shifted(offset)) if name
+  end
+
+  def fitting_scale(chord)
     options = chord.chord_scales.includes(:mode => :scale).map do |chord_scale|
       mode = chord_scale.mode.clone.in_key_of(chord.key.shifted(chord_scale.offset))
       pitches = mode.notes.map { |note| Key[note].index }
