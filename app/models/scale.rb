@@ -3,7 +3,6 @@ class Scale < ActiveRecord::Base
   include KeyContext
   include ModeContext
   include Toneable
-  include Searchable::Model
 
   has_many :modes, dependent: :destroy
 
@@ -13,14 +12,6 @@ class Scale < ActiveRecord::Base
   delegate :chords, to: :main_mode
 
   validates :name, presence: true
-
-  define_searchables do
-    searchables.create(name: "#{name} Scale")
-
-    Key.searchable.each do |key|
-      searchables.create(name: "#{key.name} #{name} Scale", key_name: key.name)
-    end
-  end
 
   def to_s
     name

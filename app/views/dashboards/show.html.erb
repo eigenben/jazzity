@@ -23,29 +23,13 @@
 
 <section class="examples" aria-labelledby="examples-heading">
   <h2 id="examples-heading" class="section-heading">Things to try</h2>
-  <div class="example-groups">
-    <% {
-      "Chord symbols" => ["Ebmaj7", "C7alt", "G7#11"],
-      "Scales" => ["Eb Dorian", "C Major Scale", "Eb Lydian Augmented"],
-      "Progressions" => ["Minor ii-V", "Rhythm Changes", "Jazz Blues"],
-      "Notes you're holding" => ["Eb G Bb D", "A C E G", "Dmin7, G7, Cmaj7", "D F A C, F G B D, C E G B"]
-    }.each do |group, examples| %>
-      <div class="example-group">
-        <h3><%= group %></h3>
-        <ul>
-          <% examples.each do |example| %>
-            <li><%= link_to_search_example example %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-  </div>
+  <%= render "searches/examples" %>
 </section>
 
 <section aria-labelledby="discover-heading">
   <h2 id="discover-heading" class="section-heading">From the reference</h2>
   <ul class="card-grid card-grid-wide">
-    <% @searchables.each do |result| %>
+    <% @reference.each do |result| %>
       <li><%= render "searches/result", result: result %></li>
     <% end %>
   </ul>

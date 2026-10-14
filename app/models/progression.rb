@@ -1,12 +1,10 @@
 class Progression < ActiveRecord::Base
   extend FriendlyId
 
-  include Searchable::Model
   include KeyContext
 
   friendly_id :name, use: :slugged
 
-  has_many :searchables, as: :model
   belongs_to :progression_family
   belongs_to :meter
   belongs_to :form
@@ -18,10 +16,6 @@ class Progression < ActiveRecord::Base
   scope :partial, -> { where(full_tune: false) }
 
   validates :name, presence: true
-
-  define_searchables do
-    searchables.create(name: name)
-  end
 
   def to_s
     name

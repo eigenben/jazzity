@@ -9,24 +9,34 @@ class SearchesController < ApplicationController
     end
   end
 
+  # Goes straight to what the query names, or lists what it matches by
+  # name, or says nothing matched and suggests what to try.
   def show
     @query = params[:id]
-
     @search = Search.new(@query)
-    @results = @search.all
 
-    respond_with @results do |format|
+    respond_to do |format|
       format.html do
-        if @results.size == 0
-          redirect_to root_path, alert: "Nothing matched “#{@query}”. Try a chord symbol like Cmaj7, a scale like D Dorian, or notes like C E G."
-        elsif @results.size == 1
-          redirect_to path_to_searchable(@results.first)
+        if (destination = @search.destination)
+          flash[:notice] = @search.note if @search.note
+          redirect_to path_to_model(destination)
+        elsif @search.strong_results.empty?
+          render :empty
         end
       end
+      format.json { render json: describe(@search.strong_results) }
     end
   end
 
   def autocomplete
-    render json: Search.new(params[:q].to_s).suggestions
+    render json: Search.new(params[:q].to_s).suggestions.map(&:label)
+  end
+
+  protected
+
+  def describe(results)
+    results.map do |result|
+      {:label => result.label, :detail => result.detail, :url => polymorphic_path(path_to_model(result.target))}
+    end
   end
 end

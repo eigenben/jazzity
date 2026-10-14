@@ -1,7 +1,6 @@
 class Mode < ActiveRecord::Base
   extend FriendlyId
   include KeyContext
-  include Searchable::Model
 
   belongs_to :scale
 
@@ -20,14 +19,6 @@ class Mode < ActiveRecord::Base
   validates :name, presence: true
   validates :mode, presence: true, numericality: true
   validates :scale, presence: true
-
-  define_searchables do
-    searchables.create(name: "#{name} Scale")
-
-    Key.searchable.each do |key|
-      searchables.create(name: "#{dup.in_key_of(key).mode_key} #{name} Scale", key_name: key.name)
-    end
-  end
 
   def to_s
     name

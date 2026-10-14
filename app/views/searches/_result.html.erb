@@ -1,5 +1,5 @@
 <% model = result.target %>
 
-<%= link_to path_to_searchable(result), class: "card" do %>
-  <%= render "searches/searchables/#{model.class.name.underscore}", model: model, result: result %>
+<%= link_to path_to_model(model), class: "card" do %>
+  <%= render "searches/results/#{model.class.name.underscore}", model: model %>
 <% end %>

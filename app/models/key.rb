@@ -147,7 +147,7 @@ class Key
     primaries.flat_map { |key| key.name == "Gb" ? [key, self["F#"]] : [key] }
   end
 
-  # Keys that get their own search entries: the standard keys plus C#.
+  # The standard keys plus C#, which players write as often as Db.
   def self.searchable
     standard + [self["C#"]]
   end

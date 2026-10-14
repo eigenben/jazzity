@@ -1,9 +1,22 @@
 <% content_for :title, "Search: #{@query}" %>
 
-<%= render "shared/title", eyebrow: "Search", title: @query, subtitle: pluralize(@results.size, "match") %>
+<% results = @search.strong_results %>
+<%= render "shared/title", eyebrow: "Search", title: @query,
+      subtitle: [pluralize(results.size, "match"), ("for “#{@search.corrected_query}”" if @search.corrected?)].compact.join(" ") %>
 
-<ul class="card-grid card-grid-wide">
-  <% @results.each do |result| %>
-    <li><%= render "searches/result", result: result %></li>
-  <% end %>
-</ul>
+<% @search.grouped_results.each do |group, group_results| %>
+  <section class="group" aria-labelledby="<%= group.parameterize %>-heading">
+    <h2 class="section-heading" id="<%= group.parameterize %>-heading">
+      <%= group %>
+      <span class="section-count"><%= group_results.size %></span>
+    </h2>
+    <ul class="card-grid card-grid-wide">
+      <% group_results.first(Search::PER_GROUP).each do |result| %>
+        <li><%= render "searches/result", result: result %></li>
+      <% end %>
+    </ul>
+    <% if group_results.size > Search::PER_GROUP %>
+      <p class="more-results">and <%= pluralize(group_results.size - Search::PER_GROUP, "more") %>. Add a word or a key to narrow it down.</p>
+    <% end %>
+  </section>
+<% end %>

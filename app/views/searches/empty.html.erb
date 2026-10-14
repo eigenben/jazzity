@@ -1,0 +1,25 @@
+<% content_for :title, "Search: #{@query}" %>
+
+<%= render "shared/title", eyebrow: "Search", title: "Nothing matched “#{@query}”",
+      subtitle: "Jazzity reads chord symbols, scales and modes with their key, roman numerals, chord changes and the notes you're holding." %>
+
+<% if (suggestions = @search.suggestions_for_nothing_found).any? %>
+  <section class="group" aria-labelledby="suggestions-heading">
+    <h2 class="section-heading" id="suggestions-heading">Did you mean…</h2>
+    <ul class="suggestion-list">
+      <% suggestions.each do |result| %>
+        <li>
+          <%= link_to path_to_model(result.target) do %>
+            <span class="suggestion-label"><%= result.label %></span>
+            <span class="suggestion-detail">— <%= result.detail %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
+
+<section class="group" aria-labelledby="examples-heading">
+  <h2 class="section-heading" id="examples-heading">Things to try</h2>
+  <%= render "searches/examples" %>
+</section>
