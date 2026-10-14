@@ -17,6 +17,14 @@ class ApplicationController < ActionController::Base
     helpers.in_key(model.key, *parents, model)
   end
 
+  # The voicing picked for each chord position, e.g. {"0" => "878", "1" => "<"}.
+  # Anything other than a flat hash of positions is ignored.
+  def voicing_choices
+    choices = params[:v]
+    choices.respond_to?(:permit) ? choices.permit(*choices.keys).to_h : {}
+  end
+
   helper_method :path_to_searchable
   helper_method :path_to_model
+  helper_method :voicing_choices
 end

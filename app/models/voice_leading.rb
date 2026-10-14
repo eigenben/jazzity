@@ -21,17 +21,17 @@ class VoiceLeading < ActiveRecord::Base
   # Currently if it can't find one, it will choose a random voicing! (Dangerous?)
   #
   def self.voicings_for_chords(chords, voicing_ids = {})
-    voicing_ids.stringify_keys!
+    voicing_ids = voicing_ids.to_h.stringify_keys
 
     [].tap do |voicings|
       chords.each_with_index do |chord, i|
         choice = voicing_ids[i.to_s]
         previous_voicing = voicings.last
 
-        if choice == "<" or choice.nil?
-          voicings << (voicing_for_chord_after(chord, previous_voicing) || chord.voicings.sample.try(:in_key_of, chord.key))
-        elsif choice.to_i > 0
+        if choice.to_i > 0
           voicings << chord.voicings.find(choice).in_key_of(chord.key)
+        else
+          voicings << (voicing_for_chord_after(chord, previous_voicing) || chord.voicings.sample.try(:in_key_of, chord.key))
         end
       end
     end.compact

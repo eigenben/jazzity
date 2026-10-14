@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def voicing_options_for_select(chord, position)
-    selected = params.dig(:v, position.to_s)
+    selected = voicing_choices[position.to_s]
     lead = position.zero? ? "Any voicing" : "Voice-led from previous chord"
 
     options_for_select([[lead, "<"]], selected) + options_from_collection_for_select(chord.voicings, :id, :name, selected)
