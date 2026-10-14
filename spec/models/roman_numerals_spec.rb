@@ -59,6 +59,12 @@ RSpec.describe RomanNumerals do
     expect(described_class.parse("ii V I in Eb").progressions.map(&:title)).to eq(["Major ii-V-I Progression in Eb"])
   end
 
+  it "picks the progression whose chords are exactly the ones assumed" do
+    numerals = described_class.parse("ii V")
+    expect(numerals.progressions.map(&:name)).to eq(["Major ii-V", "Minor ii-V"])
+    expect(numerals.progression.name).to eq("Major ii-V")
+  end
+
   it "finds no progression when the chords differ in kind" do
     expect(progressions("I vi ii V")).to be_empty
   end
