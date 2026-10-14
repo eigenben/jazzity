@@ -1,5 +1,5 @@
 class ChordSequence
-  extend ActiveModel::Naming
+  include Routable
   include Enumerable
   include KeyContext
 

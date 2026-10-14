@@ -1,17 +1,12 @@
 require "set"
 
 class NoteSequence
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
+  include Routable
   include Enumerable
   include KeyContext
 
   attr_accessor :keys
   attr_accessor :invalid_keys
-
-  def persisted?
-    true
-  end
 
   def initialize(value = [])
     @value_as_given = value
