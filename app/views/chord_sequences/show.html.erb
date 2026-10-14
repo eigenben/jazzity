@@ -1,6 +1,6 @@
 <% content_for :title, @chord_sequence.title %>
 
-<%= render "shared/title", eyebrow: "Chord sequence", title: @chord_sequence.name, subtitle: links_to_chords(@chord_sequence.chords, " ") %>
+<%= render "shared/title", eyebrow: "Chord sequence", title: @chord_sequence.name, subtitle: links_to_chords(@chord_sequence.chords, " ", lead_sheet: true) %>
 
 <div class="with-dial">
   <div class="main-column">

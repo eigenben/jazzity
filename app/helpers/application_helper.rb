@@ -18,8 +18,10 @@ module ApplicationHelper
     sanitize html, attributes: Rails::HTML5::SafeListSanitizer.allowed_attributes + STAFF_ATTRIBUTES
   end
 
-  def links_to_chords(chords, separator = ", ")
-    safe_join(chords.map { |chord| link_to(chord.short_name, in_key(chord.key, chord)) }, separator)
+  # Links to chords, named by their short names (Dmin7) or, with
+  # `lead_sheet`, by their symbols as a lead sheet writes them (Dm7).
+  def links_to_chords(chords, separator = ", ", lead_sheet: false)
+    safe_join(chords.map { |chord| link_to(lead_sheet ? chord_symbol(chord) : chord.short_name, in_key(chord.key, chord)) }, separator)
   end
 
   def link_to_search_example(name)

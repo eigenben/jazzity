@@ -46,6 +46,7 @@ RSpec.describe "Analyzing chord changes", type: :request do
     ])
     expect(page.css("a.card[href='/progressions/major-ii-v-i'] .card-title").text).to eq("Major ii-V-I Progression")
     expect(page.css("a.card[href='/scales/major/modes/dorian'] .card-kind").text.squish).to eq("Over Dm7 · ii7")
+    expect(page.css(".subtitle").text.squish).to eq("Dm7 G7 Cmaj7 A7")
   end
 
   it "names secondary dominants and tritone substitutes" do
