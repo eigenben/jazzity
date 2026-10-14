@@ -29,10 +29,11 @@ class VoiceLeader
   end
 
   # Rootless voicings are written for the right hand over the root in the
-  # left, from A3 to E5 and centred on F4. That is the left-hand rootless
+  # left, from Ab3 to F5 and centred on F4. That is the left-hand rootless
   # register (about D3 to A4) moved up a 4th, so the voicing sits on the
-  # treble staff with at most two ledger lines instead of straddling middle C.
-  RIGHT_HAND = Register.new(low: 57, high: 76, centre: 65)
+  # treble staff with at most two ledger lines instead of straddling middle
+  # C. It is 21 semitones wide, so every octave-wide voicing fits somewhere.
+  RIGHT_HAND = Register.new(low: 56, high: 77, centre: 65)
 
   # Voicings that include the root are played by the left hand alone, from
   # E2 to E4. How low they can go depends on their intervals, see
