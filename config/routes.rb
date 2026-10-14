@@ -5,7 +5,7 @@ Jazzity::Application.routes.draw do
     get :autocomplete, on: :collection
   end
 
-  resources :keys, only: [:show] do
+  resources :keys, only: [] do
     resources :chord_qualities, only: %i[index show]
     resources :chords, only: %i[index show] do
       get :staff, on: :member
@@ -16,7 +16,7 @@ Jazzity::Application.routes.draw do
       get :staff, on: :member
     end
 
-    resources :note_sequences, path: 'notes', only: %i[index show] do
+    resources :note_sequences, path: 'notes', only: [:show] do
       get :staff, on: :member
     end
 
@@ -24,7 +24,7 @@ Jazzity::Application.routes.draw do
       get :staff, on: :member
     end
 
-    resources :chord_note_sequences, path: 'chord-notes', only: %i[index show] do
+    resources :chord_note_sequences, path: 'chord-notes', only: [:show] do
       get :staff, on: :member
     end
 

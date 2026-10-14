@@ -1,6 +1,7 @@
 class ChordsController < ApplicationController
-  before_action :find_key
-  before_action :find_chord, except: [:index, :new, :create]
+  include KeyScoped
+
+  before_action :find_chord, except: :index
   before_action :find_chord_qualities
 
   respond_to :html, :json
@@ -21,18 +22,10 @@ class ChordsController < ApplicationController
     end
   end
 
-
   protected
 
-  def find_key
-    if params[:key_id]
-      @key = Key[params[:key_id]]
-      @key = nil if @key.main?
-    end
-  end
-
   def find_chord
-    @chord = Chord.find_by(slug: params[:id])
+    @chord = Chord.find_by!(slug: params[:id])
     @chord = @chord.in_key_of(@key) if @key
   end
 

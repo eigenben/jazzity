@@ -1,6 +1,7 @@
 class ProgressionsController < ApplicationController
-  before_action :find_key
-  before_action :find_progression, except: [:index, :new, :create]
+  include KeyScoped
+
+  before_action :find_progression, except: :index
 
   respond_to :html, :json
 
@@ -23,18 +24,10 @@ class ProgressionsController < ApplicationController
     end
   end
 
-
   protected
 
-  def find_key
-    if params[:key_id]
-      @key = Key[params[:key_id]]
-      @key = nil if @key.main?
-    end
-  end
-
   def find_progression
-    @progression = Progression.find_by(slug: params[:id])
+    @progression = Progression.find_by!(slug: params[:id])
     @progression = @progression.in_key_of(@key) if @key
     @staff_notes = @progression.staff_notes(params[:v] || {})
   end
