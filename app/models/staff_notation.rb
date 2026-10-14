@@ -1,17 +1,19 @@
+# Expands {{reference}} markers in descriptive text, such as {{Cmaj7}} or
+# {{D Dorian}}, into staff notation.
 class StaffNotation
+  MARKER = /\{\{(.*?)\}\}/
+  NOTATABLE = [NoteSequence, ChordSequence, ChordNoteSequence, Chord, Scale, Mode]
+
   def self.parse(text)
-    if md = /\{\{(.*)\}\}/.match(text)
-      matched = md[1].strip
-
-      staff = nil
-      if found = [NoteSequence, ChordSequence, ChordNoteSequence, Chord, Scale, Mode].map { |k| k[matched] }.compact.first
-        staff = found.staff_notes
-      else
-        staff = matched
-      end
-
-      text = text.gsub(/\{\{(.*)\}\}/, %(<span class="staff" data-clef="treble,bass" data-width="500" data-height="160" data-staff='#{staff}' />)) if staff
+    text.gsub(MARKER) do
+      reference = $1.strip
+      notatable = NOTATABLE.lazy.map { |klass| klass[reference] }.find(&:itself)
+      notatable ? staff_markup(notatable.staff_notes) : reference
     end
-    text
+  end
+
+  def self.staff_markup(notes)
+    chords = notes.first.is_a?(String) ? [notes] : notes
+    %(<div class="staff" data-controller="staff" data-staff-clef-value="grand" data-staff-chords-value="#{ERB::Util.html_escape(chords.to_json)}"></div>)
   end
 end

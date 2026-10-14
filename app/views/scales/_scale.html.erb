@@ -1,11 +1,16 @@
-<article id="scale_<%= scale.id %>">
-  <div class="staff scale-staff" data-id="<%= scale.id %>" data-staff='<%= scale.staff_notes.to_json %>' data-staff-clef="treble" width="420" height="100"></div>
-  <h2><%= link_to scale.title, scale %></h2>
-  <p><%= scale.information %></p>
-  <h4>Modes:</h4>
-  <ul class="modes">
-    <% scale.modes.each do |mode| %>
-      <li><%= link_to mode.title, [scale, mode] %></li>
+<article class="scale-entry" id="<%= dom_id(scale) %>">
+  <div class="scale-entry-text">
+    <h2 class="scale-entry-title"><%= link_to scale.name, scale %></h2>
+    <% if scale.information.present? %>
+      <p><%= scale.information %></p>
     <% end %>
-  </ul>
+    <% if scale.modes.many? %>
+      <ul class="chips" aria-label="Modes of <%= scale.name %>">
+        <% scale.modes.each do |mode| %>
+          <li><%= link_to mode.name, [scale, mode] %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+  <%= scale_staff(scale) %>
 </article>

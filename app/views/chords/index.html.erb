@@ -1,3 +1,12 @@
-<section id="chords">
-  <%= render @chord_qualities %>
-</section>
+<% content_for :title, "Chords" %>
+
+<%= render "shared/title", eyebrow: "Reference", title: "Chords", subtitle: "Every chord quality Jazzity knows, written from C. Open one to see it in other keys, the scales that fit it, and common voicings." %>
+
+<% @chord_qualities.each do |chord_quality| %>
+  <section class="group" aria-labelledby="<%= dom_id(chord_quality) %>">
+    <h2 class="section-heading" id="<%= dom_id(chord_quality) %>"><%= chord_quality %></h2>
+    <ul class="card-grid card-grid-compact">
+      <%= render chord_quality.chords %>
+    </ul>
+  </section>
+<% end %>

@@ -1,0 +1,15 @@
+<%# Lets the reader pick a voicing for each chord; unset chords are voice-led from the one before. %>
+<section class="group" aria-labelledby="voicing-heading">
+  <h2 class="section-heading" id="voicing-heading">Voicings</h2>
+  <%= form_with url: request.path, method: :get, class: "voicing-form", data: {controller: "autosubmit", turbo_action: "replace"} do %>
+    <ol class="voicing-choices">
+      <% chords.each_with_index do |chord, i| %>
+        <li>
+          <%= label_tag "v_#{i}", chord.short_name %>
+          <%= select_tag "v[#{i}]", voicing_options_for_select(chord, i), data: {action: "autosubmit#submit"} %>
+        </li>
+      <% end %>
+    </ol>
+    <noscript><%= submit_tag "Update voicings", name: nil %></noscript>
+  <% end %>
+</section>

@@ -1,0 +1,16 @@
+<%# The twelve keys arranged around the circle of fifths. `path` builds the link for each key. %>
+<% current = @key || Key.default %>
+
+<nav class="key-dial" aria-label="Key">
+  <p class="key-dial-current">
+    <span>Key of</span>
+    <strong><%= current %></strong>
+  </p>
+  <ol>
+    <% Key.primaries.each do |key| %>
+      <li style="--position: <%= (12 - key.cycle_index) % 12 %>">
+        <%= link_to key, path.call(key), :aria => {:current => ("page" if key == current)} %>
+      </li>
+    <% end %>
+  </ol>
+</nav>

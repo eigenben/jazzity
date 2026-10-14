@@ -1,41 +1,33 @@
-<article id="note-sequence">
-  <header>
-    <h1>
-      Note Sequence:
-      <%= @note_sequence.title %>
-    </h1>
-  </header>
+<% content_for :title, @note_sequence.title %>
 
-  <nav id="key-selector">
-    <h2>Key:</h2>
-    <ul>
-      <% Key.primaries.each do |key| %>
-        <li class="<%= "current" if @key == key %>">
-          <%= link_to_unless @key == key, key, [key, @note_sequence] %>
-        </li>
-      <% end %>
-    </ul>
-  </nav>
+<%= render "shared/title", eyebrow: "Notes", title: @note_sequence.name %>
 
-  <section id="staff">
-    <div class="staff chord-staff" data-staff='<%= @note_sequence.octavized_notes.to_json %>' data-staff-clef="treble"></div>
-  </section>
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature">
+      <%= staff_tag([@note_sequence.octavized_notes], class: "staff-large") %>
+    </section>
 
-  <% unless @note_sequence.chords.empty? %>
-    <nav class="related-chords">
-      <h3>Related Chords:</h3>
-      <ul class="chords-list">
-        <%= render @note_sequence.chords %>
-      </ul>
-    </nav>
-  <% end %>
+    <% if @note_sequence.chords.any? %>
+      <section class="group" aria-labelledby="chords-heading">
+        <h2 class="section-heading" id="chords-heading">Chords these notes spell</h2>
+        <ul class="card-grid card-grid-compact">
+          <%= render @note_sequence.chords %>
+        </ul>
+      </section>
+    <% else %>
+      <p class="empty">These notes don't spell a chord Jazzity knows. Check the spelling, or try fewer notes.</p>
+    <% end %>
 
-  <% unless @note_sequence.modes.empty? %>
-    <nav class="related-modes">
-      <h3>Related Scales:</h3>
-      <ul class="modes-list">
-        <%= render @note_sequence.modes %>
-      </ul>
-    </nav>
-  <% end %>
-</article>
+    <% if @note_sequence.modes.any? %>
+      <section class="group" aria-labelledby="scales-heading">
+        <h2 class="section-heading" id="scales-heading">Scales that contain them</h2>
+        <ul class="card-grid">
+          <%= render @note_sequence.modes %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+
+  <%= render "shared/key_dial", path: ->(key) { in_key(key, @note_sequence) } %>
+</div>

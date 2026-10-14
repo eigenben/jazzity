@@ -1,0 +1,6 @@
+<p class="card-kind">Notes</p>
+<h3 class="card-title"><%= model.title %></h3>
+<%= staff_tag([model.octavized_notes]) %>
+<% if model.chords.any? %>
+  <p class="card-meta">Spells <%= model.chords.map(&:title).to_sentence(two_words_connector: " or ", last_word_connector: " or ") %></p>
+<% end %>

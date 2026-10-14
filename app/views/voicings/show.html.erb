@@ -1,9 +1,19 @@
-<article id="chord">
-  <%= render "chords/header" %>
+<% content_for :title, @voicing.title %>
 
-  <article id="voicing">
-    <%= render "chords/key_selector" %>
-    <h1><%= @voicing.title %></h1>
-    <div class="staff voicing-staff" data-id="<%= @voicing.id %>" data-clef="treble,bass" data-staff='<%= @voicing.octavized_notes(3).to_json %>' width="150" height="160"></div>
-  </article>
-</article>
+<%= render "shared/title", eyebrow: "Voicing of #{@chord.title}", title: @voicing.name, subtitle: link_to("Back to #{@chord.short_name}", in_key(@chord.key, @chord)) %>
+
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature">
+      <%= voicing_staff(@voicing, class: "staff-large") %>
+      <dl class="facts">
+        <div>
+          <dt>Notes, low to high</dt>
+          <dd class="notes"><%= @voicing.notes.join(" ") %></dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord, @voicing) } %>
+</div>

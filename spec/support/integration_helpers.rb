@@ -1,6 +1,6 @@
 module IntegrationHelpers
   def navigate_to(name)
-    within("#header nav") do
+    within("nav[aria-label=Sections]") do
       click_on name
     end
   end

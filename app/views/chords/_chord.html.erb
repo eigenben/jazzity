@@ -1,8 +1,9 @@
 <% chord = chord.in_key_of(key) if local_assigns[:key] %>
 
-<li id="chord_<%= chord.id %>">
-  <%= link_to chord do %>
-    <h3><%= chord.title %></h3>
-    <div class="staff chord-staff" data-id="<%= chord.id %>" data-staff='<%= chord.octavized_notes.to_json %>' data-staff-clef="treble" width="150"></div>
+<li id="<%= dom_id(chord) %>">
+  <%= link_to in_key(chord.key, chord), class: "card" do %>
+    <h3 class="card-title"><%= chord.short_name %></h3>
+    <%= chord_staff(chord) %>
+    <p class="card-meta"><%= chord.title %></p>
   <% end %>
 </li>

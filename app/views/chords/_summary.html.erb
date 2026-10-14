@@ -1,0 +1,22 @@
+<section class="feature">
+  <%= chord_staff(@chord, class: "staff-large") %>
+  <dl class="facts">
+    <div>
+      <dt>Notes</dt>
+      <dd class="notes"><%= @chord.notes.join(" ") %></dd>
+    </div>
+    <div>
+      <dt>Intervals</dt>
+      <dd class="notes"><%= @chord.interval_names.join(" ") %></dd>
+    </div>
+    <% if @chord.parent %>
+      <div>
+        <dt>Extends</dt>
+        <dd><%= link_to @chord.parent.in_key_of(@chord.key).title, in_key(@chord.key, @chord.parent) %></dd>
+      </div>
+    <% end %>
+  </dl>
+  <% if @chord.information.present? %>
+    <div class="prose"><%= text_to_html @chord.information %></div>
+  <% end %>
+</section>

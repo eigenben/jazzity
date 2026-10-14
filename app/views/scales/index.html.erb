@@ -1,3 +1,7 @@
-<section id="scales">
+<% content_for :title, "Scales" %>
+
+<%= render "shared/title", eyebrow: "Reference", title: "Scales", subtitle: "Parent scales and the modes built on each of their degrees." %>
+
+<section class="scale-list">
   <%= render @scales %>
 </section>

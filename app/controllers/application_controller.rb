@@ -8,21 +8,15 @@ class ApplicationController < ActionController::Base
   end
 
   def path_to_model(model)
-    if model.is_a?(Mode)
-      [(model.respond_to?(:key) ? model.key : nil), model.scale, model].compact
-    elsif model.is_a?(Voicing)
-      [(model.respond_to?(:key) ? model.key : nil), model.chord, model].compact
-    else
-      [(model.respond_to?(:key) ? model.key : nil), model].compact
+    parents = case model
+    when Mode then [model.scale]
+    when Voicing then [model.chord]
+    else []
     end
-  end
 
-  # Applies Textile and StaffNotation parsers to produce HTML
-  def text_to_html(text)
-    RedCloth.new(StaffNotation.parse(text.to_s)).to_html
+    helpers.in_key(model.key, *parents, model)
   end
 
   helper_method :path_to_searchable
   helper_method :path_to_model
-  helper_method :text_to_html
 end

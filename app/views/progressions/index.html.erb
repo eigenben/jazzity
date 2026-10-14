@@ -1,18 +1,12 @@
-<section id="search">
-  <%= form_tag searches_path do %>
-    <%= label_tag :query, "Search Progressions: " %>
-    <%= text_field_tag :query %>
-    <%= submit_tag "Go" %>
-  <% end %>
-</section>
+<% content_for :title, "Progressions" %>
 
-<section id="progressions">
-  <% @progression_families.each_with_index do |family, i| %>
-    <article class="progression-family" style="<%= "clear: left" if i % 3 == 0 %>">
-      <h2><%= family %></h2>
-      <ul class="progressions-list">
-        <%= render family.progressions %>
-      </ul>
-    </article>
-  <% end %>
-</section>
+<%= render "shared/title", eyebrow: "Reference", title: "Progressions", subtitle: "Common chord movements and the tune forms built from them, with voice-led voicings in any key." %>
+
+<% @progression_families.each do |family| %>
+  <section class="group" aria-labelledby="<%= dom_id(family) %>">
+    <h2 class="section-heading" id="<%= dom_id(family) %>"><%= family %></h2>
+    <ul class="card-grid">
+      <%= render family.progressions %>
+    </ul>
+  </section>
+<% end %>
