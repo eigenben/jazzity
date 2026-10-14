@@ -1,4 +1,4 @@
-<%# The twelve keys arranged around the circle of fifths. `path` builds the link for each key. %>
+<%# The keys arranged around the circle of fifths, with Gb and F# sharing a place. `path` builds the link for each key. %>
 <% current = @key || Key.default %>
 
 <nav class="key-dial" aria-label="Key">
@@ -7,9 +7,11 @@
     <strong><%= current %></strong>
   </p>
   <ol>
-    <% Key.primaries.each do |key| %>
-      <li style="--position: <%= (12 - key.cycle_index) % 12 %>">
-        <%= link_to key, path.call(key), :aria => {:current => ("page" if key == current)} %>
+    <% Key.standard.group_by(&:cycle_index).each do |cycle_index, keys| %>
+      <li style="--position: <%= (12 - cycle_index) % 12 %>"<% if keys.many? %> class="key-dial-enharmonic"<% end %>>
+        <% keys.each do |key| %>
+          <%= link_to key, path.call(key), :aria => {:current => ("page" if key == current)} %>
+        <% end %>
       </li>
     <% end %>
   </ol>

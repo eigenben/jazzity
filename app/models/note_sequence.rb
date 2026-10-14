@@ -52,24 +52,9 @@ class NoteSequence
     octavized_notes.map { |n| [n] }
   end
 
-  # TODO: This is duplicated! Bad bad!
   def octavized_notes(octave = 4)
-    return [] if keys.empty?
-
-    octave -= 1 if (8..11).include?(keys.first.index)
-    last_index = keys.first.index
-
-    effective_octave = (keys.first.name == "Cb") ? octave + 1 : octave  # Hack for Cb, which is a weird case...
-
-    ["#{notes.first}/#{effective_octave}"] + keys.from(1).map do |key|
-      index = key.index > last_index ? key.index : key.index + 12
-      octave += 1 if (last_index..index).include?(12)
-      last_index = key.index
-      effective_octave = (key.name == "Cb") ? octave + 1 : octave  # Hack for Cb, which is a weird case...
-      "#{key.name}/#{effective_octave}"
-    end
+    Tones.octavize(keys, octave)
   end
-
 
   class << self
     def resolve(value)

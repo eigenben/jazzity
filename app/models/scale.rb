@@ -17,7 +17,7 @@ class Scale < ActiveRecord::Base
   define_searchables do
     searchables.create(name: "#{name} Scale")
 
-    Key.primaries.each do |key|
+    Key.searchable.each do |key|
       searchables.create(name: "#{key.name} #{name} Scale", key_name: key.name)
     end
   end
@@ -39,27 +39,16 @@ class Scale < ActiveRecord::Base
   end
 
   def self.resolve(symbol)
-    in_key = nil
-
     return nil if symbol.nil?
-    symbol = symbol.dup
 
-    symbol.gsub!(/ Scale/i, "")
-
-    Key.all.each do |k|
-      if symbol.starts_with?(k.name)
-        in_key = k
-        symbol.gsub!(/^#{k.name}/, '').strip!
-        break
-      end
-    end
-
-    scale = find_by(name: symbol)
+    whole = symbol.gsub(/ Scale/i, "")
+    in_key, symbol = Key.extract(whole)
+    scale = find_by(name: symbol.strip)
 
     # Perhaps the matched key was really part of the name, try that:
     if scale.nil? && !in_key.nil?
-      symbol = in_key.name + symbol
-      scale = all.detect { |s| s.name == symbol }
+      in_key = nil
+      scale = find_by(name: whole)
     end
 
     # If still not found, must be invalid:
