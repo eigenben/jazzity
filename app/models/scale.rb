@@ -38,24 +38,11 @@ class Scale < ActiveRecord::Base
     octavized_notes.map { |n| [n] }
   end
 
-  def self.resolve(symbol)
-    return nil if symbol.nil?
-
-    whole = symbol.gsub(/ Scale/i, "")
-    in_key, symbol = Key.extract(whole)
-    scale = find_by(name: symbol.strip)
-
-    # Perhaps the matched key was really part of the name, try that:
-    if scale.nil? && !in_key.nil?
-      in_key = nil
-      scale = find_by(name: whole)
-    end
-
-    # If still not found, must be invalid:
-    return nil if scale.nil?
-
-    scale.key = in_key
-    scale
+  # Finds a scale by name with an optional key, such as "Bb Major Scale"
+  # or "melodic minor in F#", see ScaleName.
+  def self.resolve(name)
+    target = ScaleName.resolve(name)
+    target if target.is_a?(Scale)
   end
 
   class << self
