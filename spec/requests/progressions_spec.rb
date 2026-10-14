@@ -37,4 +37,31 @@ feature "Progressions" do
       expect(page).to have_link("Bird Blues Progression in F", href: "/keys/F/progressions/bird-blues")
     end
   end
+
+  scenario "Reharmonizing a turnaround and analyzing the result" do
+    visit "/keys/Eb/progressions/major-i-vi-ii-v"
+
+    within("section[aria-labelledby=reharmonize-heading]") do
+      expect(all(".card-title").map(&:text)).to eq(["Tritone substitutes", "Backdoor dominants"])
+      expect(first(".reharmonized strong").text).to eq("E7")
+      click_on "Tritone substitutes"
+    end
+
+    expect(page).to have_current_path("/keys/Eb/chord-sequences/Ebmaj7,Cm7,Fm7,E7")
+    expect(page).to have_css(".analysis-key", text: "Eb major")
+    expect(all(".analysis-numeral").map(&:text)).to eq(%w[Imaj7 vi7 ii7 subV7])
+  end
+
+  scenario "Analyzing a progression's own changes" do
+    visit "/keys/F/progressions/bird-blues"
+    click_on "Analyze these changes"
+
+    expect(page).to have_current_path(%r{\A/keys/F/chord-sequences/Fmaj7,Em7b5,A7,Dm7,G7,Cm7,F7,Bb7,})
+    expect(page).to have_css(".analysis-key", text: "F major")
+  end
+
+  scenario "Seeing that nothing reharmonizes a modal form" do
+    visit "/progressions/modal-aaba"
+    expect(page).to have_css("section[aria-labelledby=reharmonize-heading] .empty")
+  end
 end

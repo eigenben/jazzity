@@ -1,0 +1,27 @@
+<%# The progression's changes reharmonized in each way that changes something, each linked to its analysis. %>
+<section class="group" aria-labelledby="reharmonize-heading">
+  <h2 class="section-heading" id="reharmonize-heading">
+    Reharmonize
+    <%= link_to "Analyze these changes", polymorphic_path(path_to_model(progression.chord_sequence), anchor: "analysis"), class: "section-link" %>
+  </h2>
+  <% if (reharmonizations = progression.reharmonizations).any? %>
+    <ul class="card-grid">
+      <% reharmonizations.each do |reharmonization| %>
+        <li>
+          <%= link_to polymorphic_path(path_to_model(reharmonization.chord_sequence), anchor: "analysis"), class: "card" do %>
+            <h3 class="card-title"><%= reharmonization.name %></h3>
+            <p class="notes reharmonized">
+              <% reharmonization.chords.first(16).each_with_index do |chord, i| %>
+                <% if reharmonization.changed?(i) %><strong><%= chord.lead_sheet_symbol %></strong><% else %><%= chord.lead_sheet_symbol %><% end %>
+              <% end %>
+              <%= "…" if reharmonization.chords.size > 16 %>
+            </p>
+            <p class="card-meta"><%= reharmonization.description %></p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="empty">None of the usual substitutions apply: there are no dominant 7ths to replace and no whole steps to fill.</p>
+  <% end %>
+</section>

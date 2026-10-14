@@ -61,10 +61,7 @@ class Reharmonization
 
   # The new chords as a sequence in the key, to analyze.
   def chord_sequence
-    ChordSequence.new(chords).tap do |sequence|
-      sequence.key = key unless key.nil? || key.main?
-      sequence.home_key = key || Key.default
-    end
+    ChordSequence.in_key(chords, key)
   end
 
   # Rewrites a run of chords. Each rewrite returns the new chords and the
