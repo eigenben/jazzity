@@ -1,0 +1,46 @@
+<% content_for :title, "#{@progression.name} in all 12 keys" %>
+
+<%= render "shared/title", eyebrow: "Practice sheet", title: "#{@progression.name} in all 12 keys",
+      subtitle: "#{voicing_family_label(voicing_family)} voicings · #{practice_order_description(@order).upcase_first}" %>
+
+<%= form_with url: request.path, method: :get, class: "practice-options", data: {controller: "autosubmit"} do %>
+  <fieldset class="segmented">
+    <legend class="visually-hidden">Order of keys</legend>
+    <% practice_order_choices.each do |order, label| %>
+      <label>
+        <%= radio_button_tag :order, order, order == @order, data: {action: "autosubmit#submit"} %>
+        <span><%= label %></span>
+      </label>
+    <% end %>
+  </fieldset>
+  <fieldset class="segmented">
+    <legend class="visually-hidden">Voicing family</legend>
+    <% voicing_family_choices.each do |family, label| %>
+      <label>
+        <%= radio_button_tag :family, family.slug, family == voicing_family, data: {action: "autosubmit#submit"} %>
+        <span><%= label %></span>
+      </label>
+    <% end %>
+  </fieldset>
+  <% voicing_choices.compact_blank.each do |position, voicing| %>
+    <%= hidden_field_tag "v[#{position}]", voicing, id: nil %>
+  <% end %>
+  <noscript><%= submit_tag "Update", name: nil %></noscript>
+  <div class="practice-actions">
+    <button type="button" class="player-button" data-controller="print" data-action="print#print">Print</button>
+    <%= link_to "Back to the progression", polymorphic_path(in_key(@key, @progression), voicing_params) %>
+  </div>
+<% end %>
+
+<div class="practice-sheet<%= " practice-sheet-short" if @progression.bars.to_i.between?(1, 4) %>">
+  <% @progressions.each_with_index do |progression, i| %>
+    <section class="practice-key" aria-labelledby="practice-key-<%= i %>">
+      <h2 class="practice-key-title" id="practice-key-<%= i %>">
+        <span class="visually-hidden"><%= @progression.name %> in</span>
+        <%= progression.key %>
+      </h2>
+      <% voiced = progression.voiced_chords(family: voicing_family, overrides: voicing_choices) %>
+      <%= voiced_staff(progression.staff_notes(voiced), beats_per_bar: progression.beats_per_bar, max_bars_per_line: 8, min_bar_width: 110) %>
+    </section>
+  <% end %>
+</div>

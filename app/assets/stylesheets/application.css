@@ -1300,6 +1300,54 @@ a:hover {
   fill: var(--key-sounding-ink);
 }
 
+/* Practice sheets: a progression in all twelve keys */
+
+.practice-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.practice-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.practice-sheet {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Short progressions go two keys to a row. */
+.practice-sheet-short {
+  grid-template-columns: repeat(auto-fill, minmax(min(24rem, 100%), 1fr));
+}
+
+.practice-key {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.practice-key-title {
+  font: 800 2.25rem/1 var(--font-display);
+}
+
+@media (max-width: 40rem) {
+  .practice-key {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* Home */
 
 .hero {

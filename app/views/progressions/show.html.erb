@@ -6,7 +6,7 @@
   <div class="main-column">
     <%= tag.section class: "feature", aria: {label: "Chart"}, data: progression_player_data(@progression, @voiced_chords) do %>
       <% if @voiced_chords.any? %>
-        <%= render "players/transport", next_key: true %>
+        <%= render "players/transport", next_key: true, practice_path: polymorphic_path(in_key(@key, @progression), {:action => :practice}.merge(voicing_params)) %>
       <% end %>
       <% if (chart = @progression.lead_sheet) %>
         <%= render "progressions/lead_sheet", chart: chart %>
