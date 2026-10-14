@@ -39,6 +39,11 @@ class Pitch
     other.is_a?(Pitch) && midi == other.midi && key == other.key
   end
 
+  # Scientific pitch notation, as in Eb4.
+  def name
+    "#{key.name}#{octave}"
+  end
+
   def to_s
     "#{key.name}/#{octave}"
   end
