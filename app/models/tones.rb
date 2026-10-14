@@ -1,58 +1,36 @@
-module Tones
-  # Takes manually specified key context for this collection or
-  # delegates to th association owner.
-  def key
-    @key || (proxy_owner.key if defined?(proxy_owner) and proxy_owner.respond_to?(:key))
-  end
+# An ordered collection of tones (the degrees of a chord, scale or voicing)
+# that can be realized as concrete notes in a key and, for scales, a mode.
+#
+# Each Tone is stored relative to C: a chromatic offset (tone, 0-11), a
+# diatonic letter offset (letter_index, 0-6) used to pick the right spelling
+# (D# vs Eb), and its position within the collection. Transposing and
+# rotating return new Tones rather than mutating, so the same record can be
+# rendered in several keys.
+class Tones
+  include Enumerable
 
-  # Manually specifies the key context for this tone sequence only.
-  def in_key_of(in_key = nil)
-    @key = in_key.is_a?(Key) ? in_key : Key[in_key]
-    self
-  end
+  attr_reader :key, :mode
 
-  # Shifts indexes to simulate a key change
-  def in_key_context!
-    self.each do |tone|
-      tone.tone = (tone.tone + key.index) % 12
-      tone.letter_index = (tone.letter_index + key.letter_index) % 7
-    end
-    true
-  end
-
-  # Takes manually specified mode context for this collection or
-  # delegates to the association owner.
-  def mode
-    @mode || (proxy_owner.mode if defined?(proxy_owner) and proxy_owner.respond_to?(:mode))
-  end
-
-  # Manually specifies the mode context for this tone sequence only.
-  def in_mode(mode)
+  def initialize(tones, key: nil, mode: nil)
+    @tones = tones
+    @key = key.nil? || key.is_a?(Key) ? key : Key[key]
     @mode = mode
-    self
   end
 
-  # Shifts mode positions to place tone sequence in mode context
-  def in_mode_context!
-    self.each { |tone| tone.position = (tone.position - mode) % self.count + 1 }
-    true
+  def in_key_of(key)
+    self.class.new(@tones, key: key, mode: mode)
   end
 
-  # TODO: Is this needed anymore? Have to use this until we figure out how to override find/default collection result
-  def all
-    in_key_context! if key
-    in_mode_context! if mode
-    self.sort_by(&:position)
+  def in_mode(mode)
+    self.class.new(@tones, key: key, mode: mode)
   end
 
-  # Does the magic in determining the actual note from the tones
-  # with tone and letter indexes.
+  def each(&block)
+    realized.each(&block)
+  end
+
   def keys
-    return @keys if defined?(@keys)
-
-    @keys = all.map do |tone|
-      Key.from_index(tone.tone, tone.letter_index)
-    end
+    @keys ||= map { |tone| Key.from_index(tone.tone, tone.letter_index) }
   end
 
   def notes
@@ -89,5 +67,19 @@ module Tones
 
   def interval_names
     intervals.map { |step| Key::Intervals.invert[step] }
+  end
+
+  private
+
+  def realized
+    @realized ||= @tones.map { |tone| realize(tone) }.sort_by(&:position)
+  end
+
+  def realize(tone)
+    Tone.new(
+      :tone => key ? (tone.tone + key.index) % 12 : tone.tone,
+      :letter_index => key ? (tone.letter_index + key.letter_index) % 7 : tone.letter_index,
+      :position => mode ? (tone.position - mode) % @tones.size + 1 : tone.position
+    )
   end
 end
