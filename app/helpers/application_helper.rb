@@ -26,10 +26,40 @@ module ApplicationHelper
     link_to name, search_path(name)
   end
 
-  def voicing_options_for_select(chord, position)
-    selected = voicing_choices[position.to_s]
-    lead = position.zero? ? "Any voicing" : "Voice-led from previous chord"
+  # The families offered for voicing a progression, with a short label and a
+  # line saying how each is played.
+  VOICING_FAMILIES = {
+    "4-Note Rootless (Type I/II)" => ["Rootless", "Four-note rootless voicings in their two forms, with the 3rd or the 7th on the bottom, played over the root."],
+    "Rootless 3-Note Shells" => ["Shells", "Three-note rootless voicings: the 3rd and 7th with one more tone, played over the root."],
+    "Guide Tones" => ["Guide tones", "Just the 3rd and 7th, the notes that define each chord, played over the root."],
+    "Rooted Guide Tones" => ["Rooted shells", "The root, 3rd and 7th in the left hand, as bebop pianists comped."],
+    "4-Note Rooted" => ["Rooted", "Four-note voicings with the root on the bottom or inside, in the left hand."]
+  }.freeze
 
-    options_for_select([[lead, "<"]], selected) + options_from_collection_for_select(chord.voicings, :id, :name, selected)
+  def voicing_family_choices
+    families = VoicingFamily.where(:name => VOICING_FAMILIES.keys).index_by(&:name)
+    VOICING_FAMILIES.filter_map { |name, (label, _)| [families[name], label] if families[name] }
+  end
+
+  def voicing_family_description(family)
+    VOICING_FAMILIES.dig(family&.name, 1)
+  end
+
+  # The voicings of a chord grouped by family, after a default that leaves
+  # the chord to the voice leader (naming the voicing it picked).
+  def voicing_options_for_select(voiced, position)
+    selected = voicing_choices[position.to_s].to_s
+    auto = selected.to_i.positive? ? "Voice-led" : "Voice-led: #{voiced.name}"
+    groups = voiced.chord.voicings.includes(:voicing_family).group_by(&:voicing_family).map do |family, voicings|
+      [family.name, voicings.map { |voicing| [voicing.name, voicing.id.to_s] }]
+    end
+
+    options_for_select([[auto, ""]], selected) + grouped_options_for_select(groups, selected)
+  end
+
+  # The voicing family and picks on the current page, to keep when moving
+  # to another key.
+  def voicing_params
+    {:family => voicing_family_slug, :v => voicing_choices.compact_blank.presence}.compact
   end
 end
