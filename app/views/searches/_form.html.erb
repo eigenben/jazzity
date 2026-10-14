@@ -1,10 +1,16 @@
+<%# A search field with suggestions in a listbox as you type, see autocomplete_controller.js. %>
+<% listbox_id = "#{local_assigns.fetch(:id, "search")}-suggestions" %>
 <%= form_with url: searches_path, class: ["search", local_assigns[:class]], role: "search", data: {controller: "autocomplete", autocomplete_url_value: autocomplete_searches_path(format: :json)} do |form| %>
   <%= form.label :query, local_assigns.fetch(:label, "Search"), class: local_assigns[:label_class] %>
-  <div class="search-field">
-    <%= form.search_field :query, value: @query, list: "search-suggestions", autocomplete: "off", required: true,
-          placeholder: "Try Ebmaj7, D Dorian, or Dm7 G7 Cmaj7",
-          data: {autocomplete_target: "input", action: "input->autocomplete#suggest"} %>
-    <datalist id="search-suggestions" data-autocomplete-target="suggestions"></datalist>
-    <%= form.submit "Search", name: nil %>
+  <div class="search-combobox">
+    <div class="search-field">
+      <%= form.search_field :query, value: @query, autocomplete: "off", spellcheck: false, required: true,
+            placeholder: "Try Ebmaj7, D Dorian, ii V I in Bb or Dm7 G7 C",
+            role: "combobox", aria: {autocomplete: "list", expanded: "false", controls: listbox_id},
+            data: {autocomplete_target: "input", action: "input->autocomplete#suggest keydown->autocomplete#navigate blur->autocomplete#close"} %>
+      <%= form.submit "Search", name: nil %>
+    </div>
+    <ul id="<%= listbox_id %>" class="search-suggestions" role="listbox" aria-label="Suggestions" hidden data-autocomplete-target="listbox"></ul>
+    <p class="visually-hidden" role="status" data-autocomplete-target="status"></p>
   </div>
 <% end %>
