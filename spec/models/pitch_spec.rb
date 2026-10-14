@@ -6,6 +6,10 @@ RSpec.describe Pitch do
     expect(described_class.new(Key["C"], 60).to_s).to eq("C/4")
   end
 
+  it "names the pitch in scientific notation" do
+    expect(described_class.new(Key["Eb"], 63).name).to eq("Eb4")
+  end
+
   it "writes Cb and B# in the octave of their letter" do
     expect(described_class.new(Key["Cb"], 59).to_s).to eq("Cb/4")
     expect(described_class.new(Key["B#"], 60).to_s).to eq("B#/3")

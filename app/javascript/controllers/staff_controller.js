@@ -25,7 +25,8 @@ const DURATIONS = { 1: "q", 2: "h", 3: "hd", 4: "w" }
 //
 //   {"symbol": "Dm7", "bass": ["D/2"], "treble": ["C/4", "E/4", "F/4", "A/4"], "beats": 2}
 //
-// A plain list on a grand staff is split at middle C. With barlines, chords
+// A plain list on a grand staff is split at middle C. A grand staff leaves
+// out a staff none of the chords use, unless `full-grand` is set. With barlines, chords
 // are grouped into bars of `beats-per-bar` beats (a bar each when they don't
 // give their beats), and long runs of bars wrap onto several lines, as many
 // to the line as fit the container. The drawing is cropped to what was
@@ -35,7 +36,8 @@ export default class extends Controller {
     chords: Array,
     clef: { type: String, default: "treble" },
     barlines: { type: Boolean, default: false },
-    beatsPerBar: { type: Number, default: 4 }
+    beatsPerBar: { type: Number, default: 4 },
+    fullGrand: { type: Boolean, default: false }
   }
 
   async connect() {
@@ -100,10 +102,10 @@ export default class extends Controller {
   }
 
   // The staves to draw. A grand staff whose chords say where their notes go
-  // leaves out a staff none of them use.
+  // leaves out a staff none of them use, unless it's asked to stay whole.
   clefsFor(chords) {
     if (this.clefValue !== "grand") return ["treble"]
-    if (!chords.every((chord) => chord.explicit)) return ["treble", "bass"]
+    if (this.fullGrandValue || !chords.every((chord) => chord.explicit)) return ["treble", "bass"]
 
     const clefs = ["treble", "bass"].filter((clef) => chords.some((chord) => chord[clef].length > 0))
     return clefs.length > 0 ? clefs : ["treble", "bass"]

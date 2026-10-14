@@ -5,11 +5,22 @@
 <div class="with-dial">
   <div class="main-column">
     <section class="feature">
+      <% voiced = @voicing.voiced %>
       <%= voicing_staff(@voicing, class: "staff-large") %>
       <dl class="facts">
         <div>
-          <dt>Notes, low to high</dt>
-          <dd class="notes"><%= @voicing.notes.join(" ") %></dd>
+          <dt>Left hand</dt>
+          <dd class="notes"><%= voiced.bass.map(&:name).join(" ") %></dd>
+        </div>
+        <% if voiced.treble.any? %>
+          <div>
+            <dt>Right hand</dt>
+            <dd class="notes"><%= voiced.treble.map(&:name).join(" ") %></dd>
+          </div>
+        <% end %>
+        <div>
+          <dt>Family</dt>
+          <dd><%= @voicing.voicing_family %></dd>
         </div>
       </dl>
     </section>
