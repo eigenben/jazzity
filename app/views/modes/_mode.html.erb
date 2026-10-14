@@ -1,4 +1,4 @@
-<%# A mode as a card, in `key` (the key of its parent scale) when given, and labelled `kind` when given rather than by its scale. %>
+<%# A mode as a card, in `key` (the key of its parent scale) when given, and labelled `kind` when given rather than by its scale. Only a scale's first mode repeats the scale's information. %>
 <% mode = mode.in_key_of(key) if local_assigns[:key] %>
 
 <li id="<%= dom_id(mode) %>">
@@ -10,8 +10,10 @@
     <% end %>
     <h3 class="card-title"><%= mode.title %></h3>
     <%= scale_staff(mode) %>
-    <% if mode.information.present? %>
-      <p class="card-meta"><%= truncate mode.information, length: 90 %></p>
+    <% if (information = mode[:information].presence || (mode.scale.information if mode.main?)) %>
+      <p class="card-meta"><%= truncate information, length: 90 %></p>
+    <% elsif local_assigns[:kind] %>
+      <p class="card-meta">Mode <%= mode.mode %> of <%= mode.scale.name %></p>
     <% end %>
   <% end %>
 </li>
