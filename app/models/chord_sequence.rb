@@ -109,6 +109,7 @@ class ChordSequence
     transposed = chords.map do |chord|
       offset = (chord.key.index - home.index) % 12
       letters = (chord.key.letter_index - home.letter_index) % 7
+      letters = nil unless conventional_degree?(offset, letters)
       chord.clone.tap { |moved| moved.key = key.degree_root(offset, letters) }
     end
 
@@ -143,6 +144,14 @@ class ChordSequence
   end
 
   private
+
+  # Whether a root is spelled as players name degrees: natural or flattened,
+  # or the usual name for its distance from the key (#IV). Others, such as
+  # F# in Eb, are respelled from the distance alone (bIII) when moved.
+  def conventional_degree?(offset, letters)
+    natural = Key::MajorScaleSteps[letters]
+    [natural, (natural - 1) % 12].include?(offset) || Key::DegreeLetterOffsets[offset] == letters
+  end
 
   def closing_key
     last = chords.last
