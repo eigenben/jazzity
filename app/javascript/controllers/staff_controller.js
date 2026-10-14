@@ -11,6 +11,11 @@ const MIN_BAR_WIDTH = 150 // On screen, before a long progression wraps onto ano
 const MAX_BARS_PER_LINE = 4
 const SYMBOL_FONT = { family: "Instrument Sans, system-ui, sans-serif", size: 14, weight: "600" }
 const SYMBOL_GAP = 10
+// Sharps and flats in chord symbols come from the music font, as they're
+// written on a lead sheet: a sharp centred on the letters, a flat sitting on
+// the line like a b. Font sizes are in points, as VexFlow sets them.
+const ACCIDENTAL_FONT = { family: "Bravura", size: 16 }
+const ACCIDENTALS = { "♯": { glyph: "\uE262", rise: 6.5 }, "♭": { glyph: "\uE260", rise: 2.5 } }
 const DURATIONS = { 1: "q", 2: "h", 3: "hd", 4: "w" }
 
 // Renders chords on a treble or grand staff.
@@ -173,7 +178,7 @@ export default class extends Controller {
     voices.forEach((voice) => formatter.joinVoices([voice]))
     const spacing = this.barlinesValue ? MEASURE_SPACING : NOTE_SPACING
     const symbols = chords.map((chord) => chord.symbol && formatSymbol(chord.symbol))
-    const symbolsWidth = symbols.reduce((sum, symbol) => sum + (symbol ? textWidth(symbol) + SYMBOL_GAP : 0), 0)
+    const symbolsWidth = symbols.reduce((sum, symbol) => sum + (symbol ? symbolWidth(symbol) + SYMBOL_GAP : 0), 0)
     const minimum = Math.max(Math.max(chords.length, this.barlinesValue ? 1 : 2) * spacing, formatter.preCalculateMinTotalWidth(voices) * 1.25, symbolsWidth)
 
     return { chords, voices, formatter, symbols, width: minimum + NOTE_END_GAP }
@@ -256,8 +261,7 @@ export default class extends Controller {
     })
 
     context.save()
-    context.setFont(SYMBOL_FONT.family, SYMBOL_FONT.size, SYMBOL_FONT.weight)
-    symbols.forEach(({ symbol, x }) => context.fillText(symbol, x, symbolY))
+    symbols.forEach(({ symbol, x }) => drawSymbol(context, symbol, x, symbolY))
     context.restore()
   }
 
@@ -315,9 +319,29 @@ function formatSymbol(symbol) {
   return symbol.replace(/^([A-G])b/, "$1♭").replace(/b(?=\d)/g, "♭").replace(/#/g, "♯")
 }
 
-function textWidth(text) {
+// A chord symbol as runs of letters and of accidentals, each with its font.
+function symbolRuns(symbol) {
+  return symbol.split(/([♯♭])/).filter(Boolean).map((text) => {
+    const accidental = ACCIDENTALS[text]
+    return accidental ? { text: accidental.glyph, font: ACCIDENTAL_FONT, rise: accidental.rise } : { text, font: SYMBOL_FONT, rise: 0 }
+  })
+}
+
+function drawSymbol(context, symbol, x, y) {
+  symbolRuns(symbol).forEach((run) => {
+    context.setFont(run.font.family, run.font.size, run.font.weight || "normal")
+    context.fillText(run.text, x, y - run.rise)
+    x += textWidth(run.text, run.font)
+  })
+}
+
+function symbolWidth(symbol) {
+  return symbolRuns(symbol).reduce((sum, run) => sum + textWidth(run.text, run.font), 0)
+}
+
+function textWidth(text, font = SYMBOL_FONT) {
   const context = textWidth.context ||= document.createElement("canvas").getContext("2d")
-  context.font = `${SYMBOL_FONT.weight} ${SYMBOL_FONT.size}px ${SYMBOL_FONT.family}`
+  context.font = `${font.weight || "normal"} ${font.size}pt ${font.family}`
   return context.measureText(text).width
 }
 
