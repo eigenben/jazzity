@@ -1,0 +1,30 @@
+<%# The chart as a lead sheet: four bars to a line (two on a phone), each chord's symbol in the key over its roman numeral, linked to the chord. %>
+<div class="lead-sheet<%= " lead-sheet-labelled" if chart.labelled? %>">
+  <% chart.sections.each do |section| %>
+    <section class="lead-sheet-section" aria-label="<%= lead_sheet_section_label(section) %>">
+      <% if section.label %>
+        <p class="lead-sheet-label" aria-hidden="true"><%= section.label %></p>
+      <% end %>
+      <ol class="lead-sheet-bars">
+        <% section.bars.each do |bar| %>
+          <li class="lead-sheet-bar" value="<%= bar.number %>">
+            <span class="visually-hidden">Bar <%= bar.number %>:</span>
+            <% if bar.repeat? %>
+              <span class="lead-sheet-repeat" title="Repeat the bar before">
+                <span aria-hidden="true">%</span>
+                <span class="visually-hidden">the bar before again, <%= bar.chords.map(&:lead_sheet_symbol).join(" ") %></span>
+              </span>
+            <% else %>
+              <% bar.numerals.zip(bar.chords).each do |numeral, chord| %>
+                <%= link_to in_key(chord.key, chord), class: "lead-sheet-chord" do %>
+                  <span class="lead-sheet-symbol"><%= chord_symbol(chord) %></span>
+                  <span class="lead-sheet-numeral"><%= roman_numeral(numeral) %></span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    </section>
+  <% end %>
+</div>

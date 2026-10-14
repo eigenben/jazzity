@@ -1,10 +1,13 @@
 <% content_for :title, @progression.title %>
 
-<%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: links_to_chords(@progression.chords, " ") %>
+<%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: @progression.summary %>
 
 <div class="with-dial">
   <div class="main-column">
-    <section class="feature">
+    <section class="feature" aria-label="Chart">
+      <% if (chart = @progression.lead_sheet) %>
+        <%= render "progressions/lead_sheet", chart: chart %>
+      <% end %>
       <% if @voiced_chords.any? %>
         <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large") %>
       <% end %>
@@ -16,9 +19,8 @@
           <% end %>
         </dl>
       <% end %>
-      <% if @progression.summary.present? || @progression.information.present? %>
+      <% if @progression.information.present? %>
         <div class="prose">
-          <p><%= @progression.summary %></p>
           <%= text_to_html @progression.information %>
         </div>
       <% end %>
