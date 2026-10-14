@@ -80,4 +80,13 @@ RSpec.describe Progression, type: :model do
     expect(described_class).to receive(:find_by).with(name: 'Test')
     described_class['Test']
   end
+
+  it "gives a player each voiced chord with its length in beats" do
+    playback = described_class["Rhythm Changes"].playback
+
+    expect(playback.size).to eq(described_class["Rhythm Changes"].chords.size)
+    expect(playback.first(2).map { |chord| chord.values_at(:symbol, :beats) }).to eq([["C6", 2], ["Am7", 2]])
+    expect(playback.sum { |chord| chord[:beats] }).to eq(32 * 4)
+    expect(playback.first[:left] + playback.first[:right]).to all(be_between(36, 84))
+  end
 end

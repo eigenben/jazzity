@@ -45,6 +45,12 @@ class VoicedChord
     {:symbol => chord.lead_sheet_symbol, :bass => bass.map(&:to_s), :treble => treble.map(&:to_s)}
   end
 
+  # Everything a player needs to sound this chord: its symbol, the MIDI
+  # notes for each hand, and their names, left hand first.
+  def to_playback
+    {:symbol => chord.lead_sheet_symbol, :left => bass.map(&:midi), :right => treble.map(&:midi), :names => (bass + treble).map(&:name)}
+  end
+
   private
 
   def left_hand_count
