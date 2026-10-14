@@ -14,7 +14,6 @@ class ProgressionsController < ApplicationController
   end
 
   def show
-    params[:v] ||= {}
     respond_with @progression
   end
 
@@ -29,6 +28,6 @@ class ProgressionsController < ApplicationController
   def find_progression
     @progression = Progression.find_by!(slug: params[:id])
     @progression = @progression.in_key_of(@key) if @key
-    @staff_notes = @progression.staff_notes(params[:v] || {})
+    @staff_notes = @progression.staff_notes(voicing_choices)
   end
 end

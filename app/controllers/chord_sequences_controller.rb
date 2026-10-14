@@ -6,7 +6,6 @@ class ChordSequencesController < ApplicationController
   respond_to :html
 
   def show
-    params[:v] ||= {}
   end
 
   def staff
@@ -20,6 +19,6 @@ class ChordSequencesController < ApplicationController
   def find_chord_sequence
     @chord_sequence = ChordSequence[params[:id]] or raise ActiveRecord::RecordNotFound
     @chord_sequence = @chord_sequence.in_key_of(@key) if @key
-    @staff_notes = @chord_sequence.staff_notes(params[:v] || {})
+    @staff_notes = @chord_sequence.staff_notes(voicing_choices)
   end
 end
