@@ -22,6 +22,9 @@ gem "RedCloth"
 group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :test do
