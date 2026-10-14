@@ -7,8 +7,13 @@ RSpec.describe Progression, type: :model do
   it { should have_many(:components) }
 
   describe 'scopes' do
-    it 'should scope full_tune'
-    it 'should scope partial'
+    it 'should scope full_tune' do
+      expect(described_class.full_tune.pluck(:name)).to include('Original Rhythm Changes')
+    end
+
+    it 'should scope partial' do
+      expect(described_class.partial.pluck(:name)).to include('Major ii-V-I')
+    end
   end
 
   describe 'validations' do
