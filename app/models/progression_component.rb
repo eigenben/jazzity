@@ -30,9 +30,11 @@ class ProgressionComponent < ActiveRecord::Base
     all_chords_in_key(Key.default)
   end
 
+  # The chord on its root in `key`: a copy, since components preloaded
+  # together share one record for each chord.
   def all_chords_in_key(key)
     if chord
-      [chord.in_key_of(root_in(key))]
+      [chord.clone.in_key_of(root_in(key))]
     end
   end
 
