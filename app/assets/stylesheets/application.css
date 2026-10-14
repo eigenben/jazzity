@@ -433,7 +433,7 @@ a:hover {
 }
 
 .staff-large svg {
-  max-width: calc(var(--staff-width) * 1.5);
+  max-width: calc(var(--staff-width) * 1.8);
   min-width: min(calc(var(--staff-width) * 1.1), 40rem);
 }
 
