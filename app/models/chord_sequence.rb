@@ -102,7 +102,7 @@ class ChordSequence
         component.try(:chord) == chord
       end and chord_key_offsets == progression.component_index_offsets
     end.map do |progression|
-      progression.in_key_of chords.first.key.shifted(-1 * progression.components.first.index)
+      progression.in_key_of progression.components.first.key_from_root(chords.first.key)
     end
   end
 end
