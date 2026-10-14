@@ -375,17 +375,18 @@ a:hover {
   text-decoration: none;
 }
 
-/* Enharmonic keys (Gb and F#) share a place, one above the other. */
+/* Gb and F# share the bottom place, one above the other, nudged inward so
+   both stay inside the dial. */
 .key-dial .key-dial-enharmonic {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  height: 2.8rem;
-  margin-top: -1.4rem;
+  height: 2.6rem;
+  margin-top: -1.7rem;
 }
 
 .key-dial-enharmonic a {
   border-radius: var(--radius);
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .key-dial a:hover {
