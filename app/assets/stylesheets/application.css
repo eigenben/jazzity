@@ -455,6 +455,11 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 2.5rem;
+}
+
+.staff + .facts,
+.facts + .prose,
+.staff + .prose {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--rule);
@@ -473,7 +478,6 @@ a:hover {
 }
 
 .prose {
-  margin-top: 1.25rem;
   max-width: 42rem;
 }
 
@@ -491,6 +495,11 @@ a:hover {
 
 .card-grid-compact {
   grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+}
+
+/* Scales are long runs of notes, so give them room to stay legible. */
+.card-grid-wide {
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
 }
 
 .card-grid > li {

@@ -44,7 +44,7 @@
 
 <section aria-labelledby="discover-heading">
   <h2 id="discover-heading" class="section-heading">From the reference</h2>
-  <ul class="card-grid">
+  <ul class="card-grid card-grid-wide">
     <% @searchables.each do |result| %>
       <li><%= render "searches/result", result: result %></li>
     <% end %>

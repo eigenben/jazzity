@@ -6,7 +6,7 @@
 
     <section class="group" aria-labelledby="scales-heading">
       <h2 class="section-heading" id="scales-heading">Scales that fit</h2>
-      <ul class="card-grid">
+      <ul class="card-grid card-grid-wide">
         <% @chord.chord_scales.each do |chord_scale| %>
           <%= render chord_scale.mode, key: (@chord.key || Key.default).shifted(chord_scale.offset) %>
         <% end %>

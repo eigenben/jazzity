@@ -5,7 +5,9 @@
 <div class="with-dial">
   <div class="main-column">
     <section class="feature">
-      <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+      <% if @staff_notes.any? %>
+        <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+      <% end %>
       <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
       <% if facts.any? %>
         <dl class="facts">
@@ -22,7 +24,9 @@
       <% end %>
     </section>
 
-    <%= render "progressions/voice_leading", chords: @progression.chords %>
+    <% if @progression.chords.any? %>
+      <%= render "progressions/voice_leading", chords: @progression.chords %>
+    <% end %>
   </div>
 
   <%= render "shared/key_dial", path: ->(key) { in_key(key, @progression) } %>

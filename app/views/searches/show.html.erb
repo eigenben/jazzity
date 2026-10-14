@@ -2,7 +2,7 @@
 
 <%= render "shared/title", eyebrow: "Search", title: @query, subtitle: pluralize(@results.size, "match") %>
 
-<ul class="card-grid">
+<ul class="card-grid card-grid-wide">
   <% @results.each do |result| %>
     <li><%= render "searches/result", result: result %></li>
   <% end %>
