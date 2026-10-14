@@ -375,6 +375,19 @@ a:hover {
   text-decoration: none;
 }
 
+/* Enharmonic keys (Gb and F#) share a place, one above the other. */
+.key-dial .key-dial-enharmonic {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 2.8rem;
+  margin-top: -1.4rem;
+}
+
+.key-dial-enharmonic a {
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
 .key-dial a:hover {
   background: var(--paper);
   color: var(--ink);

@@ -43,6 +43,12 @@ RSpec.describe Chord, type: :model do
       expect(described_class["maj7"].notes).to eq(["C", "E", "G", "B"])
     end
 
+    it "reads sharp and flat roots that start with another key's name" do
+      expect(described_class["C#maj7"].notes).to eq(["C#", "E#", "G#", "B#"])
+      expect(described_class["F#7"].key.name).to eq("F#")
+      expect(described_class["Cbmaj7"].key.name).to eq("Cb")
+    end
+
     it "returns nil for unknown symbols" do
       expect(described_class["Xyz"]).to be_nil
     end

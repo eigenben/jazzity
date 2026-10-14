@@ -24,7 +24,7 @@ class Mode < ActiveRecord::Base
   define_searchables do
     searchables.create(name: "#{name} Scale")
 
-    Key.primaries.each do |key|
+    Key.searchable.each do |key|
       searchables.create(name: "#{dup.in_key_of(key).mode_key} #{name} Scale", key_name: key.name)
     end
   end
@@ -62,25 +62,15 @@ class Mode < ActiveRecord::Base
   end
 
   def self.resolve(symbol)
-    in_key = nil
-
     return nil if symbol.nil?
-    symbol = symbol.dup
 
-    Key.all.each do |k|
-      if symbol.starts_with?(k.name)
-        in_key = k
-        symbol.gsub!(/^#{k.name}/, '').strip!
-        break
-      end
-    end
-
-    mode = find_by(name: symbol)
+    in_key, name = Key.extract(symbol)
+    mode = find_by(name: name.strip)
 
     # Perhaps the matched key was really part of the name, try that:
     if mode.nil? && !in_key.nil?
-      symbol = in_key.name + symbol
-      mode = all.detect { |s| s.name == symbol }
+      in_key = nil
+      mode = find_by(name: symbol)
     end
 
     # If still not found, must be invalid:

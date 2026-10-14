@@ -38,19 +38,24 @@ class Tones
   end
 
   def octavized_notes(octave = 4)
+    self.class.octavize(keys, octave)
+  end
+
+  # Writes keys as rising notes such as "Eb/4", starting in the given octave
+  # (or the one below for A, Bb and B, to keep the run in a sensible range).
+  def self.octavize(keys, octave = 4)
     return [] if keys.empty?
 
     octave -= 1 if (8..11).include?(keys.first.index)
     last_index = keys.first.index
 
-    effective_octave = (keys.first.name == "Cb") ? octave + 1 : octave  # Hack for Cb, which is a weird case...
+    keys.each_with_index.map do |key, i|
+      unless i.zero?
+        octave += 1 if key.index <= last_index
+        last_index = key.index
+      end
 
-    ["#{notes.first}/#{effective_octave}"] + keys.from(1).map do |key|
-      index = key.index > last_index ? key.index : key.index + 12
-      octave += 1 if (last_index..index).include?(12)
-      last_index = key.index
-      effective_octave = (key.name == "Cb") ? octave + 1 : octave  # Hack for Cb, which is a weird case...
-      "#{key.name}/#{effective_octave}"
+      "#{key.name}/#{octave + key.octave_offset}"
     end
   end
 

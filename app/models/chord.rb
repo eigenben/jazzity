@@ -27,7 +27,7 @@ class Chord < ActiveRecord::Base
 
     symbols.each { |symbol| searchables.create(name: "#{symbol} Chord") }
 
-    Key.primaries.each do |key|
+    Key.searchable.each do |key|
       searchables.create(name: "#{key.name} #{name} Chord", key_name: key.name)
       symbols.each { |symbol| searchables.create(name: "#{key.name}#{symbol} Chord", key_name: key.name) }
 
@@ -67,27 +67,16 @@ class Chord < ActiveRecord::Base
   # Implementation is somewhat flakey due to the potential ambiguities arising
   # from specifying key and symbols together.
   def self.resolve(symbol)
-    in_key = nil
-
     return nil if symbol.nil?
-    symbol = symbol.dup
 
-    symbol.gsub!(/ Chord/i, "")
-
-    Key.all.each do |k|
-      if symbol.starts_with?(k.name)
-        in_key = k
-        symbol.sub!(k.name, '').strip
-        break
-      end
-    end
-
-    chord_symbol = ChordSymbol[symbol]
+    whole = symbol.gsub(/ Chord/i, "")
+    in_key, symbol = Key.extract(whole)
+    chord_symbol = ChordSymbol[symbol.strip]
 
     # Perhaps the matched key was really part of the name of the chord, try that:
     if chord_symbol.nil? && !in_key.nil?
-      symbol = in_key.name + symbol
-      chord_symbol = ChordSymbol[symbol]
+      in_key = nil
+      chord_symbol = ChordSymbol[whole]
     end
 
     # If still not found, must be invalid:
