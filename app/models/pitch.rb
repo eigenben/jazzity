@@ -17,6 +17,15 @@ class Pitch
     new(key, midi + (key.index - midi) % 12)
   end
 
+  # A note written for the staff, as in "Eb/4" or "Cb/4".
+  def self.parse(note)
+    name, octave = note.to_s.split("/")
+    key = Key.from_name(name.to_s)
+    return unless key && octave.to_s.match?(/\A-?\d+\z/)
+
+    new(key, (octave.to_i + 1 - key.octave_offset) * 12 + key.index)
+  end
+
   # The pitch of the key nearest a MIDI note, the lower when two are as near.
   def self.nearest(key, midi)
     below = midi - (midi - key.index) % 12
