@@ -61,23 +61,11 @@ class Mode < ActiveRecord::Base
     octavized_notes.map { |n| [n] }
   end
 
-  def self.resolve(symbol)
-    return nil if symbol.nil?
-
-    in_key, name = Key.extract(symbol)
-    mode = find_by(name: name.strip)
-
-    # Perhaps the matched key was really part of the name, try that:
-    if mode.nil? && !in_key.nil?
-      in_key = nil
-      mode = find_by(name: symbol)
-    end
-
-    # If still not found, must be invalid:
-    return nil if mode.nil?
-
-    mode.key = in_key
-    mode
+  # Finds a mode by name with the note it starts on, such as "D Dorian" or
+  # "Dorian in D", placed in the key of its parent scale, see ScaleName.
+  def self.resolve(name)
+    target = ScaleName.resolve(name)
+    target.is_a?(Scale) ? target.main_mode&.in_key_of(target.key) : target
   end
 
   class << self
