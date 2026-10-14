@@ -62,6 +62,21 @@ RSpec.describe Key, type: :model do
     end
   end
 
+  describe "#degree_root" do
+    it "should spell roots like #shifted" do
+      expect(described_class["E"].degree_root(2).name).to eq("F#")
+      expect(described_class["Gb"].degree_root(5).name).to eq("Cb")
+      expect(described_class["B"].degree_root(6).name).to eq("E#")
+    end
+
+    it "should write lowered degrees that land on Cb or Fb as B or E" do
+      expect(described_class["Bb"].degree_root(1).name).to eq("B")
+      expect(described_class["Db"].degree_root(3).name).to eq("E")
+      expect(described_class["Ab"].degree_root(8).name).to eq("E")
+      expect(described_class["Gb"].degree_root(10).name).to eq("E")
+    end
+  end
+
   describe ".extract" do
     it "should split off the longest key name" do
       expect(described_class.extract("C#maj7")).to eq([described_class["C#"], "maj7"])

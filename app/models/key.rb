@@ -52,6 +52,9 @@ class Key
   # (tritone substitute), bIII, #IV (as in #iv°7), bVI and bVII.
   DegreeLetterOffsets = [0, 1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6].freeze
 
+  # Semitones from the key to each degree of its major scale.
+  MajorScaleSteps = [0, 2, 4, 5, 7, 9, 11].freeze
+
   def initialize(attributes = {})
     @primary = true
 
@@ -236,6 +239,19 @@ class Key
   def shifted(offset, letter_offset = nil)
     letter_offset ||= DegreeLetterOffsets[offset % 12]
     self.class.spelled((index + offset) % 12, (letter_index + letter_offset) % 7)
+  end
+
+  # The root of a chord on a degree of this key. Like shifted, except that a
+  # lowered degree (bII, bIII, bVI or bVII) landing on Cb or Fb is written B
+  # or E: those chords are tritone substitutes and borrowed chords, which
+  # players write with the simpler name (B7 rather than Cb7 for the bII7 in
+  # Bb), and spelled from Cb or Fb they would need double flats.
+  def degree_root(offset, letter_offset = nil)
+    letter_offset ||= DegreeLetterOffsets[offset % 12]
+    root = shifted(offset, letter_offset)
+    lowered = offset % 12 == (MajorScaleSteps[letter_offset % 7] - 1) % 12
+
+    lowered && %w[Cb Fb].include?(root.name) ? self.class.from_index(root.index) : root
   end
 
   def enharmonic_with?(another_key)
