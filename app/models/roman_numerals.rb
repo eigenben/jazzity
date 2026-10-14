@@ -123,6 +123,11 @@ class RomanNumerals
         IMPLIED[minor? ? :minor : :major].include?(component.chord.chord_quality.name)
       end
     end
+
+    # Whether a progression's chord is of the same kind as this numeral's own.
+    def exact?(component)
+      component.chord&.chord_quality_id == chord.chord_quality_id
+    end
   end
 
   attr_reader :numerals
@@ -180,11 +185,27 @@ class RomanNumerals
     ChordSequence.new(chords)
   end
 
-  # Known progressions with these chords, in this key.
+  # Known progressions with these chords, in this key, those whose chords
+  # are most often exactly the ones written or assumed first: "ii V" is the
+  # major ii-V before the minor one, whose ii is half diminished.
   def progressions
-    Progression.includes(:components => {:chord => :chord_quality}).select do |progression|
-      components = progression.components.to_a
-      components.size == size && numerals.zip(components).all? { |numeral, component| numeral.matches?(component) }
-    end.map { |progression| progression.in_key_of(key) }
+    ranked.map(&:first)
+  end
+
+  # The one progression that fits best, if one does.
+  def progression
+    (best, exact), (_, runner_up) = ranked.first(2)
+    best if runner_up.nil? || exact > runner_up
+  end
+
+  private
+
+  def ranked
+    @ranked ||= Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
+      pairs = numerals.zip(progression.components.to_a)
+      next unless progression.components.size == size && pairs.all? { |numeral, component| numeral.matches?(component) }
+
+      [progression.in_key_of(key), pairs.count { |numeral, component| numeral.exact?(component) }]
+    end.sort_by { |_, exact| -exact }
   end
 end
