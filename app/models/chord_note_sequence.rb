@@ -42,12 +42,12 @@ class ChordNoteSequence
     name
   end
 
-  # The first note of the first chord.
+  # The key of a known progression the chords make, or else the first note.
   def home_key
-    note_sequences.first&.home_key
+    @home_key ||= progressions.first&.key || note_sequences.first&.home_key
   end
 
-  # The same chords moved so the first note is `key`.
+  # The same chords moved from their home key to `key`.
   def in_key_of(key)
     key = Key[key] unless key.nil? || key.is_a?(Key)
     return self if key.nil? || note_sequences.empty?
