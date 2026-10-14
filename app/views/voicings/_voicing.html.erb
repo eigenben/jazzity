@@ -1,8 +1,9 @@
 <% voicing = voicing.in_key_of(key) if local_assigns[:key] %>
 
-<li id="<%= dom_id(voicing) %>">
+<%= tag.li id: dom_id(voicing), class: "playable", data: player_data(:chord, playback_for(voicing).first) do %>
   <%= link_to in_key(voicing.key, voicing.chord, voicing), class: "card" do %>
     <h3 class="card-title"><%= voicing.name %></h3>
     <%= voicing_staff(voicing) %>
   <% end %>
-</li>
+  <%= play_button "Play #{voicing.name}" %>
+<% end %>

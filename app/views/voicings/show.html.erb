@@ -4,9 +4,11 @@
 
 <div class="with-dial">
   <div class="main-column">
-    <section class="feature">
-      <% voiced = @voicing.voiced %>
+    <% voiced = @voicing.voiced %>
+    <%= tag.section class: "feature", data: player_data(:chord, [voiced.to_playback], shortcut: true) do %>
+      <%= render "players/controls", play_label: "Play voicing" %>
       <%= voicing_staff(@voicing, class: "staff-large") %>
+      <%= keyboard_tag(voiced.treble, left: voiced.bass, data: {player_target: "keyboard"}) %>
       <dl class="facts">
         <div>
           <dt>Left hand</dt>
@@ -23,7 +25,7 @@
           <dd><%= @voicing.voicing_family %></dd>
         </div>
       </dl>
-    </section>
+    <% end %>
   </div>
 
   <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord, @voicing) } %>

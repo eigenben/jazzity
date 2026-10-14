@@ -12,8 +12,11 @@
       </nav>
     <% end %>
 
-    <section class="feature">
+    <% chords, hands = playback_for(@mode) %>
+    <%= tag.section class: "feature", data: player_data(:scale, chords, shortcut: true) do %>
+      <%= render "players/controls", play_label: @mode.main? ? "Play scale" : "Play mode", kind: :scale %>
       <%= scale_staff(@mode, class: "staff-large") %>
+      <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
       <dl class="facts">
         <div>
           <dt>Notes</dt>
@@ -31,7 +34,7 @@
       <% if @mode.information.present? %>
         <div class="prose"><%= text_to_html @mode.information %></div>
       <% end %>
-    </section>
+    <% end %>
 
     <% if @mode.chord_scales.any? %>
       <section class="group" aria-labelledby="chords-heading">

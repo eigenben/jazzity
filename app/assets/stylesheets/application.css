@@ -28,6 +28,7 @@
   --hand-ink: #131a2a;
   --key-sounding: #d9512c;
   --key-sounding-ink: #ffffff;
+  --current: rgb(217 164 65 / 0.22);
 
   --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
   --font-body: "Instrument Sans", system-ui, sans-serif;
@@ -57,6 +58,7 @@
     --hand-left: #8fb0f0;
     --key-sounding: #ff8a65;
     --key-sounding-ink: #131a2a;
+    --current: rgb(227 177 88 / 0.2);
   }
 }
 
@@ -1075,6 +1077,173 @@ a:hover {
 .spelled-chords .notes {
   min-width: 8rem;
   color: var(--muted);
+}
+
+/* Players: play buttons, and the transport for progressions */
+
+.player-controls,
+.transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.transport {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: -0.5rem 0 1rem;
+  padding-block: 0.5rem;
+  background: var(--surface);
+}
+
+.player-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 0.9rem/1.2 var(--font-body);
+  cursor: pointer;
+}
+
+.player-button:hover {
+  border-color: var(--brass);
+}
+
+.player-button[aria-pressed="true"] {
+  background: var(--midnight);
+  border-color: var(--midnight);
+  color: var(--brass);
+}
+
+.player-button-small {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+/* A toggle shows its state in a little lamp. */
+.player-toggle::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.player-toggle[aria-pressed="true"]::before {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.icon-stop,
+[aria-pressed="true"] > .icon .icon-play {
+  display: none;
+}
+
+[aria-pressed="true"] > .icon .icon-stop {
+  display: inline;
+}
+
+.transport-tempo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.transport-tempo input {
+  width: 8rem;
+  accent-color: var(--brass);
+}
+
+.transport-tempo output {
+  min-width: 4.5rem;
+  font: 400 0.85rem/1 var(--font-mono);
+  color: var(--muted);
+}
+
+.transport-link {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.player-hint {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (hover: none) {
+  .player-hint {
+    display: none;
+  }
+}
+
+/* A round play button in the corner of a card. */
+.playable {
+  position: relative;
+}
+
+.playable > .card > :first-child {
+  padding-right: 2.25rem;
+}
+
+.scale-entry.playable {
+  padding-right: 3.5rem;
+}
+
+.play-button {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.play-button:hover {
+  border-color: var(--brass);
+  color: var(--brass-ink);
+}
+
+.play-button[aria-pressed="true"] {
+  background: var(--midnight);
+  border-color: var(--midnight);
+  color: var(--brass);
+}
+
+/* The chord sounding, on the staff and on the lead sheet. */
+.staff .is-current {
+  color: var(--brass-ink);
+}
+
+.lead-sheet-chord.is-current,
+.lead-sheet-repeat.is-current {
+  background: var(--current);
+  box-shadow: inset 0 -3px 0 var(--brass);
 }
 
 /* Piano keyboard */

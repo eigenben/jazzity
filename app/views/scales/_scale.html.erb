@@ -1,4 +1,4 @@
-<article class="scale-entry" id="<%= dom_id(scale) %>">
+<%= tag.article class: "scale-entry playable", id: dom_id(scale), data: player_data(:scale, playback_for(scale).first) do %>
   <div class="scale-entry-text">
     <h2 class="scale-entry-title"><%= link_to scale.name, scale %></h2>
     <% if scale.information.present? %>
@@ -13,4 +13,5 @@
     <% end %>
   </div>
   <%= scale_staff(scale) %>
-</article>
+  <%= play_button "Play the #{scale.name} scale" %>
+<% end %>
