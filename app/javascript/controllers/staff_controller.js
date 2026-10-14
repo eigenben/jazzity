@@ -142,8 +142,11 @@ export default class extends Controller {
   }
 
   // Lines of bars, as even as possible: 12 bars at four to the line are
-  // three lines of four, and 5 bars are lines of three and two.
+  // three lines of four, and 5 bars are lines of three and two. A few bars
+  // stay on one line and shrink to fit instead.
   linesFor(measures) {
+    if (measures.length <= MAX_BARS_PER_LINE) return [measures]
+
     const count = Math.ceil(measures.length / this.barsPerLine)
     const perLine = Math.ceil(measures.length / count)
     const lines = []
