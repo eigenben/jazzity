@@ -30,4 +30,21 @@ RSpec.describe Chord, type: :model do
       expect(subject.title).to eq("Bb Test")
     end
   end
+
+  describe ".resolve" do
+    it "finds a chord from a symbol and places it in the symbol's key" do
+      chord = described_class["Ebmaj7"]
+      expect(chord.name).to eq("Major 7")
+      expect(chord.key.name).to eq("Eb")
+      expect(chord.notes).to eq(["Eb", "G", "Bb", "D"])
+    end
+
+    it "leaves the chord in C when no key is given" do
+      expect(described_class["maj7"].notes).to eq(["C", "E", "G", "B"])
+    end
+
+    it "returns nil for unknown symbols" do
+      expect(described_class["Xyz"]).to be_nil
+    end
+  end
 end

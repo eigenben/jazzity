@@ -12,7 +12,7 @@ module Toneable
   end
 
   def tones
-    @tones ||= tone_values.map { |v| Tone.new(v) }.extend(Tones)
+    Tones.new(tone_values.map { |value| Tone.new(value) }, key: key)
   end
 
   def specify_tones=(values)
@@ -28,7 +28,7 @@ module Toneable
       new_tones << Tone.new(:tone => tone, :letter_index => letter_index, :position => (i + 1))
     end
 
-    self.tone_values = new_tones
+    self.tone_values = new_tones.map(&:as_json)
     self
   end
 

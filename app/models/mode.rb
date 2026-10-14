@@ -54,11 +54,7 @@ class Mode < ActiveRecord::Base
   end
 
   def tones
-    if self.key
-      self.scale.tones.in_mode(self.mode).in_key_of(self.key)
-    else
-      self.scale.tones.in_mode(self.mode)
-    end
+    scale.tones.in_key_of(key).in_mode(mode)
   end
 
   def staff_notes
