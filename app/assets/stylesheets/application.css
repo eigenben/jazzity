@@ -629,6 +629,74 @@ a:hover {
 
 /* Voicing choices */
 
+.segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  border: 1px solid var(--rule);
+  border-radius: calc(var(--radius) + 0.25rem);
+  background: var(--surface);
+}
+
+.segmented label {
+  position: relative;
+}
+
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented span {
+  display: block;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segmented label:hover span {
+  background: var(--paper);
+}
+
+.segmented input:checked + span {
+  background: var(--midnight);
+  color: var(--brass);
+}
+
+.segmented input:focus-visible + span {
+  outline: 3px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.voicing-family-description {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+.voicing-details {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.voicing-details summary {
+  padding-block: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.voicing-details summary:hover {
+  color: var(--brass-ink);
+}
+
+.voicing-reset {
+  margin-top: 1rem;
+}
+
 .voicing-choices {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));

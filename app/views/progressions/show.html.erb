@@ -25,9 +25,9 @@
     </section>
 
     <% if @progression.chords.any? %>
-      <%= render "progressions/voice_leading", chords: @progression.chords %>
+      <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
     <% end %>
   </div>
 
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @progression) } %>
+  <%= render "shared/key_dial", path: ->(key) { polymorphic_path(in_key(key, @progression), voicing_params) } %>
 </div>
