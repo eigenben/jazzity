@@ -16,8 +16,10 @@ RSpec.describe ChordNoteSequence do
     expect(described_class.new("D F A C, G B D F, C E G B").progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
   end
 
-  it "moves every chord so the first note is in the key asked for" do
-    expect(sequence.in_key_of("A").name).to eq("A C E G, D F# A C")
+  it "is in the key of the progression it makes, and moves from there" do
+    expect(sequence.home_key.name).to eq("C")
+    expect(sequence.in_key_of("A").name).to eq("B D F# A, E G# B D")
+    expect(described_class.new("C E G, F A C").home_key.name).to eq("C")
   end
 
   it "is parameterized without spaces after commas" do
