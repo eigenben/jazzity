@@ -1,6 +1,7 @@
 class ScalesController < ApplicationController
-  before_action :find_key
-  before_action :find_scale, except: [:index, :new, :create]
+  include KeyScoped
+
+  before_action :find_scale, except: :index
   before_action :find_scales
 
   respond_to :html, :json
@@ -19,18 +20,10 @@ class ScalesController < ApplicationController
     end
   end
 
-
   protected
 
-  def find_key
-    if params[:key_id]
-      @key = Key[params[:key_id]]
-      @key = nil if @key.main?
-    end
-  end
-
   def find_scale
-    @scale = Scale.find_by(slug: params[:id])
+    @scale = Scale.find_by!(slug: params[:id])
     @scale = @scale.in_key_of(@key) if @key
     @mode = @scale.main_mode
     @mode = @mode.in_key_of(@key) if @key

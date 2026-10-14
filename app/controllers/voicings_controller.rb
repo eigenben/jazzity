@@ -1,9 +1,10 @@
 class VoicingsController < ApplicationController
+  include KeyScoped
+
   before_action :set_body_class
-  before_action :find_key
   before_action :find_chord
   before_action :find_chord_qualities
-  before_action :find_voicing, except: [:index, :new, :create]
+  before_action :find_voicing, except: :index
 
   respond_to :html, :json
 
@@ -16,18 +17,10 @@ class VoicingsController < ApplicationController
     respond_with @voicing
   end
 
-
   protected
 
   def set_body_class
     @body_class = "chords"
-  end
-
-  def find_key
-    if params[:key_id]
-      @key = Key[params[:key_id]]
-      @key = nil if @key.main?
-    end
   end
 
   def find_chord_qualities
@@ -35,12 +28,12 @@ class VoicingsController < ApplicationController
   end
 
   def find_chord
-    @chord = Chord.find_by(slug: params[:chord_id])
+    @chord = Chord.find_by!(slug: params[:chord_id])
     @chord = @chord.in_key_of(@key) if @key
   end
 
   def find_voicing
-    @voicing = @chord.voicings.find(params[:id])
+    @voicing = @chord.voicings.find_by!(slug: params[:id])
     @voicing = @voicing.in_key_of(@key) if @key
   end
 end

@@ -1,11 +1,9 @@
 class ChordSequencesController < ApplicationController
-  before_action :find_key
-  before_action :find_chord_sequence, except: [:index]
+  include KeyScoped
+
+  before_action :find_chord_sequence
 
   respond_to :html
-
-  def index
-  end
 
   def show
     params[:v] ||= {}
@@ -17,18 +15,10 @@ class ChordSequencesController < ApplicationController
     end
   end
 
-
   protected
 
-  def find_key
-    if params[:key_id]
-      @key = Key[params[:key_id]]
-      @key = nil if @key.main?
-    end
-  end
-
   def find_chord_sequence
-    @chord_sequence = ChordSequence[params[:id]]
+    @chord_sequence = ChordSequence[params[:id]] or raise ActiveRecord::RecordNotFound
     @chord_sequence = @chord_sequence.in_key_of(@key) if @key
     @staff_notes = @chord_sequence.staff_notes(params[:v] || {})
   end

@@ -1,6 +1,6 @@
 class ChordQualitiesController < ApplicationController
   before_action :set_body_class
-  before_action :find_chord_quality, except: [:index, :new, :create]
+  before_action :find_chord_quality, except: :index
 
   respond_to :html, :json
 
@@ -13,7 +13,6 @@ class ChordQualitiesController < ApplicationController
     respond_with @chord_quality
   end
 
-
   protected
 
   def set_body_class
@@ -21,6 +20,6 @@ class ChordQualitiesController < ApplicationController
   end
 
   def find_chord_quality
-    @chord_quality = ChordQuality[params[:id]]
+    @chord_quality = ChordQuality.find_by!(slug: params[:id])
   end
 end
