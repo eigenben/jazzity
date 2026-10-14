@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+# The app only uses its session for CSRF protection, so a throwaway secret is
+# fine when none is provided. Set SECRET_KEY_BASE to keep sessions across restarts.
+if [ -z "${SECRET_KEY_BASE}" ]; then
+  export SECRET_KEY_BASE="$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')"
+fi
+
+# Create and seed the database if it doesn't exist yet (e.g. on a fresh volume).
+if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"
