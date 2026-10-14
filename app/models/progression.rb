@@ -76,6 +76,16 @@ class Progression < ActiveRecord::Base
     ([parent] + parent.variants.to_a).reject { |progression| progression.id == id }.map { |progression| progression.in_key_of(key) }
   end
 
+  # The changes as a chord sequence in the progression's key, to analyze.
+  def chord_sequence
+    ChordSequence.in_key(changes, key)
+  end
+
+  # The ways its changes can be reharmonized, see Reharmonization.
+  def reharmonizations
+    Reharmonization.all(changes, key: key)
+  end
+
   # The components as they change, see #changes.
   def changing_components
     components.to_a.chunk_while { |a, b| a.index == b.index && a.chord_id == b.chord_id }.map(&:first)

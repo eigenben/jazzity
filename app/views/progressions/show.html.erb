@@ -30,6 +30,10 @@
       <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
     <% end %>
 
+    <% if @progression.changes.many? %>
+      <%= render "progressions/reharmonize", progression: @progression %>
+    <% end %>
+
     <% if (variations = @progression.variations).any? %>
       <section class="group" aria-labelledby="variations-heading">
         <h2 class="section-heading" id="variations-heading">Variations</h2>

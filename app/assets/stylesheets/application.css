@@ -703,6 +703,13 @@ a:hover {
   }
 }
 
+/* Reharmonizations: the new chords stand out. */
+
+.reharmonized strong {
+  color: var(--brass-ink);
+  font-weight: 500;
+}
+
 /* Analysis of chord changes */
 
 .analysis-key {

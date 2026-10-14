@@ -86,6 +86,14 @@ class ChordSequence
   end
 
   class << self
+    # Chords known to be in a key, as a sequence that stays in it.
+    def in_key(chords, key)
+      new(chords).tap do |sequence|
+        sequence.key = key unless key.nil? || key.main?
+        sequence.home_key = key || Key.default
+      end
+    end
+
     def resolve(value)
       collection = new(value)
       if collection.invalid_chords.empty? and collection.chords.size > 1
