@@ -2,15 +2,19 @@ module StaffHelper
   # Renders staff notation for a list of chords, where each chord is a list
   # of notes such as "Eb/4", or a hash naming the notes on each staff (see
   # VoicedChord#to_staff). Pass clef: :grand for a treble and bass staff, and
-  # full_grand: true to keep both staves when the chords only use one.
-  def staff_tag(chords, clef: :treble, barlines: false, beats_per_bar: nil, full_grand: nil, **options)
+  # full_grand: true to keep both staves when the chords only use one. Long
+  # runs of bars wrap at up to four bars to a line, or `max_bars_per_line`,
+  # each at least `min_bar_width` pixels wide.
+  def staff_tag(chords, clef: :treble, barlines: false, beats_per_bar: nil, full_grand: nil, max_bars_per_line: nil, min_bar_width: nil, **options)
     tag.div(class: ["staff", options.delete(:class)], data: {
       :controller => "staff",
       :staff_chords_value => chords.to_json,
       :staff_clef_value => clef,
       :staff_barlines_value => barlines,
       :staff_beats_per_bar_value => beats_per_bar,
-      :staff_full_grand_value => full_grand
+      :staff_full_grand_value => full_grand,
+      :staff_max_bars_per_line_value => max_bars_per_line,
+      :staff_min_bar_width_value => min_bar_width
     }.compact.merge(options.delete(:data) || {}), **options)
   end
 

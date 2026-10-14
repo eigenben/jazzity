@@ -8,7 +8,7 @@ const MEASURE_SPACING = 64
 const NOTE_END_GAP = 18
 const PADDING = 4
 const MIN_BAR_WIDTH = 150 // On screen, before a long progression wraps onto another line
-const MAX_BARS_PER_LINE = 4
+const MAX_BARS_PER_LINE = 4 // Unless the staff asks for more, as a page to print might
 const SYMBOL_FONT = { family: "Instrument Sans, system-ui, sans-serif", size: 14, weight: "600" }
 const SYMBOL_GAP = 10
 // Sharps and flats in chord symbols come from the music font, as they're
@@ -45,7 +45,9 @@ export default class extends Controller {
     clef: { type: String, default: "treble" },
     barlines: { type: Boolean, default: false },
     beatsPerBar: { type: Number, default: 4 },
-    fullGrand: { type: Boolean, default: false }
+    fullGrand: { type: Boolean, default: false },
+    maxBarsPerLine: { type: Number, default: MAX_BARS_PER_LINE },
+    minBarWidth: { type: Number, default: MIN_BAR_WIDTH }
   }
 
   async connect() {
@@ -168,7 +170,7 @@ export default class extends Controller {
   // three lines of four, and 5 bars are lines of three and two. A few bars
   // stay on one line and shrink to fit instead.
   linesFor(measures) {
-    if (measures.length <= MAX_BARS_PER_LINE) return [measures]
+    if (measures.length <= this.maxBarsPerLineValue) return [measures]
 
     const count = Math.ceil(measures.length / this.barsPerLine)
     const perLine = Math.ceil(measures.length / count)
@@ -178,8 +180,8 @@ export default class extends Controller {
   }
 
   get barsPerLine() {
-    const available = this.element.clientWidth || MIN_BAR_WIDTH * MAX_BARS_PER_LINE
-    return Math.max(2, Math.min(MAX_BARS_PER_LINE, Math.floor(available / MIN_BAR_WIDTH)))
+    const available = this.element.clientWidth || this.minBarWidthValue * this.maxBarsPerLineValue
+    return Math.max(2, Math.min(this.maxBarsPerLineValue, Math.floor(available / this.minBarWidthValue)))
   }
 
   // Builds the notes of a bar on each staff and works out how much room
