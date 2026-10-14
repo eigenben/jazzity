@@ -1,8 +1,13 @@
+<%# A mode as a card, in `key` (the key of its parent scale) when given, and labelled `kind` when given rather than by its scale. %>
 <% mode = mode.in_key_of(key) if local_assigns[:key] %>
 
 <li id="<%= dom_id(mode) %>">
   <%= link_to in_key(local_assigns[:key], mode.scale, (mode unless mode.main?)), class: "card" do %>
-    <p class="card-kind">Mode of <%= mode.scale.name %></p>
+    <% if local_assigns[:kind] %>
+      <p class="card-kind card-kind-cased"><%= kind %></p>
+    <% else %>
+      <p class="card-kind">Mode of <%= mode.scale.name %></p>
+    <% end %>
     <h3 class="card-title"><%= mode.title %></h3>
     <%= scale_staff(mode) %>
     <% if mode.information.present? %>

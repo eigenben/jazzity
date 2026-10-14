@@ -1,0 +1,73 @@
+<%# A chord sequence analyzed: its key, each chord's roman numeral and role, the known progressions inside it, and a scale for each chord. %>
+<% analysis = sequence.analysis %>
+
+<section class="group" id="analysis" aria-labelledby="analysis-heading">
+  <h2 class="section-heading" id="analysis-heading">Analysis</h2>
+  <p class="analysis-key">Heard in <strong><%= analysis.key %></strong></p>
+
+  <div class="table-scroll">
+    <table class="analysis-table">
+      <caption class="visually-hidden">Each chord's roman numeral and role in <%= analysis.key %></caption>
+      <thead>
+        <tr>
+          <th scope="col">Chord</th>
+          <th scope="col">Numeral</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% analysis.analyzed_chords.each do |analyzed| %>
+          <tr<% unless analyzed.clear? %> class="analysis-unclear"<% end %>>
+            <th scope="row"><%= link_to chord_symbol(analyzed.chord), in_key(analyzed.chord.key, analyzed.chord), class: "analysis-symbol" %></th>
+            <td class="analysis-numeral"><%= roman_numeral(analyzed.numeral) %></td>
+            <td><%= analyzed.role %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%= render "analyses/form", value: sequence.chord_names.join(" "), label: "Analyze other changes", class: "analysis-form-inline", id: "changes-again" %>
+</section>
+
+<% whole = sequence.progressions %>
+<% parts = analysis.patterns.reject { |pattern| pattern.to - pattern.from + 1 == sequence.chords.size && whole.any? { |progression| progression.id == pattern.progression.id } } %>
+<% if whole.any? || parts.any? %>
+  <section class="group" aria-labelledby="progressions-heading">
+    <h2 class="section-heading" id="progressions-heading">Progressions in these changes</h2>
+    <ul class="card-grid">
+      <% whole.each do |progression| %>
+        <li>
+          <%= link_to in_key(progression.key, progression), class: "card" do %>
+            <p class="card-kind">All the chords</p>
+            <h3 class="card-title"><%= progression.title %></h3>
+            <% if progression.summary.present? %>
+              <p class="card-meta"><%= progression.summary %></p>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+      <% parts.each do |pattern| %>
+        <li>
+          <%= link_to in_key(pattern.progression.key, pattern.progression), class: "card" do %>
+            <p class="card-kind">Chords <%= pattern.from + 1 %> to <%= pattern.to + 1 %></p>
+            <h3 class="card-title"><%= pattern.progression.title %></h3>
+            <p class="notes"><%= pattern.chords.map(&:lead_sheet_symbol).join(" ") %></p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
+
+<% scales = analysis.analyzed_chords.select(&:scale).uniq { |analyzed| [analyzed.chord.lead_sheet_symbol, analyzed.numeral] } %>
+<% if scales.any? %>
+  <section class="group" aria-labelledby="scales-heading">
+    <h2 class="section-heading" id="scales-heading">Scales to play</h2>
+    <ul class="card-grid card-grid-wide">
+      <% scales.each do |analyzed| %>
+        <%= render analyzed.scale, key: analyzed.scale.key, kind: "Over #{analyzed.chord.lead_sheet_symbol} · #{roman_numeral(analyzed.numeral)}" %>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
