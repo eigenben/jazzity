@@ -22,7 +22,7 @@
     <% if @note_sequence.modes.any? %>
       <section class="group" aria-labelledby="scales-heading">
         <h2 class="section-heading" id="scales-heading">Scales that contain them</h2>
-        <ul class="card-grid">
+        <ul class="card-grid card-grid-wide">
           <%= render @note_sequence.modes %>
         </ul>
       </section>
