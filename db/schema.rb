@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_04_235616) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_14_204235) do
   create_table "chord_qualities", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -99,6 +99,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_04_235616) do
     t.string "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "degree"
     t.index ["chord_id"], name: "index_progression_components_on_chord_id"
     t.index ["position"], name: "index_progression_components_on_position"
     t.index ["progression_id"], name: "index_progression_components_on_progression_id"
