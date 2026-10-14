@@ -10,12 +10,15 @@ class Progression < ActiveRecord::Base
   belongs_to :form
   belongs_to :variant_of, class_name: 'Progression'
   has_many :variants, class_name: 'Progression', foreign_key: 'variant_of_id'
-  has_many :components, -> { order('progression_components.position') }, class_name: 'ProgressionComponent'
+  has_many :components, -> { order('progression_components.position') }, class_name: 'ProgressionComponent', dependent: :destroy
 
   scope :full_tune, -> { where(full_tune: true) }
   scope :partial, -> { where(full_tune: false) }
 
   validates :name, presence: true
+  validate :chart_fits_the_meter, if: :chart?
+
+  before_save :write_components, if: :will_save_change_to_chart?
 
   def to_s
     name
@@ -55,6 +58,22 @@ class Progression < ActiveRecord::Base
     end.flatten.compact
   end
 
+  # The chart the progression is written in, in its key, see Chart.
+  def lead_sheet
+    @lead_sheet ||= Chart.parse(chart)
+    @lead_sheet&.in_key_of(key)
+  end
+
+  # The chords as they change, with a chord held over several bars once.
+  def changes
+    chords.chunk_while { |a, b| a.key == b.key && a.id == b.id }.map(&:first)
+  end
+
+  # The components as they change, see #changes.
+  def changing_components
+    components.to_a.chunk_while { |a, b| a.index == b.index && a.chord_id == b.chord_id }.map(&:first)
+  end
+
   # The chords voiced in a family, see VoiceLeader.
   def voiced_chords(family: nil, overrides: {})
     VoiceLeader.new(chords, family: family, overrides: overrides).voiced_chords
@@ -87,5 +106,25 @@ class Progression < ActiveRecord::Base
 
   class << self
     alias [] resolve
+  end
+
+  private
+
+  # Every bar of the chart must split evenly into beats.
+  def chart_fits_the_meter
+    uneven = Chart.parse!(chart).bars.find { |bar| beats_per_bar % bar.size != 0 }
+    errors.add(:chart, "has #{uneven.size} chords in bar #{uneven.number}, which can't share #{beats_per_bar} beats evenly") if uneven
+  rescue Chart::ParseError => e
+    errors.add(:chart, e.message)
+  end
+
+  # Writes the chart out as components, a chord to each position, and
+  # counts its bars.
+  def write_components
+    @lead_sheet = nil
+    written = Chart.parse!(chart)
+    self.bars = written.bars.size
+    self.positions_per_bar = written.positions_per_bar
+    self.components = written.components.map { |attributes| ProgressionComponent.new(attributes) }
   end
 end

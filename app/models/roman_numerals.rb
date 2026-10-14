@@ -202,8 +202,9 @@ class RomanNumerals
 
   def ranked
     @ranked ||= Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
-      pairs = numerals.zip(progression.components.to_a)
-      next unless progression.components.size == size && pairs.all? { |numeral, component| numeral.matches?(component) }
+      components = progression.changing_components
+      pairs = numerals.zip(components)
+      next unless components.size == size && pairs.all? { |numeral, component| numeral.matches?(component) }
 
       [progression.in_key_of(key), pairs.count { |numeral, component| numeral.exact?(component) }]
     end.sort_by { |_, exact| -exact }

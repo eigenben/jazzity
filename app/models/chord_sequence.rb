@@ -127,12 +127,13 @@ class ChordSequence
   end
 
   # Known progressions with chords of the same kinds on the same roots,
-  # placed in the key that matches.
+  # placed in the key that matches. A chord a progression holds for several
+  # bars is written once.
   def progressions
     return [] if chords.empty?
 
     Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
-      components = progression.components.to_a
+      components = progression.changing_components
       next unless components.size == chords.size && components.all?(&:chord)
 
       key = components.first.key_from_root(chords.first.key)
