@@ -1,45 +1,24 @@
-<article id="chord-sequence">
-  <header>
-    <h1>
-      Chord Sequence:
-      <%= @chord_sequence.title %>
-    </h1>
-  </header>
+<% content_for :title, @chord_sequence.title %>
 
-  <nav id="key-selector">
-    <h2>Key:</h2>
-    <ul>
-      <% Key.primaries.each do |key| %>
-        <li class="<%= "current" if @key == key %>">
-          <%= link_to_unless @key == key, key, [key, @chord_sequence] %>
-        </li>
-      <% end %>
-    </ul>
-  </nav>
+<%= render "shared/title", eyebrow: "Chord sequence", title: @chord_sequence.name, subtitle: links_to_chords(@chord_sequence.chords, " ") %>
 
-  <section id="staff">
-    <div class="staff progression-staff" data-staff='<%= @staff_notes.to_json %>' data-clef="treble,bass" height="160"></div>
-  </section>
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature">
+      <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+    </section>
 
-  <section id="voice-leading">
-    <%= form_tag({}, method: :get) do %>
-      <h2>Voice Leading:</h2>
-      <ul>
-        <% @chord_sequence.chords.each_with_index do |chord, i| %>
-          <li>
-            <%= chord.short_name %>
-            (<%= select_tag("v[#{i}]", voice_leading_options_for_select(chord, i)) %>)
-          </li>
-        <% end %>
-      </ul>
-      <%= submit_tag "Update Voicings", name: nil %>
+    <%= render "progressions/voice_leading", chords: @chord_sequence.chords %>
+
+    <% if (progressions = @chord_sequence.progressions).any? %>
+      <section class="group" aria-labelledby="progressions-heading">
+        <h2 class="section-heading" id="progressions-heading">Known progressions</h2>
+        <ul class="card-grid">
+          <%= render progressions %>
+        </ul>
+      </section>
     <% end %>
-  </section>
+  </div>
 
-  <nav class="related-progressions">
-    <h3>Related Progressions:</h3>
-    <ul class="progressions-list">
-      <%= render @chord_sequence.progressions %>
-    </ul>
-  </nav>
-</article>
+  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord_sequence) } %>
+</div>

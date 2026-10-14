@@ -1,25 +1,49 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-  <%= render partial: "layouts/head" %>
+<html lang="en">
+  <head>
+    <title><%= [content_for(:title), "Jazzity"].compact.join(" · ") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Explore jazz chords, scales, voicings and progressions in every key, written out in staff notation.">
+    <meta name="color-scheme" content="light dark">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
 
-  <body class="<%= "#{controller.class.name.sub(/Controller$/, '').underscore.gsub('/', '_').dasherize} #{@body_class}" %>">
-    <div id="container">
-      <header id="header">
-        <%= render partial: "layouts/header" %>
-      </header>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
 
-      <%= render partial: "layouts/flashes" %>
-
-      <div id="main">
-        <%= yield %>
+  <body>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <%= link_to root_path, class: "wordmark" do %>Jazzity<% end %>
+        <nav class="primary-nav" aria-label="Sections">
+          <%= navigation_link_to "Chords", chords_path, [ChordsController, VoicingsController] %>
+          <%= navigation_link_to "Scales", scales_path, [ScalesController, ModesController] %>
+          <%= navigation_link_to "Progressions", progressions_path, [ProgressionsController, ChordSequencesController] %>
+        </nav>
+        <% unless controller.is_a?(DashboardsController) %>
+          <%= render "searches/form", class: "masthead-search", label_class: "visually-hidden" %>
+        <% end %>
       </div>
+    </header>
 
-      <footer id="footer">
-        <%= render partial: "layouts/footer" %>
-      </footer>
-    </div>
+    <% flash.each do |type, message| %>
+      <p class="flash flash-<%= type %>" role="status"><%= message %></p>
+    <% end %>
 
-    <%# Javascript at the bottom for fast page loading %>
-    <%= render partial: "layouts/javascripts" %>
+    <main class="page">
+      <%= yield %>
+    </main>
+
+    <footer class="colophon">
+      <p>
+        Jazzity is a jazz theory reference by Ben Hughes.
+        <%= link_to "Source on GitHub", "https://github.com/eigenben/jazzity" %>
+      </p>
+    </footer>
   </body>
 </html>

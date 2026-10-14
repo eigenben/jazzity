@@ -1,78 +1,52 @@
-<section id="search">
-  <%= form_tag searches_path do %>
-    <%= label_tag :query, "Explore Jazz: " %>
-    <%= text_field_tag :query, params[:query], "data-autocomplete" => "/searches/autocomplete" %>
-    <%= submit_tag "Go" %>
+<section class="hero">
+  <div class="hero-text">
+    <h1 class="hero-title">Jazz theory,<br>in every key.</h1>
+    <p class="hero-lede">
+      Look up a chord, scale or progression and see it written out on the staff,
+      with the scales that fit it and the voicings players reach for.
+      Or type the notes you're holding and find out what they spell.
+    </p>
+
+    <%= render "searches/form", class: "hero-search", label: "Search chords, scales, progressions or notes", label_class: "visually-hidden" %>
+  </div>
+
+  <% if @featured %>
+    <figure class="hero-figure">
+      <%= staff_tag(@featured.staff_notes, clef: :grand, barlines: true) %>
+      <figcaption>
+        <%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I with voice-led voicings.
+        Reload for another set.
+      </figcaption>
+    </figure>
   <% end %>
 </section>
 
-<div id="sidebar"></div>
-
-<section id="search-examples">
-  <h2>Search Examples:</h2>
-  <ul>
-    <li><%= link_to_search_example "Minor ii-V" %></li>
-    <li><%= link_to_search_example "Chromatic b3-2-b2-I" %></li>
-    <li><%= link_to_search_example "Rhythm Changes" %></li>
-    <li><%= link_to_search_example "Blues" %></li>
-  </ul>
-  <ul>
-    <li><%= link_to_search_example "Eb Dorian" %></li>
-    <li><%= link_to_search_example "C Major Scale" %></li>
-    <li><%= link_to_search_example "Eb Lydian Augmented" %></li>
-    <li><%= link_to_search_example "Tri-Tone Substitution" %></li>
-  </ul>
-  <ul>
-    <li><%= link_to_search_example "Ebmaj7" %></li>
-    <li><%= link_to_search_example "C7alt" %></li>
-    <li><%= link_to_search_example "G7#11" %></li>
-    <li><%= link_to_search_example "F G B D" %></li>
-  </ul>
-  <ul>
-    <li><%= link_to_search_example "Eb G Bb D" %></li>
-    <li><%= link_to_search_example "A C E G" %></li>
-    <li><%= link_to_search_example "Dmin7, G7, Cmaj7" %></li>
-    <li><%= link_to_search_example "D F A C, F G B D, C E G B" %></li>
-  </ul>
+<section class="examples" aria-labelledby="examples-heading">
+  <h2 id="examples-heading" class="section-heading">Things to try</h2>
+  <div class="example-groups">
+    <% {
+      "Chord symbols" => ["Ebmaj7", "C7alt", "G7#11"],
+      "Scales" => ["Eb Dorian", "C Major Scale", "Eb Lydian Augmented"],
+      "Progressions" => ["Minor ii-V", "Rhythm Changes", "Tri-Tone Substitution"],
+      "Notes you're holding" => ["Eb G Bb D", "A C E G", "Dmin7, G7, Cmaj7", "D F A C, F G B D, C E G B"]
+    }.each do |group, examples| %>
+      <div class="example-group">
+        <h3><%= group %></h3>
+        <ul>
+          <% examples.each do |example| %>
+            <li><%= link_to_search_example example %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
 </section>
 
-<section id="features-overview">
-  <h1>What is Jazzity?</h1>
-  <article class="introduction">
-    <p>Jazzity is a knowledge engine for students of jazz.</p>
-  </article>
-
-  <article>
-    <h2>Explore Chord/Scale/Voicing Relationships</h2>
-    <p>
-      Jazzity extensively understands chords, scales, and voicings. Learn and explore these relationships, and see them plotted in staff notation.
-    </p>
-  </article>
-  <article>
-    <h2>Analyze a Note Sequence</h2>
-    <p>
-      Search for a list of notes separated by commas, and Jazzity will analyze your input against it's knowledge of chords, scales, and progressions.
-    </p>
-  </article>
-  <article>
-    <h2>So, how is this done?</h2>
-    <p>
-      The core of Jazzity is a mathematical model of jazz theory, allowing us to fully analyze - in real time - your input, sort of like
-      <%= link_to "Wolfram Alpha", "http://www.wolframalpha.com/" %>, but specific to Jazz!
-    </p>
-  </article>
-</section>
-
-<section id="searchable-examples">
-  <ul class="searchables-list">
+<section aria-labelledby="discover-heading">
+  <h2 id="discover-heading" class="section-heading">From the reference</h2>
+  <ul class="card-grid">
     <% @searchables.each do |result| %>
-      <% model = result.respond_to?(:target) ? result.target : result %>
-
-      <li class="searchable">
-        <%= link_to path_to_searchable(result) do %>
-          <%= render "searches/searchables/#{model.class.name.underscore}", model: model, result: result %>
-        <% end %>
-      </li>
+      <li><%= render "searches/result", result: result %></li>
     <% end %>
   </ul>
 </section>

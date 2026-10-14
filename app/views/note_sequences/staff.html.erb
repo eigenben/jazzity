@@ -1,1 +1,1 @@
-<div class="staff chord-staff" data-staff='<%= @note_sequence.octavized_notes.to_json %>' data-staff-clef="treble"></div>
+<%= staff_tag([@note_sequence.octavized_notes]) %>

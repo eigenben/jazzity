@@ -1,36 +1,29 @@
-<article id="progression">
-  <%= render "progressions/header" %>
+<% content_for :title, @progression.title %>
 
-  <nav id="key-selector">
-    <h2>Key:</h2>
-    <ul>
-      <% Key.primaries.each do |key| %>
-        <li class="<%= "current" if @key == key %>">
-          <%= link_to_unless @key == key, key, [key, @progression] %>
-        </li>
+<%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: links_to_chords(@progression.chords, " ") %>
+
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature">
+      <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+      <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
+      <% if facts.any? %>
+        <dl class="facts">
+          <% facts.each do |term, value| %>
+            <div><dt><%= term %></dt><dd><%= value %></dd></div>
+          <% end %>
+        </dl>
       <% end %>
-    </ul>
-  </nav>
+      <% if @progression.summary.present? || @progression.information.present? %>
+        <div class="prose">
+          <p><%= @progression.summary %></p>
+          <%= text_to_html @progression.information %>
+        </div>
+      <% end %>
+    </section>
 
-  <p><%= @progression.summary %></p>
-  <p><%= @progression.information %></p>
+    <%= render "progressions/voice_leading", chords: @progression.chords %>
+  </div>
 
-  <section id="staff">
-    <div class="staff progression-staff" data-staff='<%= { notes: @staff_notes }.to_json %>' data-clef="treble,bass" height="160" width="1000"></div>
-  </section>
-
-  <section id="voice-leading">
-    <%= form_tag({}, method: :get) do %>
-      <h2>Voice Leading:</h2>
-      <ul>
-        <% @progression.chords.each_with_index do |chord, i| %>
-          <li>
-            <%= chord.short_name %>
-            (<%= select_tag("v[#{i}]", voice_leading_options_for_select(chord, i)) %>)
-          </li>
-        <% end %>
-      </ul>
-      <%= submit_tag "Update Voicings", name: nil %>
-    <% end %>
-  </section>
-</article>
+  <%= render "shared/key_dial", path: ->(key) { in_key(key, @progression) } %>
+</div>

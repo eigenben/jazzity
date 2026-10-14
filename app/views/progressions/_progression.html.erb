@@ -1,9 +1,11 @@
-<li id="progression_<%= progression.id %>">
-  <%= link_to [progression.key, progression].compact do %>
-    <h3><%= progression.title %></h3>
+<li id="<%= dom_id(progression) %>">
+  <%= link_to in_key(progression.key, progression), class: "card" do %>
+    <h3 class="card-title"><%= progression.title %></h3>
     <% unless progression.full_tune? %>
-      <h4><%= progression.chords.map(&:short_name).join(", ") %></h4>
+      <p class="notes"><%= progression.chords.map(&:short_name).join(" ") %></p>
     <% end %>
-    <p><%= progression.summary %></p>
+    <% if progression.summary.present? %>
+      <p class="card-meta"><%= progression.summary %></p>
+    <% end %>
   <% end %>
 </li>

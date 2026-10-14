@@ -1,0 +1,10 @@
+<%= form_with url: searches_path, class: ["search", local_assigns[:class]], role: "search", data: {controller: "autocomplete", autocomplete_url_value: autocomplete_searches_path(format: :json)} do |form| %>
+  <%= form.label :query, local_assigns.fetch(:label, "Search"), class: local_assigns[:label_class] %>
+  <div class="search-field">
+    <%= form.search_field :query, value: @query, list: "search-suggestions", autocomplete: "off", required: true,
+          placeholder: "Try Ebmaj7, D Dorian, or Dm7 G7 Cmaj7",
+          data: {autocomplete_target: "input", action: "input->autocomplete#suggest"} %>
+    <datalist id="search-suggestions" data-autocomplete-target="suggestions"></datalist>
+    <%= form.submit "Search", name: nil %>
+  </div>
+<% end %>

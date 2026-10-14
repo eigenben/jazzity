@@ -1,1 +1,6 @@
-<h2><%= model.title %></h2>
+<p class="card-kind">Progression</p>
+<h3 class="card-title"><%= model.title %></h3>
+<% unless model.full_tune? %>
+  <p class="notes"><%= model.chords.map(&:short_name).join(" ") %></p>
+<% end %>
+<p class="card-meta"><%= model.summary %></p>

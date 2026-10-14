@@ -1,26 +1,25 @@
-<article id="chord-note-sequence">
-  <header>
-    <h1>
-      Chord Note Sequence:
-      <%= @chord_note_sequence.title %>
-    </h1>
-    <h3>
-      <%= safe_join @chord_note_sequence.chords.reject(&:empty?).map { |group| links_to_chords(group, " or ") }, ", " %>
-    </h3>
-  </header>
+<% content_for :title, @chord_note_sequence.title %>
 
-  <nav id="key-selector">
-    <h2>Key:</h2>
-    <ul>
-      <% Key.primaries.each do |key| %>
-        <li class="<%= "current" if @key == key %>">
-          <%= link_to_unless @key == key, key, [key, @chord_note_sequence] %>
-        </li>
-      <% end %>
-    </ul>
-  </nav>
+<%= render "shared/title", eyebrow: "Chords from notes", title: @chord_note_sequence.name %>
 
-  <section id="staff">
-    <div class="staff progression-staff" data-staff='<%= @chord_note_sequence.octavized_notes.to_json %>' data-staff-clef="treble"></div>
-  </section>
-</article>
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature">
+      <%= staff_tag(@chord_note_sequence.octavized_notes, barlines: true, class: "staff-large") %>
+      <ol class="spelled-chords">
+        <% @chord_note_sequence.note_sequences.zip(@chord_note_sequence.chords).each do |notes, chords| %>
+          <li>
+            <span class="notes"><%= notes %></span>
+            <% if chords.any? %>
+              <%= links_to_chords(chords, " or ") %>
+            <% else %>
+              <span class="muted">No known chord</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    </section>
+  </div>
+
+  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord_note_sequence) } %>
+</div>
