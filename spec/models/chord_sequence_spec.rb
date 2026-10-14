@@ -3,8 +3,23 @@ require "spec_helper"
 RSpec.describe ChordSequence do
   subject(:sequence) { described_class.new("Dm7 G7 Cmaj7") }
 
-  it "accepts space or comma separated chord symbols" do
-    expect(described_class.new("Dm7,G7, Cmaj7").chord_names).to eq(["Dm7", "G7", "Cmaj7"])
+  it "accepts chord symbols separated by spaces, commas, barlines or dashes" do
+    ["Dm7,G7, Cmaj7", "Dm7 | G7 | Cmaj7", "Dm7-G7-Cmaj7", "Dm7 / G7 / Cmaj7"].each do |text|
+      expect(described_class.new(text).chord_names).to eq(["Dm7", "G7", "Cmaj7"]), text
+    end
+  end
+
+  it "keeps the dash of a minor chord" do
+    expect(described_class.new("C-7-F7").chord_names).to eq(["C-7", "F7"])
+  end
+
+  it "reads bare roots as major triads and other spellings of chords" do
+    expect(described_class.new("Dm7 G7 C").chords.map(&:title)).to eq(["D Minor 7", "G Dominant 7", "C Major Triad"])
+    expect(described_class.new("D-7 G7(b9) C^7").chord_names).to eq(["D-7", "G7b9", "Cmaj7"])
+  end
+
+  it "needs a root for every chord" do
+    expect(described_class.new("Dm7 maj7").invalid_chords).to eq(["maj7"])
   end
 
   it "resolves each symbol into a chord in its key" do
@@ -20,8 +35,23 @@ RSpec.describe ChordSequence do
     expect(sequence.to_param).to eq("Dm7,G7,Cmaj7")
   end
 
-  it "includes the key in its title when transposed" do
-    expect(sequence.in_key_of("Bb").title).to eq("Dm7, G7, Cmaj7 in Bb")
+  it "moves every chord into another key, keeping its degree" do
+    transposed = sequence.in_key_of("Bb")
+    expect(transposed.name).to eq("Cm7, F7, Bbmaj7")
+    expect(transposed.title).to eq("Cm7, F7, Bbmaj7 in Bb")
+    expect(transposed.to_param).to eq("Cm7,F7,Bbmaj7")
+    expect(sequence.in_key_of("E").name).to eq("F#m7, B7, Emaj7")
+  end
+
+  it "transposes from the key it is in rather than from C" do
+    expect(described_class.new("Em7 A7 Dmaj7").in_key_of("C").name).to eq("Dm7, G7, Cmaj7")
+  end
+
+  it "finds its home key from a known progression or its last chord" do
+    expect(sequence.home_key.name).to eq("C")
+    expect(described_class.new("Em7 A7 Dm7 G7").home_key.name).to eq("C")
+    expect(described_class.new("Gm7 C7 F").home_key.name).to eq("F")
+    expect(described_class.new("Am7 D7").home_key.name).to eq("G")
   end
 
   it "measures the root movement between chords" do
@@ -30,6 +60,11 @@ RSpec.describe ChordSequence do
 
   it "finds progressions with the same chords and root movement" do
     expect(sequence.progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
+  end
+
+  it "finds progressions whose chords are of the same kinds" do
+    expect(described_class.new("Dm7 G7 C").progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
+    expect(described_class.new("Dm7 G7 Cm7").progressions).to be_empty
   end
 
   it "names the key of a progression found in a sharp key" do

@@ -1,12 +1,24 @@
+# Chords written one after another, as in "Dm7 G7 Cmaj7", "Dm7, G7, C",
+# "Dm7 | G7 | Cmaj7" or "Dm7-G7-C". Each chord is read by ChordName and
+# must have a root.
+#
+# A sequence has a home key: the key of a known progression it matches,
+# or else the key its last chord settles in. `in_key_of` moves the whole
+# sequence into another key, each chord keeping its degree, so Dm7 G7 Cmaj7
+# in Bb is Cm7 F7 Bbmaj7.
 class ChordSequence
   include Routable
   include Enumerable
   include KeyContext
 
+  # Spaces, commas and barlines separate chords, and so does a dash
+  # before a root (Dm7-G7-C), though not the dash of a minor chord (C-7).
+  SEPARATORS = /[\s,|]+|-(?=[A-G])/
+
   attr_accessor :chords
   attr_accessor :chord_names
   attr_accessor :invalid_chords
-
+  attr_writer :home_key
 
   def initialize(value = [])
     @value_as_given = value
@@ -14,15 +26,16 @@ class ChordSequence
     @chord_names = []
     @invalid_chords = []
 
-    value = value.split(/,| /).map(&:strip).reject(&:blank?) if value.instance_of?(String)
-    value.each do |chord_name|
-      chord_object = chord_name.is_a?(Chord) ? chord_name : Chord[chord_name]
-
-      if chord_object.nil?
-        @invalid_chords << chord_name
+    value = value.split(SEPARATORS).reject { |name| name.blank? || name.match?(%r{\A[/%]+\z}) } if value.instance_of?(String)
+    value.each do |item|
+      if item.is_a?(Chord)
+        @chords << item
+        @chord_names << item.lead_sheet_symbol
+      elsif (name = ChordName.parse(item))&.rooted?
+        @chords << name.chord
+        @chord_names << name.to_s
       else
-        @chords << chord_object
-        @chord_names << chord_name.to_s
+        @invalid_chords << item
       end
     end
   end
@@ -87,18 +100,58 @@ class ChordSequence
 
   delegate :each, :to => :chords
 
-  # This is not very efficient; everything is loaded into memory... Not sure how to do this in SQL without caching:
-  # TODO: Needs key_context - determine which key this progression is in!
-  #
+  # The same chords on the same degrees of another key.
+  def in_key_of(key)
+    key = Key[key] unless key.nil? || key.is_a?(Key)
+    return self if key.nil? || chords.empty?
+
+    home = home_key
+    transposed = chords.map do |chord|
+      offset = (chord.key.index - home.index) % 12
+      letters = (chord.key.letter_index - home.letter_index) % 7
+      chord.clone.tap { |moved| moved.key = key.degree_root(offset, letters) }
+    end
+
+    self.class.new(transposed).tap do |sequence|
+      sequence.key = key
+      sequence.home_key = key
+    end
+  end
+
+  # The key the sequence is in: that of a known progression with the same
+  # chords, or else the key of its last chord when that's major or minor,
+  # the key it resolves to when that's a dominant, or the first chord's root.
+  def home_key
+    @home_key ||= progressions.first&.key || closing_key
+  end
+
+  # Known progressions with chords of the same kinds on the same roots,
+  # placed in the key that matches.
   def progressions
-    Progression.all.select do |progression|
-      i = 0
-      chords.all? do |chord|
-        component = progression.components[i]; i += 1
-        component.try(:chord) == chord
-      end and chord_key_offsets == progression.component_index_offsets
-    end.map do |progression|
-      progression.in_key_of progression.components.first.key_from_root(chords.first.key)
+    return [] if chords.empty?
+
+    Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
+      components = progression.components.to_a
+      next unless components.size == chords.size && components.all?(&:chord)
+
+      key = components.first.key_from_root(chords.first.key)
+      matches = chords.zip(components).all? do |chord, component|
+        (chord.key.index - key.index) % 12 == component.index && chord.chord_quality_id == component.chord.chord_quality_id
+      end
+      progression.in_key_of(key) if matches
+    end
+  end
+
+  private
+
+  def closing_key
+    last = chords.last
+    return if last.nil?
+
+    case last.chord_quality.name
+    when "Major", "Minor" then last.key
+    when "Dominant" then last.key.shifted(5, 3)
+    else chords.first.key
     end
   end
 end

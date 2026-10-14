@@ -1,5 +1,5 @@
-<%# The keys arranged around the circle of fifths, with Gb and F# sharing a place. `path` builds the link for each key. %>
-<% current = @key || Key.default %>
+<%# The keys arranged around the circle of fifths, with Gb and F# sharing a place. `path` builds the link for each key, and `current` is the key shown (the page's key by default). %>
+<% current = local_assigns[:current] || @key || Key.default %>
 
 <nav class="key-dial" aria-label="Key">
   <p class="key-dial-current">
