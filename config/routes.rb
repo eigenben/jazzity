@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
     resources :progressions, only: %i[index show] do
       get :staff, on: :member
+      get :practice, on: :member
     end
 
     resources :note_sequences, path: 'notes', only: [:show] do
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
 
   resources :progressions, only: %i[index show] do
     get :staff, on: :member
+    get :practice, on: :member
   end
 
   resources :note_sequences, path: 'notes', only: [:show] do

@@ -27,4 +27,25 @@ module ProgressionsHelper
     bars = section.bars
     [("Section #{section.label}" if section.label), "bars #{bars.first.number} to #{bars.last.number}"].compact.join(", ").upcase_first
   end
+
+  # The orders a practice sheet can go through the keys in (see
+  # Key.practice_order), with a label and a description of each.
+  PRACTICE_ORDERS = {
+    "fourths" => ["Fourths", "round the cycle of fourths"],
+    "chromatic" => ["Chromatic", "up by half steps"],
+    "whole-steps" => ["Whole steps", "up by whole steps"]
+  }.freeze
+
+  def practice_order_choices
+    PRACTICE_ORDERS.transform_values(&:first)
+  end
+
+  def practice_order_description(order)
+    PRACTICE_ORDERS.dig(order, 1)
+  end
+
+  # The short name of a voicing family, as on its button, in the singular.
+  def voicing_family_label(family)
+    (ApplicationHelper::VOICING_FAMILIES.dig(family&.name, 0) || family.to_s).singularize
+  end
 end

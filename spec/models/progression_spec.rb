@@ -89,4 +89,12 @@ RSpec.describe Progression, type: :model do
     expect(playback.sum { |chord| chord[:beats] }).to eq(32 * 4)
     expect(playback.first[:left] + playback.first[:right]).to all(be_between(36, 84))
   end
+
+  it "is in every key, in a practice order from its own" do
+    progressions = described_class["Major ii-V-I"].in_key_of(Key["Eb"]).in_every_key("chromatic")
+
+    expect(progressions.map(&:key).map(&:name)).to eq(%w[Eb E F Gb G Ab A Bb B C Db D])
+    expect(progressions[2].changes.map(&:lead_sheet_symbol)).to eq(%w[Gm7 C7 Fmaj7])
+    expect(progressions.first.changes.map(&:lead_sheet_symbol)).to eq(%w[Fm7 Bb7 Ebmaj7])
+  end
 end

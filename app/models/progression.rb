@@ -76,6 +76,12 @@ class Progression < ActiveRecord::Base
     ([parent] + parent.variants.to_a).reject { |progression| progression.id == id }.map { |progression| progression.in_key_of(key) }
   end
 
+  # The progression in each of the twelve keys, starting from its own and
+  # going round them in a practice order, see Key.practice_order.
+  def in_every_key(order = "fourths")
+    Key.practice_order(order, key || Key.default).map { |key| clone.in_key_of(key) }
+  end
+
   # The changes as a chord sequence in the progression's key, to analyze.
   def chord_sequence
     ChordSequence.in_key(changes, key)

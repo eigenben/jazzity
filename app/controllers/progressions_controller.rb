@@ -2,6 +2,7 @@ class ProgressionsController < ApplicationController
   include KeyScoped
 
   before_action :find_progression, except: :index
+  before_action :voice_progression, only: %i[show staff]
 
   respond_to :html, :json
 
@@ -23,11 +24,20 @@ class ProgressionsController < ApplicationController
     end
   end
 
+  # A sheet to print, with the progression voiced in all twelve keys.
+  def practice
+    @order = Key::PRACTICE_ORDERS.key?(params[:order]) ? params[:order] : "fourths"
+    @progressions = @progression.in_every_key(@order)
+  end
+
   protected
 
   def find_progression
     @progression = Progression.find_by!(slug: params[:id])
     @progression = @progression.in_key_of(@key) if @key
+  end
+
+  def voice_progression
     @voiced_chords = @progression.voiced_chords(family: voicing_family, overrides: voicing_choices)
   end
 end
