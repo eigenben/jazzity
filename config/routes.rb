@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   end
 
   resources :keys, only: [] do
-    resources :chord_qualities, only: %i[index show]
     resources :chords, only: %i[index show] do
       get :staff, on: :member
       resources :voicings, only: %i[index show]
@@ -33,7 +32,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :chord_qualities, only: %i[index show]
   resources :chords, only: %i[index show] do
     get :staff, on: :member
     resources :voicings, only: %i[index show]
