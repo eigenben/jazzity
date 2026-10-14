@@ -53,4 +53,14 @@ RSpec.describe Chord, type: :model do
       expect(described_class["Xyz"]).to be_nil
     end
   end
+
+  describe "#lead_sheet_symbol" do
+    it "writes minor as m and a major triad as its root" do
+      expect(described_class["Dmin7"].lead_sheet_symbol).to eq("Dm7")
+      expect(described_class["F#m7b5"].lead_sheet_symbol).to eq("F#m7b5")
+      expect(described_class["Ebmaj7"].lead_sheet_symbol).to eq("Ebmaj7")
+      expect(described_class["Gmaj"].lead_sheet_symbol).to eq("G")
+      expect(described_class["Amin"].lead_sheet_symbol).to eq("Am")
+    end
+  end
 end
