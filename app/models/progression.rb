@@ -109,6 +109,11 @@ class Progression < ActiveRecord::Base
     voiced.zip(chord_beats).map { |chord, beats| chord.to_staff.merge(:beats => beats) }
   end
 
+  # The voiced chords for a player, each with its length in beats.
+  def playback(voiced = voiced_chords)
+    voiced.zip(chord_beats).map { |chord, beats| chord.to_playback.merge(:beats => beats) }
+  end
+
   def beats_per_bar
     meter&.beats || 4
   end

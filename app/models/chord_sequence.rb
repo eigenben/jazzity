@@ -85,6 +85,11 @@ class ChordSequence
     voiced.map(&:to_staff)
   end
 
+  # The voiced chords for a player, a bar of four beats each.
+  def playback(voiced = voiced_chords)
+    voiced.map { |chord| chord.to_playback.merge(:beats => 4) }
+  end
+
   class << self
     # Chords known to be in a key, as a sequence that stays in it.
     def in_key(chords, key)

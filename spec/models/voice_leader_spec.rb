@@ -115,4 +115,8 @@ RSpec.describe VoiceLeader do
   it "describes each chord for the staff" do
     expect(two_five_one.first.to_staff).to eq(:symbol => "Dm7", :bass => %w[D/2], :treble => %w[C/4 E/4 F/4 A/4])
   end
+
+  it "describes each chord for a player, left hand first" do
+    expect(two_five_one.first.to_playback).to eq(:symbol => "Dm7", :left => [38], :right => [60, 64, 65, 69], :names => %w[D2 C4 E4 F4 A4])
+  end
 end
