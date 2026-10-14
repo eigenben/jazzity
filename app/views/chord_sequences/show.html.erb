@@ -13,5 +13,5 @@
     <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
   </div>
 
-  <%= render "shared/key_dial", current: @chord_sequence.home_key, path: ->(key) { polymorphic_path(@chord_sequence.in_key_of(key), voicing_params) } %>
+  <%= render "shared/key_dial", current: @chord_sequence.home_key, path: ->(key) { polymorphic_path(in_key(key, @chord_sequence.in_key_of(key)), voicing_params) } %>
 </div>
