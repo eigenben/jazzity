@@ -26,8 +26,15 @@ RSpec.describe "Spelling in every key" do
           notes = toneable.tones.keys
 
           toneable.tone_values.each_with_index do |value, i|
-            expected = [(key.index + value["tone"]) % 12, (key.letter_index + value["letter_index"]) % 7]
-            expect([notes[i].index, notes[i].letter_index]).to eq(expected), "#{toneable.class} #{toneable} in #{key}: #{toneable.notes.join(' ')}"
+            index = (key.index + value["tone"]) % 12
+            letter = (key.letter_index + value["letter_index"]) % 7
+            message = "#{toneable.class} #{toneable} in #{key}: #{toneable.notes.join(' ')}"
+
+            if Key.from_index(index, letter).double? && Tones::TENSION_LETTERS.include?(value["letter_index"])
+              expect([notes[i].index, notes[i].double?]).to eq([index, false]), message
+            else
+              expect([notes[i].index, notes[i].letter_index]).to eq([index, letter]), message
+            end
           end
         end
       end
@@ -39,7 +46,8 @@ RSpec.describe "Spelling in every key" do
       "Emaj7" => "E G# B D#", "B7" => "B D# F# A", "F#m7" => "F# A C# E", "Bbm7" => "Bb Db F Ab",
       "Dbmaj7" => "Db F Ab C", "Cm7b5" => "C Eb Gb Bb", "Bø7" => "B D F A", "Cdim7" => "C Eb Gb Bbb",
       "Ebdim7" => "Eb Gb Bbb Dbb", "C#o7" => "C# E G Bb", "G7#5" => "G B D# F", "C6/9" => "C E G A D",
-      "C13" => "C E G Bb D A", "Ab7b9" => "Ab C Eb Gb Bbb", "D7#9" => "D F# A C E#", "Gm(maj7)" => "G Bb D F#"
+      "C13" => "C E G Bb D A", "Ab7b9" => "Ab C Eb Gb A", "D7#9" => "D F# A C E#", "Gm(maj7)" => "G Bb D F#",
+      "E7alt" => "E G# B# D F G", "Bb7#9" => "Bb D F Ab C#"
     }.each do |symbol, notes|
       expect(Chord[symbol].notes.join(" ")).to eq(notes), symbol
     end

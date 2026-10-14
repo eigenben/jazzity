@@ -29,8 +29,17 @@ class Tones
     realized.each(&block)
   end
 
+  # Tensions (2nds, 4ths and 6ths, that is 9ths, 11ths and 13ths) are
+  # named from their interval's letter unless that would take a double
+  # sharp or flat, when the nearest single accidental is clearer: the #9 of
+  # E7alt is G rather than F##, and the b9 of Ab7b9 is A rather than Bbb.
+  # Chord tones keep their letter, so Cdim7 still has its Bbb.
+  TENSION_LETTERS = [1, 3, 5].freeze
+
   def keys
-    @keys ||= map { |tone| Key.from_index(tone.tone, tone.letter_index) }
+    @keys ||= @tones.map { |tone| [realize(tone), tone.letter_index] }.sort_by { |tone, _| tone.position }.map do |tone, letter|
+      spell(tone, letter)
+    end
   end
 
   def notes
@@ -84,6 +93,11 @@ class Tones
   end
 
   private
+
+  def spell(tone, relative_letter)
+    key = Key.from_index(tone.tone, tone.letter_index)
+    key.double? && TENSION_LETTERS.include?(relative_letter) ? Key.spelled(tone.tone, tone.letter_index) : key
+  end
 
   def realized
     @realized ||= @tones.map { |tone| realize(tone) }.sort_by(&:position)
