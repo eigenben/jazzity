@@ -62,7 +62,7 @@ RSpec.describe "Spelling in every key" do
     context "in #{key}" do
       it "spells the ii-V-I entirely within the key" do
         scale = major_scale(key)
-        chords = progression_in("Major ii-V-I", key).chords
+        chords = progression_in("Major ii-V-I", key).changes
 
         expect(chords.map { |chord| chord.key.name }).to eq([scale[1], scale[4], scale[0]])
         chords.each { |chord| expect(scale).to include(*chord.notes), chord.title }
@@ -70,7 +70,7 @@ RSpec.describe "Spelling in every key" do
 
       it "roots the minor ii-V-I on the same degrees" do
         scale = major_scale(key)
-        chords = progression_in("Minor ii-V-I", key).chords
+        chords = progression_in("Minor ii-V-I", key).changes
 
         expect(chords.map { |chord| chord.key.name }).to eq([scale[1], scale[4], scale[0]])
         expect(chords.map(&:name)).to eq(["Half Diminished", "Altered", "Minor 6"])
@@ -92,7 +92,9 @@ RSpec.describe "Spelling in every key" do
           end
         end
 
-        expect(progression_in("Chromatic b3-2-b2-I", key).chords.map { |chord| chord.key.name }).not_to include("Cb", "Fb")
+        %w[Tritone\ Sub\ Turnaround Chromatic\ iii-bIII-ii-bII Tadd\ Dameron\ Turnaround].each do |name|
+          expect(progression_in(name, key).chords.map { |chord| chord.key.name }).not_to include("Cb", "Fb"), name
+        end
       end
 
       it "spells every seeded progression as its chart says, from the key's letters" do
@@ -122,11 +124,14 @@ RSpec.describe "Spelling in every key" do
   end
 
   it "spells progressions in sharp and flat keys from the key's letters" do
-    expect(progression_in("Major ii-V-I", "E").chords.map(&:short_name)).to eq(%w[F#min7 B7 Emaj7])
-    expect(progression_in("Major ii-V-I", "F#").chords.map(&:short_name)).to eq(%w[G#min7 C#7 F#maj7])
-    expect(progression_in("Major ii-V-I", "Gb").chords.map(&:short_name)).to eq(%w[Abmin7 Db7 Gbmaj7])
-    expect(progression_in("Minor ii-V-I", "A").chords.map(&:short_name)).to eq(%w[Bm7b5 E7alt Amin6])
-    expect(progression_in("Chromatic b3-2-b2-I", "Db").chords.map(&:short_name)).to eq(%w[E7alt Ebmin7 D7alt Dbmaj7])
+    expect(progression_in("Major ii-V-I", "E").changes.map(&:short_name)).to eq(%w[F#min7 B7 Emaj7])
+    expect(progression_in("Major ii-V-I", "F#").changes.map(&:short_name)).to eq(%w[G#min7 C#7 F#maj7])
+    expect(progression_in("Major ii-V-I", "Gb").changes.map(&:short_name)).to eq(%w[Abmin7 Db7 Gbmaj7])
+    expect(progression_in("Minor ii-V-I", "A").changes.map(&:short_name)).to eq(%w[Bm7b5 E7alt Amin6])
+    expect(progression_in("Tritone Sub Turnaround", "Db").chords.map(&:short_name)).to eq(%w[Dbmaj7 E7 Ebmin7 D7])
+    expect(progression_in("Coltrane Changes", "Eb").changes.map(&:lead_sheet_symbol)).to eq(%w[Fm7 Gb7 Bmaj7 D7 Gmaj7 Bb7 Ebmaj7])
+    expect(progression_in("Bird Blues", "F").changes.map(&:lead_sheet_symbol).first(8)).to eq(%w[Fmaj7 Em7b5 A7 Dm7 G7 Cm7 F7 Bb7])
+    expect(progression_in("Minor Blues", "C").changes.map(&:lead_sheet_symbol)).to eq(%w[Cm7 Fm7 Cm7 Ab7 G7alt Cm7 Dm7b5 G7alt])
     expect(progression_in("Bebop Blues", "B").chords.map(&:short_name)).to include("E#dim7")
     expect(progression_in("Basic Blues", "Gb").chords.map(&:short_name).uniq).to eq(%w[Gb7 Cb7 Db7])
   end

@@ -12,7 +12,7 @@ RSpec.describe ChordNoteSequence do
   end
 
   it "finds the progressions the chords could be" do
-    expect(sequence.progressions.map(&:title)).to eq(["Major ii-V Progression in C"])
+    expect(sequence.progressions.map(&:title)).to eq(["Major ii-V Progression in C", "i-IV Vamp Progression in D"])
     expect(described_class.new("D F A C, G B D F, C E G B").progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
   end
 

@@ -22,7 +22,7 @@ RSpec.describe "Searching", type: :request do
     "D dorian" => "/scales/major/modes/dorian", "dorian D" => "/scales/major/modes/dorian", "lydian" => "/scales/major/modes/lydian",
     "f# melodic minor" => "/keys/F%23/scales/melodic-minor", "C major" => "/scales/major",
     "ii-V-I" => "/progressions/major-ii-v-i", "ii V I" => "/progressions/major-ii-v-i", "ii V I in Eb" => "/keys/Eb/progressions/major-ii-v-i",
-    "251" => "/progressions/major-ii-v-i", "rhythm changes" => "/progressions/original-rhythm-changes",
+    "251" => "/progressions/major-ii-v-i", "rhythm changes" => "/progressions/rhythm-changes",
     "C E G" => "/notes/C%20E%20G", "C E G B" => "/notes/C%20E%20G%20B",
     "Dm7 G7 Cmaj7" => "/chord-sequences/Dm7,G7,Cmaj7", "Dm7 G7 C" => "/chord-sequences/Dm7,G7,C",
     "Dm7 | G7 | Cmaj7" => "/chord-sequences/Dm7,G7,Cmaj7", "Em7 A7 Dm7 G7" => "/chord-sequences/Em7,A7,Dm7,G7",
@@ -42,7 +42,7 @@ RSpec.describe "Searching", type: :request do
     get search_path("blues")
     expect(response).to have_http_status(:ok)
     page = Nokogiri::HTML(response.body)
-    expect(page.css(".section-heading").map { |heading| heading.text.squish }).to eq(["Scales & modes 2", "Progressions 4"])
+    expect(page.css(".section-heading").map { |heading| heading.text.squish }).to eq(["Scales & modes 2", "Progressions 6"])
   end
 
   %w[minor altered bebop].each do |query|

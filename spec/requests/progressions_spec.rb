@@ -7,7 +7,7 @@ feature "Progressions" do
   end
 
   scenario "Viewing Rhythm Changes in Bb" do
-    visit "/keys/Bb/progressions/original-rhythm-changes"
+    visit "/keys/Bb/progressions/rhythm-changes"
 
     chords = all(".subtitle a").map(&:text)
     expect(chords.size).to eq(53)

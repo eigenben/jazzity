@@ -53,11 +53,13 @@ RSpec.describe RomanNumerals do
   end
 
   it "finds known progressions by degree and kind of chord" do
-    expect(progressions("ii V I")).to eq(["Major ii-V-I Progression"])
+    expect(progressions("ii V I").first).to eq("Major ii-V-I Progression")
     expect(progressions("ii7 V7 Imaj7")).to eq(["Major ii-V-I Progression"])
+    expect(progressions("iv7 bVII7 I")).to eq(["Backdoor ii-V-I Progression"])
+    expect(progressions("I vi ii V")).to eq(["Major I-vi-ii-V Progression"])
     expect(progressions("iiø V i")).to eq(["Minor ii-V-I Progression"])
     expect(progressions("iii VI7 ii V")).to eq(["Major iii-VI-ii-V Progression"])
-    expect(described_class.parse("ii V I in Eb").progressions.map(&:title)).to eq(["Major ii-V-I Progression in Eb"])
+    expect(described_class.parse("ii V I in Eb").progression.title).to eq("Major ii-V-I Progression in Eb")
   end
 
   it "picks the progression whose chords are exactly the ones assumed" do
@@ -67,7 +69,7 @@ RSpec.describe RomanNumerals do
   end
 
   it "finds no progression when the chords differ in kind" do
-    expect(progressions("I vi ii V")).to be_empty
+    expect(progressions("I iii IV V")).to be_empty
   end
 
   it "turns into a chord sequence" do
