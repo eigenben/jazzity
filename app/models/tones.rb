@@ -41,6 +41,15 @@ class Tones
     self.class.octavize(keys, octave)
   end
 
+  # The tones as a rising stack of pitches, the first at or above a MIDI
+  # note. A tone that repeats a pitch class (a doubled root) goes up an octave.
+  def pitches(lowest)
+    previous = lowest - 1
+    keys.map do |key|
+      Pitch.at_or_above(key, previous + 1).tap { |pitch| previous = pitch.midi }
+    end
+  end
+
   # Writes keys as rising notes such as "Eb/4", starting in the given octave
   # (or the one below for A, Bb and B, to keep the run in a sensible range).
   def self.octavize(keys, octave = 4)
