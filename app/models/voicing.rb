@@ -11,8 +11,6 @@ class Voicing < ActiveRecord::Base
 
   belongs_to :voicing_family
   belongs_to :chord
-  has_many :voice_leadings_to, class_name: "VoiceLeading", foreign_key: "to_voicing_id"
-  has_many :voice_leadings_from, class_name: "VoiceLeading", foreign_key: "from_voicing_id"
   belongs_to :upper_structure_chord, class_name: "Chord"
 
   validates :name, presence: true

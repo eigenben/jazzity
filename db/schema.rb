@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_204235) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_120000) do
   create_table "chord_qualities", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -157,17 +157,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_204235) do
     t.index ["model_type", "model_id"], name: "index_searchables_on_model_type_and_model_id"
     t.index ["name"], name: "index_searchables_on_name"
     t.index ["parent_id"], name: "index_searchables_on_parent_id"
-  end
-
-  create_table "voice_leadings", force: :cascade do |t|
-    t.integer "from_voicing_id"
-    t.integer "to_voicing_id"
-    t.integer "offset"
-    t.integer "changed_tones", default: 1
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["from_voicing_id"], name: "index_voice_leadings_on_from_voicing_id"
-    t.index ["to_voicing_id"], name: "index_voice_leadings_on_to_voicing_id"
   end
 
   create_table "voicing_families", force: :cascade do |t|
