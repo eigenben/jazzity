@@ -43,6 +43,11 @@ RSpec.describe ChordSequence do
     expect(sequence.in_key_of("E").name).to eq("F#m7, B7, Emaj7")
   end
 
+  it "respells chords named unusually for their key when moving them" do
+    expect(described_class.new("F#m7 B7 Ebmaj7").in_key_of("D").name).to eq("Fm7, Bb7, Dmaj7")
+    expect(described_class.new("Gmaj7 Db7 Cmaj7").in_key_of("F").name).to eq("Cmaj7, Gb7, Fmaj7")
+  end
+
   it "transposes from the key it is in rather than from C" do
     expect(described_class.new("Em7 A7 Dmaj7").in_key_of("C").name).to eq("Dm7, G7, Cmaj7")
   end
