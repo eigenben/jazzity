@@ -588,6 +588,122 @@ a:hover {
   margin-top: 0.75rem;
 }
 
+/* Lead sheet: a progression's chart in bars, four to a line, each chord's
+   symbol over its roman numeral. */
+
+.lead-sheet {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.lead-sheet + .staff {
+  margin-top: 1.5rem;
+}
+
+.lead-sheet-labelled .lead-sheet-section {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: start;
+}
+
+.lead-sheet-label {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: 0.75rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font: 800 1.25rem/1 var(--font-display);
+}
+
+.lead-sheet-bars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 0.6rem;
+}
+
+.lead-sheet-bar {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  min-height: 4.25rem;
+  border-right: 2px solid var(--ink);
+}
+
+.lead-sheet-bar:nth-child(4n + 1) {
+  border-left: 2px solid var(--ink);
+}
+
+.lead-sheet-chord,
+.lead-sheet-repeat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.45rem 0.55rem 0.4rem;
+  text-decoration: none;
+}
+
+.lead-sheet-chord:hover {
+  background: var(--paper);
+}
+
+.lead-sheet-symbol {
+  font: 600 1.4rem/1 var(--font-display);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.lead-sheet-symbol .accidental {
+  font-family: var(--font-body);
+  font-size: 0.8em;
+  font-weight: 400;
+  margin-inline: 0.02em;
+}
+
+.lead-sheet-numeral {
+  font: 400 0.75rem/1.2 var(--font-mono);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.lead-sheet-repeat {
+  justify-content: center;
+  align-items: center;
+  font: 600 1.5rem/1 var(--font-display);
+  color: var(--muted);
+}
+
+@media (max-width: 40rem) {
+  .lead-sheet-bars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lead-sheet-bar:nth-child(4n + 1) {
+    border-left: 0;
+  }
+
+  .lead-sheet-bar:nth-child(2n + 1) {
+    border-left: 2px solid var(--ink);
+  }
+
+  .lead-sheet-symbol {
+    font-size: 1.2rem;
+  }
+
+  .lead-sheet-labelled .lead-sheet-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .lead-sheet-label {
+    margin-top: 0;
+  }
+}
+
 /* Cards */
 
 .card-grid {

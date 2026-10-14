@@ -9,10 +9,23 @@ feature "Progressions" do
   scenario "Viewing Rhythm Changes in Bb" do
     visit "/keys/Bb/progressions/rhythm-changes"
 
-    chords = all(".subtitle a").map(&:text)
-    expect(chords.size).to eq(53)
-    expect(chords.first(16)).to eq(%w[Bb6 Gmin7 Cmin7 F7 Bb6 Gmin7 Cmin7 F7 Bb6 Bb7 Eb6 Edim7 Bb6 F7 Bb6 Bb6])
-    expect(chords[30, 8]).to eq(%w[D7 D7 G7 G7 C7 C7 F7 F7])
+    bars = all(".lead-sheet-bar").map { |bar| bar.all(".lead-sheet-symbol").map(&:text) }
+    expect(bars.size).to eq(32)
+    expect(bars.first(8)).to eq([%w[B♭6 Gm7], %w[Cm7 F7], %w[B♭6 Gm7], %w[Cm7 F7], %w[B♭6 B♭7], %w[E♭6 Edim7], %w[B♭6 F7], %w[B♭6]])
+    expect(bars[16, 8]).to eq([%w[D7], [], %w[G7], [], %w[C7], [], %w[F7], []])
+    expect(all(".lead-sheet-section").map { |section| section["aria-label"] }).to eq(["Section A, bars 1 to 8", "Section A, bars 9 to 16", "Section B, bars 17 to 24", "Section A, bars 25 to 32"])
+    expect(first(".lead-sheet-numeral").text).to eq("I6")
     expect(page).to have_css(".staff[data-controller='staff']")
+  end
+
+  scenario "Following a chord on the lead sheet to its page in the key" do
+    visit "/keys/E/progressions/major-ii-v-i"
+
+    expect(all(".lead-sheet-symbol").map(&:text)).to eq(%w[F♯m7 B7 Emaj7])
+    expect(all(".lead-sheet-numeral").map(&:text)).to eq(%w[ii7 V7 Imaj7])
+    expect(page).to have_css(".lead-sheet-repeat", text: "%")
+
+    first(".lead-sheet-chord").click
+    expect(page).to have_current_path("/keys/F%23/chords/minor-7")
   end
 end
