@@ -23,11 +23,13 @@
       <section class="group" aria-labelledby="scales-heading">
         <h2 class="section-heading" id="scales-heading">Scales that contain them</h2>
         <ul class="card-grid card-grid-wide">
-          <%= render @note_sequence.modes %>
+          <% @note_sequence.modes.each do |mode| %>
+            <%= render mode, key: mode.key %>
+          <% end %>
         </ul>
       </section>
     <% end %>
   </div>
 
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @note_sequence) } %>
+  <%= render "shared/key_dial", current: @note_sequence.home_key, path: ->(key) { @note_sequence.in_key_of(key) } %>
 </div>

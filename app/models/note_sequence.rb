@@ -13,9 +13,9 @@ class NoteSequence
     @keys = []
     @invalid_keys = []
 
-    value = value.split(/ /).map(&:strip) if value.instance_of?(String)
+    value = value.split.reject(&:empty?) if value.instance_of?(String)
     value.each do |key_name|
-      key_object = Key[key_name]
+      key_object = key_name.is_a?(Key) ? key_name : Key.parse(key_name)
 
       if key_object.nil?
         @invalid_keys << key_name
@@ -38,10 +38,22 @@ class NoteSequence
   end
 
   def title
-    if key
-      "#{name} in #{key}"
-    else
-      name
+    name
+  end
+
+  # The note the sequence is heard from: its first.
+  def home_key
+    keys.first
+  end
+
+  # The same notes moved so the first is `key`, each spelled from the
+  # letter its interval calls for.
+  def in_key_of(key)
+    key = Key[key] unless key.nil? || key.is_a?(Key)
+    return self if key.nil? || keys.empty?
+
+    self.class.new(keys.map { |note| key.shifted((note.index - home_key.index) % 12, (note.letter_index - home_key.letter_index) % 7) }).tap do |sequence|
+      sequence.key = key
     end
   end
 
@@ -71,27 +83,19 @@ class NoteSequence
 
   delegate :each, :to => :keys
 
-  # Chords associated with this collection of notes
+  # The chords these notes spell, each rooted on the note as it was written
+  # (F# A# C# is F# major, not Gb), a chord on the first note first.
   def chords
-    if key
-      chords_in_key(key)
-    else
-      Key.primaries.map do |in_key|
-        chords_in_key(in_key)
-      end.flatten.compact
+    @chords ||= keys.uniq(&:index).flat_map do |root|
+      intervals = keys.map { |note| (note.index - root.index) % 12 }.to_set
+      Chord.all.select { |chord| chord.tones.map(&:tone).to_set == intervals }.map { |chord| chord.in_key_of(root) }
     end.extend(Chords)
   end
 
-  # Scales associated with this collection of notes (just done through chords)
+  # The scales that fit those chords, each in the chord's key.
   def modes
-    chords.map(&:modes).flatten
-  end
-
-  private
-
-  def chords_in_key(in_key)
-    Chord.all.select do |c|
-      c.tones.map(&:tone).to_set == keys.map { |k| (k.index - (in_key ? in_key.index : 0)) % 12 }.to_set
-    end.map { |c| c.key = in_key; c }
+    chords.flat_map do |chord|
+      chord.chord_scales.map { |chord_scale| chord_scale.mode.in_key_of(chord.key.shifted(chord_scale.offset)) }
+    end.uniq { |mode| [mode.id, mode.key.name] }
   end
 end

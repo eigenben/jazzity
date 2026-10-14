@@ -13,9 +13,9 @@ class ChordNoteSequence
     @note_sequences = []
     @invalid_note_sequences = []
 
-    value = value.split(/,/).map(&:strip).reject(&:blank?) if value.instance_of?(String)
+    value = value.split(/[,|]/).map(&:strip).reject(&:blank?) if value.instance_of?(String)
     value.each do |key_group|
-      note_sequence = NoteSequence[key_group]
+      note_sequence = key_group.is_a?(NoteSequence) ? key_group : NoteSequence[key_group]
 
       if note_sequence.nil?
         @invalid_note_sequences << key_group
@@ -39,11 +39,22 @@ class ChordNoteSequence
   end
 
   def title
-    if key
-      "#{name} in #{key}"
-    else
-      name
-    end
+    name
+  end
+
+  # The first note of the first chord.
+  def home_key
+    note_sequences.first&.home_key
+  end
+
+  # The same chords moved so the first note is `key`.
+  def in_key_of(key)
+    key = Key[key] unless key.nil? || key.is_a?(Key)
+    return self if key.nil? || note_sequences.empty?
+
+    home = home_key
+    moved = note_sequences.map { |notes| notes.in_key_of(key.shifted((notes.home_key.index - home.index) % 12, (notes.home_key.letter_index - home.letter_index) % 7)) }
+    self.class.new(moved).tap { |sequence| sequence.key = key }
   end
 
   def notes
@@ -75,27 +86,10 @@ class ChordNoteSequence
 
   delegate :each, :to => :note_sequences
 
-  # TODO:
+  # Known progressions that some reading of the notes as chords matches,
+  # trying at most a few dozen readings.
   def progressions
-    Progression.all
+    readings = chords.reduce([[]]) { |partial, group| partial.product(group).map(&:flatten) }.first(48)
+    readings.flat_map { |reading| ChordSequence.new(reading).progressions }.uniq { |progression| [progression.id, progression.key&.name] }
   end
-
-  # Progressions associated with this collection of notes
-  # def progressions
-  #   if key
-  #     chords_in_key(key)
-  #   else
-  #     Key.primaries.map do |in_key|
-  #       chords_in_key(in_key)
-  #     end.flatten
-  #   end.extend(Chords)
-  # end
-
-  # private
-
-  # def chords_in_key(in_key)
-  #   Chord.all.select do |c|
-  #     c.tones.map(&:tone).to_set == keys.map {|k| (k.index - (in_key ? in_key.index : 0)) % 12 }.to_set
-  #   end.map {|c| c.key = in_key; c}
-  # end
 end

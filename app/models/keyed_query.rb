@@ -29,7 +29,9 @@ class KeyedQuery
 
     [TRAILING, LEADING, LAST].each do |pattern|
       match = pattern.match(string) or next
-      key = Key.parse(match[:key]) or next
+      key = Key.parse(match[:key])
+      next if key.nil? || key.double?
+
       readings << new(key, match[:rest].strip)
     end
 
