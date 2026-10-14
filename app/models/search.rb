@@ -55,6 +55,7 @@ class Search
 
   STRONG = 70
   PER_GROUP = 8
+  ANALYZE = /\A(?:analy[sz]e|analysis(?:\s+of)?)\s+/i
   WORDS = %w[scale mode chord chords progression in on of the key changes].freeze
 
   attr_reader :query
@@ -160,7 +161,8 @@ class Search
   def parse(text)
     return if text.blank?
 
-    ChordNoteSequence[text] ||
+    analysis_request(text) ||
+      ChordNoteSequence[text] ||
       notes(text) ||
       progression_named(text) ||
       numerals(text) ||
@@ -168,6 +170,15 @@ class Search
       keyed_scale(text) ||
       chord(text) ||
       unkeyed_scale(text)
+  end
+
+  # Changes to analyze, as in "analyze Dm7 G7 Cmaj7 A7" or "analysis of
+  # ii V I in Eb": their chord sequence, whose page has the analysis.
+  def analysis_request(text)
+    changes = text.sub(ANALYZE, "")
+    return if changes == text
+
+    chord_sequence(changes) || RomanNumerals.parse(changes)&.chord_sequence
   end
 
   # Two or more notes; a single note is a chord.

@@ -26,6 +26,9 @@ RSpec.describe "Searching", type: :request do
     "C E G" => "/notes/C%20E%20G", "C E G B" => "/notes/C%20E%20G%20B",
     "Dm7 G7 Cmaj7" => "/chord-sequences/Dm7,G7,Cmaj7", "Dm7 G7 C" => "/chord-sequences/Dm7,G7,C",
     "Dm7 | G7 | Cmaj7" => "/chord-sequences/Dm7,G7,Cmaj7", "Em7 A7 Dm7 G7" => "/chord-sequences/Em7,A7,Dm7,G7",
+    "analyze Dm7 G7 Cmaj7 A7" => "/chord-sequences/Dm7,G7,Cmaj7,A7", "analyse ii V I in Eb" => "/chord-sequences/Fm7,Bb7,Ebmaj7",
+    "backdoor" => "/progressions/backdoor-ii-v-i", "coltrane changes" => "/progressions/coltrane-changes", "bird blues in F" => "/keys/F/progressions/bird-blues",
+    "iv7 bVII7 Imaj7" => "/progressions/backdoor-ii-v-i", "ii bII I" => "/progressions/tritone-sub-ii-v-i",
     "C alt" => "/chords/altered", "Galt" => "/keys/G/chords/altered",
     "Ab Lydian Augmented" => "/keys/F/scales/melodic-minor/modes/lydian-augmented", "whole tone" => "/scales/whole-tone",
     "dorain" => "/scales/major/modes/dorian", "mixolidian" => "/scales/major/modes/mixolydian"
