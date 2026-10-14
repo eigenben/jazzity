@@ -42,7 +42,7 @@ class Chord < ActiveRecord::Base
   end
 
   def short_name
-    "#{key}#{primary_symbol}"
+    "#{key || Key.default}#{primary_symbol}"
   end
 
   def title
