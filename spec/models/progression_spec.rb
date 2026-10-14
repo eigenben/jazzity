@@ -61,6 +61,16 @@ RSpec.describe Progression, type: :model do
     end
   end
 
+  it "lists the other variations of the same progression, in its key" do
+    variations = described_class["Jazz Blues"].in_key_of(Key["F"]).variations
+
+    expect(variations.map(&:name)).to include("Basic Blues", "Bebop Blues", "Bird Blues")
+    expect(variations.map(&:name)).not_to include("Jazz Blues", "Minor Blues")
+    expect(variations.map(&:key).uniq).to eq([Key["F"]])
+    expect(described_class["Basic Blues"].variations.map(&:name)).to include("Jazz Blues")
+    expect(described_class["Deceptive Cadence"].variations).to be_empty
+  end
+
   it 'should delegate resolve to find_by' do
     expect(described_class).to receive(:find_by).with(name: 'Test')
     described_class.resolve('Test')

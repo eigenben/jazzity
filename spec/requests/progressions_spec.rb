@@ -28,4 +28,13 @@ feature "Progressions" do
     first(".lead-sheet-chord").click
     expect(page).to have_current_path("/keys/F%23/chords/minor-7")
   end
+
+  scenario "Seeing the variations of a blues in the same key" do
+    visit "/keys/F/progressions/jazz-blues"
+
+    within("section[aria-labelledby=variations-heading]") do
+      expect(page).to have_link("Basic Blues Progression in F", href: "/keys/F/progressions/basic-blues")
+      expect(page).to have_link("Bird Blues Progression in F", href: "/keys/F/progressions/bird-blues")
+    end
+  end
 end
