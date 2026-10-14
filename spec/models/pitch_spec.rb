@@ -32,4 +32,12 @@ RSpec.describe Pitch do
   it "compares by sound" do
     expect(described_class.new(Key["Cb"], 59)).to be < described_class.new(Key["C"], 60)
   end
+
+  it "reads a note written for the staff" do
+    expect(described_class.parse("Eb/4")).to eq(described_class.new(Key["Eb"], 63))
+    expect(described_class.parse("Cb/4").midi).to eq(59)
+    expect(described_class.parse("B#/3").midi).to eq(60)
+    expect(described_class.parse("H/4")).to be_nil
+    expect(described_class.parse("C")).to be_nil
+  end
 end
