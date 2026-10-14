@@ -53,6 +53,12 @@ RSpec.describe HarmonicAnalysis do
       expect(numerals("Cmaj7 E7 Am7 D7 G7 Cmaj7")).to eq(%w[Imaj7 V7/vi vi7 V7/V V7 Imaj7])
     end
 
+    it "hears the last chord lead back to the first, as changes go round again" do
+      expect(analyze("Dm7 G7 Cmaj7 A7").analyzed_chords.last.role).to eq("Secondary dominant of ii")
+      expect(numerals("Cmaj7 Am7 Dm7 Db7")).to eq(%w[Imaj7 vi7 ii7 subV7])
+      expect(analyze("Cmaj7 A7").analyzed_chords.last.role).to eq("Secondary dominant, unresolved")
+    end
+
     it "names tritone substitutes" do
       expect(numerals("Dm7 Db7 Cmaj7")).to eq(%w[ii7 subV7 Imaj7])
       expect(numerals("Em7b5 A7 Dm7 Db7 Cmaj7")).to eq(%w[iiø7/ii V7/ii ii7 subV7 Imaj7])

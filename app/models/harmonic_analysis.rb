@@ -127,6 +127,7 @@ class HarmonicAnalysis
     elsif blues && blues_dominant?(offset, kind, tonality) then 2
     elsif resolves_into_key?(i, tonality) then 1.5
     elsif related_ii?(i) || BORROWED[tonality.mode][offset]&.include?(kind) || blues_dominant?(offset, kind, tonality) then 1
+    elsif kind == :dominant && DIATONIC[tonality.mode][(offset + 5) % 12] then 0.5
     else 0
     end
   end
@@ -144,12 +145,16 @@ class HarmonicAnalysis
     end
   end
 
-  # A first chord on the tonic, and a last chord on the tonic (best of all
-  # a tonic chord) or on V7.
+  # A first and last chord on the tonic (best of all a tonic chord), or a
+  # last chord on V7.
   def ends_score(tonality)
     return 0 if chords.empty?
 
-    first = offset(chords.first, tonality).zero? ? 1 : 0
+    first = case [offset(chords.first, tonality), kind(chords.first)]
+    in [0, kind] if TONIC_KINDS[tonality.mode].include?(kind) then 2
+    in [0, _] then 1
+    else 0
+    end
     last = case [offset(chords.last, tonality), kind(chords.last)]
     in [0, kind] if TONIC_KINDS[tonality.mode].include?(kind) then 3
     in [0, _] | [7, :dominant] then 1
@@ -176,7 +181,7 @@ class HarmonicAnalysis
   # The chord a dominant resolves to: the next one, when it is a fifth or
   # a half step below.
   def resolution_target(i)
-    following = chords[i + 1]
+    following = next_chord(i)
     return unless following && kind(chords[i]) == :dominant
 
     following if [5, 11].include?(interval(chords[i], following))
@@ -193,7 +198,7 @@ class HarmonicAnalysis
     chord = chords[i]
     offset = offset(chord, key)
     kind = kind(chord)
-    following = chords[i + 1]
+    following = next_chord(i)
 
     if DIATONIC[key.mode][offset]&.include?(kind)
       [numeral(chord), diatonic_role(offset, kind)]
@@ -380,6 +385,12 @@ class HarmonicAnalysis
     letters = (chord.key.letter_index - tonic.letter_index) % 7
     natural = Key::MajorScaleSteps[letters]
     [natural, (natural - 1) % 12].include?(offset)
+  end
+
+  # The chord after a chord, and after the last, the first: changes go
+  # round again.
+  def next_chord(i)
+    chords[i + 1] || (chords.first if chords.size > 1)
   end
 
   def offset(chord, tonality)

@@ -42,7 +42,7 @@ RSpec.describe "Analyzing chord changes", type: :request do
 
     expect(page.css(".analysis-key").text.squish).to eq("Heard in C major")
     expect(rows).to eq([
-      ["Dm7", "ii7", "Subdominant"], ["G7", "V7", "Dominant"], ["Cmaj7", "Imaj7", "Tonic"], ["A7", "V7/ii", "Secondary dominant, unresolved"]
+      ["Dm7", "ii7", "Subdominant"], ["G7", "V7", "Dominant"], ["Cmaj7", "Imaj7", "Tonic"], ["A7", "V7/ii", "Secondary dominant of ii"]
     ])
     expect(page.css("a.card[href='/progressions/major-ii-v-i'] .card-title").text).to eq("Major ii-V-I Progression")
     expect(page.css("a.card[href='/scales/major/modes/dorian'] .card-kind").text.squish).to eq("Over Dm7 · ii7")
