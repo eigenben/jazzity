@@ -5,7 +5,7 @@ class ProgressionComponent < ActiveRecord::Base
   def to_s
     chord.to_s
   end
-  
+
   def all_chords
     all_chords_in_key(Key.default)
   end
@@ -15,5 +15,4 @@ class ProgressionComponent < ActiveRecord::Base
       [chord.in_key_of((key || Key.default).shifted(index))]
     end
   end
-  
 end

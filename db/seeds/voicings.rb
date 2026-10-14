@@ -20,13 +20,12 @@ VoicingFamily.create!(:name => "Triads", :voicing_tones_count => 3, :rootless =>
     c.voicings.create!(:voicing_family => family, :name => "Doubled Root", :specify_tones => "u m3 b5 u")
   end
 
-  ["Major Triad", "Minor Triad", "Diminished Triad"].map {|n| Chord.find_by_name(n) }.combination(2).each do |pair|
+  ["Major Triad", "Minor Triad", "Diminished Triad"].map { |n| Chord.find_by_name(n) }.combination(2).each do |pair|
     ["Root Inversion", "1st Inversion", "2nd inversion", "Doubled Root"].each do |voicing_name|
       VoiceLeading.define 0, pair[0].voicings.find_by_name(voicing_name), pair[1].voicings.find_by_name(voicing_name)
       VoiceLeading.define 0, pair[1].voicings.find_by_name(voicing_name), pair[0].voicings.find_by_name(voicing_name)
     end
   end
-
 end
 
 
@@ -83,7 +82,7 @@ VoicingFamily.create!(:name => "4-Note Rooted", :voicing_tones_count => 4, :root
     c.voicings.create!(:voicing_family => family, :name => "Rooted IV", :specify_tones => "6 u 3 b5")
   end
 
-  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant b5", "Half Diminished"].map {|n| Chord.find_by_name(n) }.combination(2).each do |pair|
+  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant b5", "Half Diminished"].map { |n| Chord.find_by_name(n) }.combination(2).each do |pair|
     ["Rooted I", "Rooted II"].each do |voicing_name|
       VoiceLeading.define 0, pair[0].voicings.find_by_name(voicing_name), pair[1].voicings.find_by_name(voicing_name)
       VoiceLeading.define 0, pair[1].voicings.find_by_name(voicing_name), pair[0].voicings.find_by_name(voicing_name)
@@ -133,7 +132,7 @@ VoicingFamily.create!(:name => "Guide Tones", :voicing_tones_count => 2, :rootle
     c.voicings.create!(:voicing_family => family, :name => "Guide Tones II", :specify_tones => "m7 3")
   end
 
-  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7"].map {|n| Chord.find_by_name(n) }.combination(2).each do |pair|
+  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7"].map { |n| Chord.find_by_name(n) }.combination(2).each do |pair|
     ["Guide Tones I", "Guide Tones II"].each do |voicing_name|
       VoiceLeading.define 0, pair[0].voicings.find_by_name(voicing_name), pair[1].voicings.find_by_name(voicing_name)
       VoiceLeading.define 0, pair[1].voicings.find_by_name(voicing_name), pair[0].voicings.find_by_name(voicing_name)
@@ -183,7 +182,7 @@ VoicingFamily.create!(:name => "Rooted Guide Tones", :voicing_tones_count => 3, 
     c.voicings.create!(:voicing_family => family, :name => "Rooted Guide Tones II", :specify_tones => "u m7 3")
   end
 
-  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7"].map {|n| Chord.find_by_name(n) }.combination(2).each do |pair|
+  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7"].map { |n| Chord.find_by_name(n) }.combination(2).each do |pair|
     ["Rooted Guide Tones I", "Rooted Guide Tones II"].each do |voicing_name|
       VoiceLeading.define 0, pair[0].voicings.find_by_name(voicing_name), pair[1].voicings.find_by_name(voicing_name)
       VoiceLeading.define 0, pair[1].voicings.find_by_name(voicing_name), pair[0].voicings.find_by_name(voicing_name)
@@ -264,7 +263,7 @@ VoicingFamily.create!(:name => "Rootless 3-Note Shells", :voicing_tones_count =>
     c.voicings.create!(:voicing_family => family, :name => "Shell IV", :specify_tones => "6 3 b5")
   end
 
-  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant 9", "Dominant #9", "Altered", "Dominant b5", "Half Diminished" ].map do |n| 
+  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant 9", "Dominant #9", "Altered", "Dominant b5", "Half Diminished"].map do |n|
     Chord.find_by_name(n)
   end.combination(2).each do |pair|
     ["Shell I", "Shell II"].each do |voicing_name|
@@ -352,7 +351,7 @@ VoicingFamily.create!(:name => "4-Note Rootless (Type I/II)", :voicing_tones_cou
     c.voicings.create!(:voicing_family => family, :name => "Type III", :specify_tones => "6 9 3 b5")
   end
 
-  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant 9", "Dominant #9", "Altered", "Dominant b5", "Half Diminished" ].map do |n| 
+  ["Major 7", "Major 6", "Minor 7", "Minor 6", "Minor b6", "Major-Minor", "Dominant 7", "Dominant 9", "Dominant #9", "Altered", "Dominant b5", "Half Diminished"].map do |n|
     Chord.find_by_name(n)
   end.combination(2).each do |pair|
     ["Type I", "Type II"].each do |voicing_name|
@@ -398,4 +397,3 @@ VoicingFamily.create!(:name => "Upper Structures", :voicing_tones_count => 5, :r
     c.voicings.create!(:voicing_family => family, :name => "Dominant #5 Upper Structure II 1st Inversion", :specify_tones => "b7 3 b3 b6 u")
   end
 end
-

@@ -12,11 +12,11 @@ class NoteSequence
     @value_as_given = value
     @keys = []
     @invalid_keys = []
-  
+
     value = value.split(/ /).map(&:strip) if value.instance_of?(String)
     value.each do |key_name|
       key_object = Key[key_name]
-    
+
       if key_object.nil?
         @invalid_keys << key_name
       else
@@ -49,7 +49,7 @@ class NoteSequence
     keys.map(&:name)
   end
   def staff_notes
-    octavized_notes.map {|n| [n]}
+    octavized_notes.map { |n| [n] }
   end
 
   # TODO: This is duplicated! Bad bad!
@@ -80,7 +80,7 @@ class NoteSequence
         nil
       end
     end
-    
+
     alias_method :[], :resolve
   end
 
@@ -106,8 +106,7 @@ class NoteSequence
 
   def chords_in_key(in_key)
     Chord.all.select do |c|
-      c.tones.map(&:tone).to_set == keys.map {|k| (k.index - (in_key ? in_key.index : 0)) % 12 }.to_set
-    end.map {|c| c.key = in_key; c}
+      c.tones.map(&:tone).to_set == keys.map { |k| (k.index - (in_key ? in_key.index : 0)) % 12 }.to_set
+    end.map { |c| c.key = in_key; c }
   end
-
 end

@@ -1,6 +1,6 @@
 class Voicing < ActiveRecord::Base
   extend FriendlyId
-  
+
   include KeyContext
   include OctaveContext
   include Toneable
@@ -42,6 +42,6 @@ class Voicing < ActiveRecord::Base
   end
 
   def to_json(options = {})
-    super({ methods: [:notes] }.merge(options))
+    super({methods: [:notes]}.merge(options))
   end
 end

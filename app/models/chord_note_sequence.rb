@@ -12,11 +12,11 @@ class ChordNoteSequence
     @key_groups = []
     @note_sequences = []
     @invalid_note_sequences = []
-  
+
     value = value.split(/,/).map(&:strip).reject(&:blank?) if value.instance_of?(String)
     value.each do |key_group|
       note_sequence = NoteSequence[key_group]
-      
+
       if note_sequence.nil?
         @invalid_note_sequences << key_group
       else
@@ -69,7 +69,7 @@ class ChordNoteSequence
         nil
       end
     end
-    
+
     alias_method :[], :resolve
   end
 
@@ -98,5 +98,4 @@ class ChordNoteSequence
   #     c.tones.map(&:tone).to_set == keys.map {|k| (k.index - (in_key ? in_key.index : 0)) % 12 }.to_set
   #   end.map {|c| c.key = in_key; c}
   # end
-
 end

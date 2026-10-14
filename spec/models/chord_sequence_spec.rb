@@ -36,7 +36,7 @@ RSpec.describe ChordSequence, type: :model do
 
   # context "with key context" do
   #   let(:chord) { described_class.new("C7 Bb7").in_key_of("Bb") }
-  #   
+  #
   #   it "should expose #title as key and name" do
   #     chord.title.should == "C7, Cmaj7 in Bb"
   #   end
@@ -45,7 +45,6 @@ RSpec.describe ChordSequence, type: :model do
   # context "with a chord sequence" do
 
   # end
-  # 
+  #
   # it "should expose matching progressions as #progressions"
-
 end

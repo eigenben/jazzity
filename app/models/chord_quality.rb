@@ -19,5 +19,4 @@ class ChordQuality < ActiveRecord::Base
   class << self
     alias_method :[], :resolve
   end
-
 end

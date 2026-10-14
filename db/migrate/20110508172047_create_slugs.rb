@@ -3,7 +3,7 @@ class CreateSlugs < ActiveRecord::Migration
     :chord_qualities, :chords, :forms, :meters, :modes,
     :progression_families, :progressions, :scales, :tunes, :vehicles, :voicings, :voicing_families
   ]
-  
+
   def change
     TABLES.each do |table|
       add_column table, :slug, :string

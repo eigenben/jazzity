@@ -44,5 +44,3 @@ Scale.create!(:name => 'Bebop', :specify_tones => "u 2 3 4 5 6 b7 7", :informati
   s.modes.create!(:mode => 1, :name => 'Dominant Bebop')
   s.modes.create!(:mode => 2, :name => 'Major Bebop')
 end
-
-

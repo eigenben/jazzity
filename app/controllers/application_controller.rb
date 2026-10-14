@@ -25,5 +25,4 @@ class ApplicationController < ActionController::Base
   helper_method :path_to_searchable
   helper_method :path_to_model
   helper_method :text_to_html
-  
 end

@@ -4,7 +4,7 @@ class Scale < ActiveRecord::Base
   include ModeContext
   include Toneable
   include Searchable::Model
-  
+
   has_many :modes, dependent: :destroy
 
   friendly_id :name, use: :slugged
@@ -35,17 +35,17 @@ class Scale < ActiveRecord::Base
   end
 
   def staff_notes
-    octavized_notes.map {|n| [n]}
+    octavized_notes.map { |n| [n] }
   end
 
   def self.resolve(symbol)
     in_key = nil
-  
+
     return nil if symbol.nil?
     symbol = symbol.dup
 
     symbol.gsub!(/ Scale/i, "")
-  
+
     Key.all.each do |k|
       if symbol.starts_with?(k.name)
         in_key = k
@@ -53,18 +53,18 @@ class Scale < ActiveRecord::Base
         break
       end
     end
-  
+
     scale = find_by(name: symbol)
-  
+
     # Perhaps the matched key was really part of the name, try that:
     if scale.nil? && !in_key.nil?
       symbol = in_key.name + symbol
-      scale = all.detect {|s| s.name == symbol}
+      scale = all.detect { |s| s.name == symbol }
     end
-  
+
     # If still not found, must be invalid:
     return nil if scale.nil?
-  
+
     scale.key = in_key
     scale
   end
@@ -84,5 +84,4 @@ class Scale < ActiveRecord::Base
   def to_json
     super(methods: [:notes])
   end
-
 end

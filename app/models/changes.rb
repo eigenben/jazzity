@@ -2,11 +2,11 @@ class Changes
   attr_reader :sections
 
   def initialize(data)
-    @sections = data.map {|s| Changes::Section.new(s) }
+    @sections = data.map { |s| Changes::Section.new(s) }
   end
 
   def bars
-    sections.map(&:expanded).inject([]) do |b,s|
+    sections.map(&:expanded).inject([]) do |b, s|
       b += s.bars
       b
     end
@@ -58,4 +58,3 @@ class Changes
     end
   end
 end
-

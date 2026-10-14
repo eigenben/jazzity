@@ -179,7 +179,6 @@ ChordQuality.create!(:name => 'Dominant', :code => 'DOM').tap do |q|
 
       cc.chord_scales << ChordScale.new(:mode => Scale['Melodic Minor'].modes[3], :offset => -5)
     end
-
   end
 end
 
@@ -209,4 +208,3 @@ ChordQuality.create!(:name => 'Diminished', :code => 'DIM').tap do |q|
     c.chord_scales << ChordScale.new(:mode => Scale['Diminished'].modes[1], :offset => 0)
   end
 end
-

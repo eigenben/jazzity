@@ -12,7 +12,7 @@ module Toneable
   end
 
   def tones
-    @tones ||= tone_values.map {|v| Tone.new(v) }.extend(Tones)
+    @tones ||= tone_values.map { |v| Tone.new(v) }.extend(Tones)
   end
 
   def specify_tones=(values)
@@ -35,5 +35,4 @@ module Toneable
   def staff_notes
     octavized_notes
   end
-
 end

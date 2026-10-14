@@ -18,7 +18,7 @@ class InitialJazzModels < ActiveRecord::Migration
 
     add_index :chords, :chord_quality_id
     add_index :chords, :parent_id
-    
+
     create_table :chord_symbols do |t|
       t.references :chord
       t.string :name
@@ -30,7 +30,7 @@ class InitialJazzModels < ActiveRecord::Migration
 
     add_index :chord_symbols, :chord_id
     add_index :chord_symbols, :name
-    
+
     create_table :scales do |t|
       t.string :name
       t.string :information
@@ -52,7 +52,7 @@ class InitialJazzModels < ActiveRecord::Migration
 
     add_index :modes, :scale_id
     add_index :modes, :mode
-    
+
     create_table :chord_scales do |t|
       t.references :chord
       t.references :mode
@@ -71,7 +71,7 @@ class InitialJazzModels < ActiveRecord::Migration
       t.boolean :rootless, :default => false
       t.timestamps
     end
-    
+
     create_table :voicings do |t|
       t.references :voicing_family
       t.references :chord
@@ -89,7 +89,7 @@ class InitialJazzModels < ActiveRecord::Migration
 
     add_index :voicings, :voicing_family_id
     add_index :voicings, :chord_id
-    
+
     create_table :voice_leadings do |t|
       t.integer :from_voicing_id
       t.integer :to_voicing_id
@@ -136,7 +136,7 @@ class InitialJazzModels < ActiveRecord::Migration
     add_index :tunes, :secondary_key_name
     add_index :tunes, :form_id
     add_index :tunes, :aebersold_playalong_number
-    
+
     create_table :tune_progressions do |t|
       t.references :tune
       t.references :progression
@@ -145,18 +145,18 @@ class InitialJazzModels < ActiveRecord::Migration
       t.integer :end_measure
       t.timestamps
     end
-    
+
     add_index :tune_progressions, :tune_id
     add_index :tune_progressions, :progression_id
-    
+
     create_table :vehicles do |t|
       t.string :name
       t.integer :parent_id
       t.timestamps
     end
-    
+
     add_index :vehicles, :parent_id
-    
+
     create_table :meters do |t|
       t.string :name
       t.integer :beats
@@ -186,7 +186,7 @@ class InitialJazzModels < ActiveRecord::Migration
 
     add_index :progressions, :meter_id
     add_index :progressions, :progression_family_id
-    
+
     create_table :progression_components do |t|
       t.integer :progression_id
       t.integer :position
