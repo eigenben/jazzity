@@ -18,7 +18,7 @@ class ProgressionComponent < ActiveRecord::Base
 
   # The root of this component's chord when the progression is in `key`.
   def root_in(key)
-    (key || Key.default).shifted(index, degree - 1)
+    (key || Key.default).degree_root(index, degree - 1)
   end
 
   # The key a progression is in when this component's chord has `root`.
