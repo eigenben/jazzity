@@ -215,6 +215,7 @@ export default class extends Controller {
 
   staveFor(clef, x, y, first) {
     const stave = new Stave(x, y, 500)
+    stave.setDefaultLedgerLineStyle({ strokeStyle: "currentColor", lineWidth: 1.6 }) // VexFlow's grey vanishes in dark mode
     return first ? stave.addClef(clef) : stave.setBegBarType(BarlineType.NONE)
   }
 
