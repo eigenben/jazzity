@@ -8,7 +8,7 @@ module ApplicationHelper
   end
 
   def link_to_search_example(name)
-    link_to name, search_path(u(name))
+    link_to name, search_path(name)
   end
 
   def voice_leading_options_for_select(chord, position)
