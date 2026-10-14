@@ -87,10 +87,14 @@ export default class extends Controller {
 
   async play(mode) {
     this.stop()
+    const attempt = (this.attempt = {})
+    this.playing = mode
+    this.update()
+
     await start()
+    if (this.attempt !== attempt) return // Stopped, or played again, while audio started.
     claim(this)
 
-    this.playing = mode
     this.sequencer = new Sequencer(this.stepsFor(mode), {
       tempo: () => (mode === "sequence" ? this.tempo : NOTE_TEMPO),
       loop: () => mode === "sequence" && this.loopableValue && this.settings.loop && !this.nextKey,
@@ -103,6 +107,7 @@ export default class extends Controller {
   }
 
   stop() {
+    this.attempt = null
     if (!this.playing) return
 
     this.sequencer?.stop()
