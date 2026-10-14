@@ -147,6 +147,21 @@ class Key
     primaries.flat_map { |key| key.name == "Gb" ? [key, self["F#"]] : [key] }
   end
 
+  # The orders players work through the twelve keys in, by the semitones
+  # from one key to the next.
+  PRACTICE_ORDERS = {"fourths" => 5, "chromatic" => 1, "whole-steps" => 2}.freeze
+
+  # The twelve keys from `from` in a practice order: round the cycle of
+  # fourths (C F Bb Eb...), up by half steps, or up by whole steps (the keys
+  # of one whole-tone scale, then those of the other). Keys are spelled as
+  # in a key signature, flats rather than sharps, keeping `from` as given.
+  def self.practice_order(order = "fourths", from = default)
+    step = PRACTICE_ORDERS.fetch(order)
+    cycles = step.gcd(12)
+    indexes = (0...cycles).flat_map { |offset| (0...12 / cycles).map { |n| (from.index + offset + n * step) % 12 } }
+    indexes.map { |index| index == from.index ? from : from_index(index) }
+  end
+
   # The standard keys plus C#, which players write as often as Db.
   def self.searchable
     standard + [self["C#"]]

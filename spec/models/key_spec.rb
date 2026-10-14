@@ -104,6 +104,21 @@ RSpec.describe Key, type: :model do
     end
   end
 
+  describe ".practice_order" do
+    it "goes round the cycle of fourths, spelled with flats" do
+      expect(described_class.practice_order("fourths").map(&:name)).to eq(%w[C F Bb Eb Ab Db Gb B E A D G])
+    end
+
+    it "goes up chromatically or by whole steps from a key" do
+      expect(described_class.practice_order("chromatic", described_class["Eb"]).map(&:name)).to eq(%w[Eb E F Gb G Ab A Bb B C Db D])
+      expect(described_class.practice_order("whole-steps").map(&:name)).to eq(%w[C D E Gb Ab Bb Db Eb F G A B])
+    end
+
+    it "keeps the key it starts from as it's spelled" do
+      expect(described_class.practice_order("fourths", described_class["F#"]).first(2).map(&:name)).to eq(%w[F# B])
+    end
+  end
+
   describe "hash access" do
     it "should look up by name" do
       expect(described_class["Eb"].long_name).to eq("E Flat")
