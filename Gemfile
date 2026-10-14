@@ -1,46 +1,30 @@
 source "https://rubygems.org"
 
-# Core Gems
-ruby "3.4.4"
+ruby file: ".ruby-version"
 
 gem "rails", "~> 8.0.0"
 gem "sqlite3"
-gem "responders"
 gem "puma"
 gem "bootsnap", require: false
-gem "propshaft"
 
 # Assets / Frontend
+gem "propshaft"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 
-# Views
-
-# Bread & Butter Gems
-gem "acts_as_list"
-gem "acts_as_tree"
-gem "simple_form"
+# Domain
+gem "responders"
 gem "friendly_id"
-gem "awesome_nested_set"
-gem "kaminari", "~> 1.2"
-gem "mini_magick"
+gem "acts_as_tree"
 gem "RedCloth"
 
-group :test do
-  gem "turn", require: false
-  gem "minitest"
-  gem "faker"
-  gem "rspec-rails"
-  gem "database_cleaner"
-  gem "launchy"
-  gem "shoulda-matchers"
-  gem "growl"
-  gem "capybara"
-end
-
 group :development, :test do
+  gem "rspec-rails"
   gem "factory_bot_rails"
 end
 
-gem "rspec", "~> 3.13"
+group :test do
+  gem "capybara"
+  gem "shoulda-matchers"
+end
