@@ -17,6 +17,18 @@
   --brass: #d9a441;
   --brass-ink: #8a6216;
 
+  /* The piano keyboard: the right hand in brass, the left in blue, and the
+     note sounding now picked out. */
+  --key-white: #ffffff;
+  --key-black: #1b2233;
+  --key-edge: #8792a5;
+  --key-label: #8792a5;
+  --hand-right: #d9a441;
+  --hand-left: #7c9fe0;
+  --hand-ink: #131a2a;
+  --key-sounding: #d9512c;
+  --key-sounding-ink: #ffffff;
+
   --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
   --font-body: "Instrument Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -37,6 +49,14 @@
     --rule: #26314a;
     --midnight: #08183a;
     --brass-ink: #e3b158;
+
+    --key-white: #d5dbe5;
+    --key-black: #05080f;
+    --key-edge: #0c1220;
+    --key-label: #5b6577;
+    --hand-left: #8fb0f0;
+    --key-sounding: #ff8a65;
+    --key-sounding-ink: #131a2a;
   }
 }
 
@@ -567,8 +587,10 @@ a:hover {
 }
 
 .staff + .facts,
+.keyboard + .facts,
 .facts + .prose,
-.staff + .prose {
+.staff + .prose,
+.keyboard + .prose {
   margin-top: 1.25rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--rule);
@@ -1053,6 +1075,60 @@ a:hover {
 .spelled-chords .notes {
   min-width: 8rem;
   color: var(--muted);
+}
+
+/* Piano keyboard */
+
+.keyboard {
+  display: block;
+  width: min(100%, calc(var(--keyboard-keys) * 1.4rem));
+  height: auto;
+  margin-top: 1rem;
+}
+
+.keyboard rect {
+  stroke: var(--key-edge);
+  stroke-width: 0.6;
+}
+
+.keyboard-white rect {
+  fill: var(--key-white);
+}
+
+.keyboard-black rect {
+  fill: var(--key-black);
+}
+
+.keyboard text {
+  font: 600 5.5px var(--font-body);
+  text-anchor: middle;
+  fill: var(--hand-ink);
+}
+
+.keyboard-black text {
+  font-size: 4.2px;
+}
+
+.keyboard .keyboard-octave {
+  font-weight: 400;
+  font-size: 4.4px;
+  fill: var(--key-label);
+}
+
+.keyboard .is-right rect {
+  fill: var(--hand-right);
+}
+
+.keyboard .is-left rect {
+  fill: var(--hand-left);
+}
+
+.keyboard .is-sounding rect {
+  fill: var(--key-sounding);
+}
+
+.keyboard .is-sounding text {
+  fill: var(--key-sounding-ink);
 }
 
 /* Home */
