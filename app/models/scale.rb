@@ -8,6 +8,7 @@ class Scale < ActiveRecord::Base
   has_many :modes, dependent: :destroy
 
   friendly_id :name, use: :slugged
+  include MusicalSlugs
 
   delegate :chords, to: :main_mode
 

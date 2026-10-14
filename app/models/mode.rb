@@ -9,6 +9,7 @@ class Mode < ActiveRecord::Base
   has_many :chords, through: :chord_scales, extend: Chords
 
   friendly_id :name, use: :slugged
+  include MusicalSlugs
 
   delegate :notes, to: :tones
   delegate :octavized_notes, to: :tones
