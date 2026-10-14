@@ -135,9 +135,23 @@ ProgressionFamily.create!(:name => "Blues").tap do |family|
   end
 end
 
-ProgressionFamily.create(:name => "Rhythm Changes").tap do |family|
-  family.progressions.create!(:name => "Original Rhythm Changes", :seeding => true, :bars => 32, :full_tune => true, :form => Form['A-A-B-A'],
-    :summary => "The second most commonly-played progression in Jazz, this A-A-B-A progression borrows from the famous tune, I've Got Rhythm.",
+ProgressionFamily.create!(:name => "Rhythm Changes").tap do |family|
+  family.progressions.create!(:name => "Original Rhythm Changes", :seeding => true, :bars => 32, :positions_per_bar => 2, :full_tune => true, :meter => Meter["4/4"], :form => Form['A-A-B-A'],
+    :summary => "The 32-bar A-A-B-A form of Gershwin's “I Got Rhythm”, the second most commonly played progression in jazz: I-vi-ii-V turnarounds in the A sections and a bridge of dominant 7ths around the cycle of fifths (III7, VI7, II7, V7).",
     :information => ""
-  )
+  ).tap do |p|
+    # Each bar is a list of [semitones above the key, chord symbol] pairs, with
+    # optionally the scale degree its root is spelled from.
+    a_section = [
+      [[0, "6"], [9, "min7"]], [[2, "min7"], [7, "7"]], [[0, "6"], [9, "min7"]], [[2, "min7"], [7, "7"]],
+      [[0, "6"], [0, "7"]], [[5, "6"], [6, "dim7", 4]], [[0, "6"], [7, "7"]], [[0, "6"]]
+    ]
+    bridge = [[[4, "7"]], [[4, "7"]], [[9, "7"]], [[9, "7"]], [[2, "7"]], [[2, "7"]], [[7, "7"]], [[7, "7"]]]
+
+    (a_section + a_section + bridge + a_section).each_with_index do |bar, i|
+      bar.each_with_index do |(index, symbol, degree), beat|
+        p.components.create!(:position => i * p.positions_per_bar + beat + 1, :index => index, :degree => degree, :chord => Chord[symbol])
+      end
+    end
+  end
 end
