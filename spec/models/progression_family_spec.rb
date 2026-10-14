@@ -5,4 +5,3 @@ RSpec.describe ProgressionFamily, type: :model do
     it { should have_many(:progressions) }
   end
 end
-

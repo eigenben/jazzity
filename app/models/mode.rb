@@ -62,15 +62,15 @@ class Mode < ActiveRecord::Base
   end
 
   def staff_notes
-    octavized_notes.map {|n| [n]}
+    octavized_notes.map { |n| [n] }
   end
 
   def self.resolve(symbol)
     in_key = nil
-  
+
     return nil if symbol.nil?
     symbol = symbol.dup
-  
+
     Key.all.each do |k|
       if symbol.starts_with?(k.name)
         in_key = k
@@ -78,18 +78,18 @@ class Mode < ActiveRecord::Base
         break
       end
     end
-  
+
     mode = find_by(name: symbol)
-  
+
     # Perhaps the matched key was really part of the name, try that:
     if mode.nil? && !in_key.nil?
       symbol = in_key.name + symbol
-      mode = all.detect {|s| s.name == symbol}
+      mode = all.detect { |s| s.name == symbol }
     end
-  
+
     # If still not found, must be invalid:
     return nil if mode.nil?
-  
+
     mode.key = in_key
     mode
   end
@@ -97,5 +97,4 @@ class Mode < ActiveRecord::Base
   class << self
     alias_method :[], :resolve
   end
-
 end

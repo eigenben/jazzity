@@ -2,8 +2,8 @@ class VoiceLeading < ActiveRecord::Base
   belongs_to :from_voicing, class_name: "Voicing"
   belongs_to :to_voicing, class_name: "Voicing"
 
-  scope :from_chord, ->(c) { joins("INNER JOIN voicings AS from_voicings ON from_voicings.id = voice_leadings.from_voicing_id").where(from_voicings: { chord_id: c.id }) }
-  scope :to_chord, ->(c) { joins("INNER JOIN voicings AS to_voicings ON to_voicings.id = voice_leadings.to_voicing_id").where(to_voicings: { chord_id: c.id }) }
+  scope :from_chord, ->(c) { joins("INNER JOIN voicings AS from_voicings ON from_voicings.id = voice_leadings.from_voicing_id").where(from_voicings: {chord_id: c.id}) }
+  scope :to_chord, ->(c) { joins("INNER JOIN voicings AS to_voicings ON to_voicings.id = voice_leadings.to_voicing_id").where(to_voicings: {chord_id: c.id}) }
 
   def self.define_all(leadings)
     leadings.each do |leading|
@@ -49,5 +49,4 @@ class VoiceLeading < ActiveRecord::Base
       previous_voicing.voice_leadings_from.where(offset: offset).to_chord(chord)
     end
   end
-
 end

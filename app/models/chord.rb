@@ -7,7 +7,7 @@ class Chord < ActiveRecord::Base
   acts_as_tree optional: true
   friendly_id :name, use: :slugged
   include MusicalSlugs
-  
+
   belongs_to :chord_quality
 
   has_many :symbols, class_name: "ChordSymbol"
@@ -54,7 +54,7 @@ class Chord < ActiveRecord::Base
   end
 
   def symbol_names
-    symbols.map {|s| key.to_s + s.name }
+    symbols.map { |s| key.to_s + s.name }
   end
   def main_symbol_name
     symbol_names.first
@@ -64,16 +64,16 @@ class Chord < ActiveRecord::Base
   end
 
   # Resolves a chord symbol into a chord.
-  # Implementation is somewhat flakey due to the potential ambiguities arising 
+  # Implementation is somewhat flakey due to the potential ambiguities arising
   # from specifying key and symbols together.
   def self.resolve(symbol)
     in_key = nil
-  
+
     return nil if symbol.nil?
     symbol = symbol.dup
-  
+
     symbol.gsub!(/ Chord/i, "")
-  
+
     Key.all.each do |k|
       if symbol.starts_with?(k.name)
         in_key = k
@@ -81,18 +81,18 @@ class Chord < ActiveRecord::Base
         break
       end
     end
-  
+
     chord_symbol = ChordSymbol[symbol]
-  
+
     # Perhaps the matched key was really part of the name of the chord, try that:
     if chord_symbol.nil? && !in_key.nil?
       symbol = in_key.name + symbol
       chord_symbol = ChordSymbol[symbol]
     end
-  
+
     # If still not found, must be invalid:
     return nil if chord_symbol.nil?
-  
+
     chord = chord_symbol.chord
     chord.key = in_key unless in_key.nil?
     chord
@@ -103,6 +103,6 @@ class Chord < ActiveRecord::Base
   end
 
   def to_json(options = {})
-    super({ methods: [:notes] }.merge(options))
+    super({methods: [:notes]}.merge(options))
   end
 end

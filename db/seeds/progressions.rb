@@ -136,9 +136,8 @@ ProgressionFamily.create!(:name => "Blues").tap do |family|
 end
 
 ProgressionFamily.create(:name => "Rhythm Changes").tap do |family|
-  family.progressions.create!(:name => "Original Rhythm Changes", :seeding => true, :bars => 32, :full_tune => true, :form => Form['A-A-B-A'], 
+  family.progressions.create!(:name => "Original Rhythm Changes", :seeding => true, :bars => 32, :full_tune => true, :form => Form['A-A-B-A'],
     :summary => "The second most commonly-played progression in Jazz, this A-A-B-A progression borrows from the famous tune, I've Got Rhythm.",
     :information => ""
   )
-
 end

@@ -6,18 +6,18 @@ class ChordSequence
   attr_accessor :chords
   attr_accessor :chord_names
   attr_accessor :invalid_chords
-  
+
 
   def initialize(value = [])
     @value_as_given = value
     @chords = []
     @chord_names = []
     @invalid_chords = []
-  
+
     value = value.split(/,| /).map(&:strip).reject(&:blank?) if value.instance_of?(String)
     value.each do |chord_name|
       chord_object = chord_name.is_a?(Chord) ? chord_name : Chord[chord_name]
-    
+
       if chord_object.nil?
         @invalid_chords << chord_name
       else
@@ -85,7 +85,7 @@ class ChordSequence
         nil
       end
     end
-    
+
     alias_method :[], :resolve
   end
 
@@ -97,7 +97,7 @@ class ChordSequence
   def progressions
     Progression.all.select do |progression|
       i = 0
-      chords.all? do |chord| 
+      chords.all? do |chord|
         component = progression.components[i]; i += 1
         component.try(:chord) == chord
       end and chord_key_offsets == progression.component_index_offsets
@@ -105,5 +105,4 @@ class ChordSequence
       progression.in_key_of chords.first.key.shifted(-1 * progression.components.first.index)
     end
   end
-
 end

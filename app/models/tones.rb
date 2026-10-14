@@ -1,6 +1,5 @@
 module Tones
-
-  # Takes manually specified key context for this collection or 
+  # Takes manually specified key context for this collection or
   # delegates to th association owner.
   def key
     @key || (proxy_owner.key if defined?(proxy_owner) and proxy_owner.respond_to?(:key))
@@ -14,14 +13,14 @@ module Tones
 
   # Shifts indexes to simulate a key change
   def in_key_context!
-    self.each do |tone| 
+    self.each do |tone|
       tone.tone = (tone.tone + key.index) % 12
       tone.letter_index = (tone.letter_index + key.letter_index) % 7
     end
     true
   end
 
-  # Takes manually specified mode context for this collection or 
+  # Takes manually specified mode context for this collection or
   # delegates to the association owner.
   def mode
     @mode || (proxy_owner.mode if defined?(proxy_owner) and proxy_owner.respond_to?(:mode))
@@ -35,7 +34,7 @@ module Tones
 
   # Shifts mode positions to place tone sequence in mode context
   def in_mode_context!
-    self.each {|tone| tone.position = (tone.position - mode) % self.count + 1}
+    self.each { |tone| tone.position = (tone.position - mode) % self.count + 1 }
     true
   end
 
@@ -46,8 +45,8 @@ module Tones
     self.sort_by(&:position)
   end
 
-  # Does the magic in determining the actual note from the tones 
-  # with tone and letter indexes. 
+  # Does the magic in determining the actual note from the tones
+  # with tone and letter indexes.
   def keys
     return @keys if defined?(@keys)
 
@@ -81,15 +80,14 @@ module Tones
     previous = 0
     keys.map(&:index).map do |index|
       (index - previous).tap { previous = index }
-    end[1..-1].map {|i| i % 12 }
+    end[1..-1].map { |i| i % 12 }
   end
 
   def step_names
-    intervals.map {|step| Key::Steps.invert[step] }
+    intervals.map { |step| Key::Steps.invert[step] }
   end
 
   def interval_names
-    intervals.map {|step| Key::Intervals.invert[step] }
+    intervals.map { |step| Key::Intervals.invert[step] }
   end
-
 end

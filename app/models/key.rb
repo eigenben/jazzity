@@ -3,8 +3,8 @@ class Key
 
   attr_reader :name, :long_name, :index, :letter_index, :cycle_index, :primary
 
-  Letters = { 'C' => 0, 'D' => 1, 'E' => 2, 'F' => 3, 'G' => 4, 'A' => 5, 'B' => 6 }
-  Steps = { 'H' => 1, 'W' => 2, 'm3' => 3, 'M3' => 4, '4' => 5, '#4' => 6, '5' => 7 }
+  Letters = {'C' => 0, 'D' => 1, 'E' => 2, 'F' => 3, 'G' => 4, 'A' => 5, 'B' => 6}
+  Steps = {'H' => 1, 'W' => 2, 'm3' => 3, 'M3' => 4, '4' => 5, '#4' => 6, '5' => 7}
 
   Intervals = {
     'u' => 0, 'unison' => 0, '0' => 0,

@@ -21,4 +21,3 @@ RSpec.describe Searchable, type: :model do
     end
   end
 end
-

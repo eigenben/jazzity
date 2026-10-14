@@ -1,6 +1,6 @@
 class Meter < ActiveRecord::Base
   extend FriendlyId
-  
+
   friendly_id :name, use: :slugged
 
   validates :name, presence: true
@@ -10,7 +10,7 @@ class Meter < ActiveRecord::Base
   def to_s
     name
   end
-  
+
   def self.resolve(name)
     find_by(name: name)
   end
@@ -18,5 +18,4 @@ class Meter < ActiveRecord::Base
   class << self
     alias_method :[], :resolve
   end
-
 end
