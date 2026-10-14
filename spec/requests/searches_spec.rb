@@ -69,9 +69,9 @@ RSpec.describe "Searching", type: :request do
     expect(flash[:notice]).to eq("Showing results for “dorian”.")
   end
 
-  it "suggests names as JSON while typing" do
+  it "suggests labelled names with their pages as JSON while typing" do
     get autocomplete_searches_path(format: :json), params: {q: "dor"}
-    expect(response.parsed_body).to include("D Dorian")
+    expect(response.parsed_body).to include({"label" => "D Dorian", "detail" => "scale", "url" => "/scales/major/modes/dorian"})
     expect(response.parsed_body.size).to be <= 8
   end
 end

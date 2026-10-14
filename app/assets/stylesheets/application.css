@@ -222,6 +222,51 @@ a:hover {
   border-color: transparent;
 }
 
+/* Suggestions open under the field, over whatever follows it. */
+.search-combobox {
+  position: relative;
+}
+
+.search-suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  max-height: min(24rem, 60vh);
+  overflow-y: auto;
+  padding: 0.3rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.2);
+}
+
+.search-suggestions[hidden] {
+  display: none;
+}
+
+.search-suggestion {
+  padding: 0.5rem 0.65rem;
+  border-radius: calc(var(--radius) - 2px);
+  cursor: pointer;
+}
+
+.search-suggestion[aria-selected="true"] {
+  background: var(--paper);
+  box-shadow: inset 3px 0 0 var(--brass);
+}
+
+.search-suggestion-label {
+  font: 500 0.95rem/1.3 var(--font-mono);
+}
+
+.search-suggestion-detail {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* Search results and the page for nothing found */
 
 .section-count {

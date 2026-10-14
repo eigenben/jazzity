@@ -5,12 +5,14 @@
 class SearchEntry
   KINDS = {:chord => "Chords", :scale => "Scales & modes", :progression => "Progressions"}.freeze
 
-  attr_reader :model, :kind, :names
+  attr_reader :model, :kind, :names, :symbols
 
-  def initialize(model, kind, names)
+  # `symbols` are a chord's symbols as written, where case matters (m7, M7).
+  def initialize(model, kind, names, symbols: [])
     @model = model
     @kind = kind
     @names = names.map { |name| self.class.normalize(name) }.reject(&:empty?).uniq
+    @symbols = symbols.reject(&:empty?).uniq
   end
 
   def self.all
@@ -20,7 +22,8 @@ class SearchEntry
   def self.chords
     Chord.includes(:primary_symbol, :chord_quality).map do |chord|
       symbol = chord.primary_symbol.to_s
-      new(chord, :chord, [chord.name, symbol, symbol.sub(/\Amaj\z/, "").sub(/\Amin/, "m")])
+      symbols = [symbol, symbol.sub(/\Amaj\z/, "").sub(/\Amin/, "m")]
+      new(chord, :chord, [chord.name] + symbols, symbols: symbols)
     end
   end
 

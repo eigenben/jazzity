@@ -135,17 +135,27 @@ class Search
     parsed = parse(query)
     found = [(Result.new(parsed, nil, 1000) if parsed)].compact
 
-    readings = KeyedQuery.parse(query).map { |reading| [reading.text, reading.key] }
-    if (match = ChordName::ROOT.match(query)) && query.length > match[0].length && !query[match[0].length].match?(/\s/)
-      root = Key.parse(match[0])
-      readings << [query[match[0].length..], root] if root
-    end
-    found += readings.flat_map { |text, key| matches(text, key) }.select(&:strong?)
+    named = KeyedQuery.parse(query).flat_map { |reading| matches(reading.text, reading.key) }.select(&:strong?) + symbols_after_root
+    found += named.sort_by { |result| [-result.score, result.label.length] }.uniq { |result| [result.entry.model.class, result.entry.model.id] }
 
     found.uniq(&:label).first(limit)
   end
 
   private
+
+  # Chords whose symbol starts with what follows a root typed without a
+  # space, as in "Ebma".
+  def symbols_after_root
+    match = ChordName::ROOT.match(query)
+    return [] if match.nil? || query.length == match[0].length || query[match[0].length].match?(/\s/)
+
+    root = Key.parse(match[0]) or return []
+    rest = query[match[0].length..]
+
+    entries.select { |entry| entry.symbols.any? { |symbol| symbol.start_with?(rest) } }.map do |entry|
+      Result.new(entry.target(root), entry, 90)
+    end.select { |result| result.label.start_with?(query) }
+  end
 
   def parse(text)
     return if text.blank?
@@ -228,7 +238,8 @@ class Search
   end
 
   # 100 for the whole name, 90 for its start, 80 when each word starts a
-  # word of the name, 70 when the name contains the query; then up to 40 when
+  # word of the name, 70 when the name contains a query of four letters or
+  # more; then up to 40 when
   # each word is within a typo or two of a word of the name.
   def score(name, words)
     text = words.join(" ")
@@ -237,7 +248,7 @@ class Search
 
     name_words = name.split
     return 80 if words.all? { |word| name_words.any? { |name_word| name_word.start_with?(word) } }
-    return 70 if name.include?(text)
+    return 70 if text.length > 3 && name.include?(text)
 
     distances = words.map do |word|
       next 0 if name_words.include?(word)

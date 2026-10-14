@@ -29,7 +29,7 @@ class SearchesController < ApplicationController
   end
 
   def autocomplete
-    render json: Search.new(params[:q].to_s).suggestions.map(&:label)
+    render json: describe(Search.new(params[:q].to_s).suggestions)
   end
 
   protected
