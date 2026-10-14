@@ -36,6 +36,9 @@ const DURATIONS = { 1: "q", 2: "h", 3: "hd", 4: "w" }
 // give their beats), and long runs of bars wrap onto several lines, as many
 // to the line as fit the container. The drawing is cropped to what was
 // actually engraved (brace, ledger lines and all) and scales down to fit.
+//
+// `highlight(index)` marks a chord (its notes on every staff and its
+// symbol) as the one sounding, say for a player; `highlight(null)` clears it.
 export default class extends Controller {
   static values = {
     chords: Array,
@@ -68,6 +71,7 @@ export default class extends Controller {
 
   render() {
     this.element.replaceChildren()
+    this.marks = new Map()
     if (this.chordsValue.length === 0) return
 
     const chords = this.chordsValue.map((chord) => this.normalize(chord))
@@ -96,6 +100,20 @@ export default class extends Controller {
     this.stack(this.element.querySelector("svg"), groups)
     this.renderedBarsPerLine = this.barsPerLine
     this.rendered = true
+    this.highlight(this.highlighted ?? null)
+  }
+
+  highlight(index) {
+    this.highlighted = index
+    this.element.querySelectorAll(".is-current").forEach((element) => element.classList.remove("is-current"))
+    this.marks?.get(index)?.forEach((element) => element.classList.add("is-current"))
+  }
+
+  // Remembers an engraved element as part of the chord at `index`.
+  mark(index, element) {
+    if (!element) return
+    if (!this.marks.has(index)) this.marks.set(index, [])
+    this.marks.get(index).push(element)
   }
 
   // A chord as {treble, bass, symbol, beats}.
@@ -119,19 +137,19 @@ export default class extends Controller {
   // Splits the chords into bars, restriking a chord that runs over a barline.
   // Without barlines, everything is one bar of whole notes.
   measuresFor(chords) {
-    if (!this.barlinesValue) return [chords.map((chord) => ({ ...chord, duration: "w" }))]
+    if (!this.barlinesValue) return [chords.map((chord, index) => ({ ...chord, index, duration: "w" }))]
 
     const perBar = this.beatsPerBarValue
     const measures = [[]]
     let filled = 0
 
-    chords.forEach((chord) => {
+    chords.forEach((chord, index) => {
       let remaining = chord.beats || perBar
       let symbol = chord.symbol
 
       while (remaining > 0) {
         const beats = Math.min(remaining, perBar - filled)
-        measures[measures.length - 1].push({ ...chord, symbol, duration: DURATIONS[beats] || "w" })
+        measures[measures.length - 1].push({ ...chord, index, symbol, duration: DURATIONS[beats] || "w" })
         remaining -= beats
         filled += beats
         symbol = null
@@ -244,6 +262,9 @@ export default class extends Controller {
 
       measure.formatter.format(measure.voices, noteWidth - NOTE_END_GAP)
       measure.voices.forEach((voice, s) => voice.draw(context, staves[s]))
+      measure.voices.forEach((voice) => voice.getTickables().forEach((note, n) => {
+        if (note instanceof StaveNote) this.mark(measure.chords[n].index, note.getSVGElement())
+      }))
 
       if (staves.length > 1) {
         const types = [final ? "boldDoubleRight" : "singleRight"]
@@ -253,7 +274,7 @@ export default class extends Controller {
 
       const notes = measure.voices[0].getTickables()
       measure.symbols.forEach((symbol, n) => {
-        if (symbol) symbols.push({ symbol, x: notes[n].getAbsoluteX() - 2 })
+        if (symbol) symbols.push({ symbol, x: notes[n].getAbsoluteX() - 2, index: measure.chords[n].index })
       })
       symbolY = Math.min(symbolY, staves[0].getYForLine(-1.5), ...notes.map((note) => topOf(note) - SYMBOL_GAP))
 
@@ -261,7 +282,12 @@ export default class extends Controller {
     })
 
     context.save()
-    symbols.forEach(({ symbol, x }) => drawSymbol(context, symbol, x, symbolY))
+    symbols.forEach(({ symbol, x, index }) => {
+      const group = context.openGroup("chord-symbol")
+      drawSymbol(context, symbol, x, symbolY)
+      context.closeGroup()
+      this.mark(index, group)
+    })
     context.restore()
   }
 

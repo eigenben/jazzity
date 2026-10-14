@@ -11,7 +11,7 @@ module StaffHelper
       :staff_barlines_value => barlines,
       :staff_beats_per_bar_value => beats_per_bar,
       :staff_full_grand_value => full_grand
-    }.compact, **options)
+    }.compact.merge(options.delete(:data) || {}), **options)
   end
 
   # Voiced chords on a grand staff with their symbols, in bars of
