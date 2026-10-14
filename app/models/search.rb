@@ -4,14 +4,22 @@ class Search
   end
 
   def all
-    returned = results(@query).flatten.compact
+    results(@query).flatten.compact
   end
 
+  # Names of searchables matching the query, shortest (most general) first.
+  def suggestions(limit = 8)
+    matching(@query).reorder(Arel.sql("length(name)")).limit(limit).pluck(:name).uniq
+  end
 
   protected
 
   def results(query)
-    Searchable.where("name LIKE ?", "%#{query}%").all + sequence_results(query)
+    matching(query).to_a + sequence_results(query)
+  end
+
+  def matching(query)
+    Searchable.where("name LIKE ?", "%#{Searchable.sanitize_sql_like(query)}%")
   end
 
   def sequence_results(query)
