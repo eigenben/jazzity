@@ -1,8 +1,6 @@
-<%= render "chords/index" %>
-
 <article id="chord">
-  <%= render "chords/key_selector" %>
   <%= render "chords/header" %>
+  <%= render "chords/key_selector" %>
 
   <% if @voicings.present? %>
     <nav class="related-voicings">
