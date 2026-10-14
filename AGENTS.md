@@ -40,7 +40,6 @@ The seed data is loaded before the suite runs (`spec/support/seeds.rb`), so spec
 ```ruby
 class Model < ActiveRecord::Base
   extend FriendlyId
-  include Searchable::Model
   include KeyContext
 
   friendly_id :name, use: :slugged

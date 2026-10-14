@@ -11,7 +11,7 @@ A jazz theory reference that works in every key. Look up a chord, scale or progr
 - **Chords**: every chord quality in all twelve keys, with its intervals, alternate symbols, the scales that fit it, and common voicings on a grand staff.
 - **Scales and modes**: parent scales (major, melodic minor, diminished, bebop…) and the modes built on each degree.
 - **Progressions**: ii-V-Is, blues forms and rhythm changes, voiced so each chord moves smoothly to the next, with the chord symbols over a grand staff. Pick a voicing family (rootless, shells, guide tones or rooted), or a specific voicing for any chord.
-- **Search that understands notation**: `Ebmaj7`, `C7alt`, `Eb Lydian Augmented`, `Dm7 G7 Cmaj7` or `D F A C, G B D F` all resolve to the right thing.
+- **Search that understands notation**: chord symbols however they're written (`Bb-7`, `Cø7`, `C^7`, `C7(b9)`), scales and modes with their key either side (`dorian D`, `f# melodic minor`), roman numerals (`ii V I in Eb`, `iiø V i`, `251`), chord changes (`Dm7 | G7 | Cmaj7`) and notes (`D F A C, G B D F`) all go straight to the right page. Anything else is matched by name, typos and all, with suggestions as you type.
 
 | Eb major 7 in context | A ii-V-I in F, voice-led (dark mode) |
 | --- | --- |
@@ -24,7 +24,9 @@ The theory lives in plain Ruby domain objects in `app/models`, rather than in lo
 - **`Key`** models the 12 pitch classes and their enharmonic spellings. Each key has a chromatic index and a letter index, so transposing Eb up a major third gives G rather than F##. Progressions store each chord's scale degree as well as its distance in semitones from the key, so a ii-V-I in E reads F#m7 B7 Emaj7 rather than Gbm7 B7 Emaj7.
 - **`Tones`** is an immutable collection of chord or scale degrees stored relative to C. `in_key_of` and `in_mode` return new collections, so one chord record can be shown in any key, and a scale can be rotated into any of its modes.
 - **`Chord`**, **`Scale`**, **`Mode`** and **`Voicing`** are Active Record models that share that tone math through the `Toneable` and `KeyContext` concerns.
-- **`NoteSequence`**, **`ChordSequence`** and **`ChordNoteSequence`** parse free-form input ("C E G", "Dm7 G7 Cmaj7") and work out which chords, scales and progressions it matches.
+- **`ChordName`**, **`ScaleName`** and **`RomanNumerals`** parse what a musician types: a chord symbol in any of its usual spellings, a scale or mode with its key, or a progression in roman numerals that can be realized in any key.
+- **`NoteSequence`**, **`ChordSequence`** and **`ChordNoteSequence`** parse free-form input ("C E G", "Dm7 G7 Cmaj7") and work out which chords, scales and progressions it matches, and move it into any key.
+- **`Search`** tries those parsers first and goes straight to what the query names; otherwise it matches the names of chords, scales and progressions, allowing for typos.
 - **`VoiceLeader`** voices a whole progression from one voicing family. For each chord it tries every voicing in the family at every octave that fits a comfortable register (rootless voicings in the right hand over the root, rooted ones in the left hand above the lower interval limits), then picks the sequence that moves the voices least, so common tones are held and the top voice moves by step.
 
 All content is seed data in `db/seeds`. Staff notation is drawn in the browser by a small Stimulus controller using [VexFlow](https://github.com/vexflow/vexflow).
