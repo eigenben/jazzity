@@ -23,7 +23,6 @@ ActiveRecord::Base.transaction do
     scales
     voicing_families
     voicings
-    voice_leadings
     searchables
   ].each do |table|
     ActiveRecord::Base.connection.execute "DELETE FROM #{table}"

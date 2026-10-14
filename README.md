@@ -10,7 +10,7 @@ A jazz theory reference that works in every key. Look up a chord, scale or progr
 
 - **Chords**: every chord quality in all twelve keys, with its intervals, alternate symbols, the scales that fit it, and common voicings on a grand staff.
 - **Scales and modes**: parent scales (major, melodic minor, diminished, bebop…) and the modes built on each degree.
-- **Progressions**: ii-V-Is, blues forms and rhythm changes, voiced so each chord moves smoothly to the next. You can pick a specific voicing for any chord.
+- **Progressions**: ii-V-Is, blues forms and rhythm changes, voiced so each chord moves smoothly to the next, with the chord symbols over a grand staff. Pick a voicing family (rootless, shells, guide tones or rooted), or a specific voicing for any chord.
 - **Search that understands notation**: `Ebmaj7`, `C7alt`, `Eb Lydian Augmented`, `Dm7 G7 Cmaj7` or `D F A C, G B D F` all resolve to the right thing.
 
 | Eb major 7 in context | A ii-V-I in F, voice-led (dark mode) |
@@ -25,7 +25,7 @@ The theory lives in plain Ruby domain objects in `app/models`, rather than in lo
 - **`Tones`** is an immutable collection of chord or scale degrees stored relative to C. `in_key_of` and `in_mode` return new collections, so one chord record can be shown in any key, and a scale can be rotated into any of its modes.
 - **`Chord`**, **`Scale`**, **`Mode`** and **`Voicing`** are Active Record models that share that tone math through the `Toneable` and `KeyContext` concerns.
 - **`NoteSequence`**, **`ChordSequence`** and **`ChordNoteSequence`** parse free-form input ("C E G", "Dm7 G7 Cmaj7") and work out which chords, scales and progressions it matches.
-- **`VoiceLeading`** stores which voicing of one chord moves smoothly to which voicing of the next, at each root movement, and uses that to voice a whole progression.
+- **`VoiceLeader`** voices a whole progression from one voicing family. For each chord it tries every voicing in the family at every octave that fits a comfortable register (rootless voicings in the right hand over the root, rooted ones in the left hand above the lower interval limits), then picks the sequence that moves the voices least, so common tones are held and the top voice moves by step.
 
 All content is seed data in `db/seeds`. Staff notation is drawn in the browser by a small Stimulus controller using [VexFlow](https://github.com/vexflow/vexflow).
 

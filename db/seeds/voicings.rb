@@ -21,31 +21,6 @@ module VoicingSeeds
     end
   end
 
-  # Defines voice leadings between every chord in the family that has all of
-  # the named voicings (including from a chord to itself). A voicing moves to
-  # the voicing of the same name when the root stays put; when the root moves
-  # up a fourth, as in a ii-V-I, the first two voicings swap (so the 3rd of a
-  # ii chord stays put and becomes the 7th of the V).
-  def define_leadings(family, names, fourths: true)
-    voicings = family.voicings.where(:name => names).group_by(&:chord_id).select { |_, vs| vs.size == names.size }
-    voicings = voicings.values.map { |vs| vs.index_by(&:name) }
-
-    voicings.each_with_index do |from, i|
-      voicings.drop(i).each do |to|
-        pairs = from.equal?(to) ? [[from, to]] : [[from, to], [to, from]]
-
-        pairs.each do |a, b|
-          names.each { |name| VoiceLeading.define 0, a[name], b[name] }
-
-          if fourths
-            VoiceLeading.define 5, a[names[0]], b[names[1]]
-            VoiceLeading.define 5, a[names[1]], b[names[0]]
-          end
-        end
-      end
-    end
-  end
-
   # The 3rd and 7th (or 6th) that define each chord's sound, used by the guide
   # tone families.
   GUIDE_TONES = {
@@ -75,8 +50,6 @@ VoicingSeeds.instance_exec do
       inversions = [[root, third, fifth], [third, fifth, root], [fifth, root, third], [root, third, fifth, root]]
       voice(family, chord_name, names.zip(inversions.map { |tones| tones.join(" ") }).to_h)
     end
-
-    define_leadings(family, names, :fourths => false)
   end
 
 
@@ -100,8 +73,6 @@ VoicingSeeds.instance_exec do
 
     # Every inversion of a diminished 7th is another diminished 7th.
     voice(family, "Diminished 7", "Rooted I" => "u b3 b5 bb7", "Rooted II" => "b3 b5 bb7 u", "Rooted III" => "b5 bb7 u b3", "Rooted IV" => "bb7 u b3 b5")
-
-    define_leadings(family, ["Rooted I", "Rooted II"])
   end
 
 
@@ -109,8 +80,6 @@ VoicingSeeds.instance_exec do
     VoicingSeeds::GUIDE_TONES.each do |chord_name, (third, seventh)|
       voice(family, chord_name, "Guide Tones I" => "#{third} #{seventh}", "Guide Tones II" => "#{seventh} #{third}")
     end
-
-    define_leadings(family, ["Guide Tones I", "Guide Tones II"])
   end
 
 
@@ -118,8 +87,6 @@ VoicingSeeds.instance_exec do
     VoicingSeeds::GUIDE_TONES.each do |chord_name, (third, seventh)|
       voice(family, chord_name, "Rooted Guide Tones I" => "u #{third} #{seventh}", "Rooted Guide Tones II" => "u #{seventh} #{third}")
     end
-
-    define_leadings(family, ["Rooted Guide Tones I", "Rooted Guide Tones II"])
   end
 
 
@@ -151,8 +118,6 @@ VoicingSeeds.instance_exec do
     })
 
     voice(family, "Diminished 7", "Shell I" => "b3 b5 bb7", "Shell II" => "bb7 b3 b5", "Shell III" => "b5 bb7 b3")
-
-    define_leadings(family, ["Shell I", "Shell II"])
   end
 
 
@@ -190,8 +155,6 @@ VoicingSeeds.instance_exec do
     })
 
     voice(family, "Diminished 7", "Type I" => "b3 b5 bb7 9", "Type II" => "bb7 9 b3 b5", "Type III" => "b5 bb7 9 b3")
-
-    define_leadings(family, ["Type I", "Type II"])
   end
 
 

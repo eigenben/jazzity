@@ -16,8 +16,6 @@ class Chord < ActiveRecord::Base
   has_many :chord_scales
   has_many :modes, through: :chord_scales
   has_many :voicings
-  has_many :voice_leadings_to, through: :voicings
-  has_many :voice_leadings_from, through: :voicings
 
   validates :name, presence: true
   validates :chord_quality, presence: true
