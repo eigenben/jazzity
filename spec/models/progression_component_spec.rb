@@ -34,6 +34,16 @@ RSpec.describe ProgressionComponent, type: :model do
     end
   end
 
+  describe "#all_chords_in_key" do
+    it "keys a copy of the chord, so preloaded components sharing a chord keep their own roots" do
+      progression = Progression.includes(:components => :chord).find_by!(slug: "basic-blues")
+      chords = progression.in_key_of(Key["F"]).chords
+
+      expect(chords.map(&:lead_sheet_symbol).first(3)).to eq(%w[F7 Bb7 F7])
+      expect(progression.components.first.chord.key).to be_nil
+    end
+  end
+
   describe "#key_from_root" do
     it "finds the key a root belongs to" do
       expect(described_class.new(:index => 2, :degree => 2).key_from_root(Key["F#"]).name).to eq("E")
