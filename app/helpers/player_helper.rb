@@ -14,6 +14,27 @@ module PlayerHelper
     }.merge(values.compact.transform_keys { |name| :"player_#{name}_value" }).compact
   end
 
+  # The player for voiced chords that go on to the next key round the
+  # cycle of fourths after each time through, when asked to: `in_key` gives
+  # the page for a key. A page playing `resume_key` carries on playing when
+  # it's replaced by another with the same key (in another key or voicing).
+  def sequence_player_data(playback, key:, resume_key:, beats_per_bar: 4, &in_key)
+    next_key = Key.practice_order("fourths", key || Key.default).second
+    player_data(:sequence, playback, shortcut: true, beats_per_bar: beats_per_bar, next_key_url: in_key.call(next_key), resume_key: resume_key)
+  end
+
+  def progression_player_data(progression, voiced_chords)
+    sequence_player_data(progression.playback(voiced_chords), key: progression.key, beats_per_bar: progression.beats_per_bar, resume_key: "progression-#{progression.slug}") do |key|
+      polymorphic_path(in_key(key, progression), voicing_params)
+    end
+  end
+
+  def chord_sequence_player_data(sequence, voiced_chords)
+    sequence_player_data(sequence.playback(voiced_chords), key: sequence.home_key, resume_key: "chord-sequence-#{sequence.chords.size}") do |key|
+      polymorphic_path(in_key(key, sequence.in_key_of(key)), voicing_params)
+    end
+  end
+
   # Notes written for the staff ("Eb/4") as Pitches.
   def pitches_of(notes)
     notes.filter_map { |note| Pitch.parse(note) }

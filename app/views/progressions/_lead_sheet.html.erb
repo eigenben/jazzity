@@ -1,4 +1,5 @@
-<%# The chart as a lead sheet: four bars to a line (two on a phone), each chord's symbol in the key over its roman numeral, linked to the chord. %>
+<%# The chart as a lead sheet: four bars to a line (two on a phone), each chord's symbol in the key over its roman numeral, linked to the chord. Each chord (or repeated bar) is a player's cell, listing the positions of the chords it stands for. %>
+<% position = 0 %>
 <div class="lead-sheet<%= " lead-sheet-labelled" if chart.labelled? %>">
   <% chart.sections.each do |section| %>
     <section class="lead-sheet-section" aria-label="<%= lead_sheet_section_label(section) %>">
@@ -10,16 +11,18 @@
           <li class="lead-sheet-bar" value="<%= bar.number %>">
             <span class="visually-hidden">Bar <%= bar.number %>:</span>
             <% if bar.repeat? %>
-              <span class="lead-sheet-repeat" title="Repeat the bar before">
+              <span class="lead-sheet-repeat" title="Repeat the bar before" data-player-target="cell" data-indices="<%= (position...position + bar.size).to_a.join(" ") %>">
                 <span aria-hidden="true">%</span>
                 <span class="visually-hidden">the bar before again, <%= bar.chords.map(&:lead_sheet_symbol).join(" ") %></span>
               </span>
+              <% position += bar.size %>
             <% else %>
               <% bar.numerals.zip(bar.chords).each do |numeral, chord| %>
-                <%= link_to in_key(chord.key, chord), class: "lead-sheet-chord" do %>
+                <%= link_to in_key(chord.key, chord), class: "lead-sheet-chord", data: {player_target: "cell", indices: position} do %>
                   <span class="lead-sheet-symbol"><%= chord_symbol(chord) %></span>
                   <span class="lead-sheet-numeral"><%= roman_numeral(numeral) %></span>
                 <% end %>
+                <% position += 1 %>
               <% end %>
             <% end %>
           </li>

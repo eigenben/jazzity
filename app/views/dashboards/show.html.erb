@@ -11,13 +11,14 @@
   </div>
 
   <% if @featured %>
-    <figure class="hero-figure">
-      <%= voiced_staff(@featured.staff_notes) %>
+    <%= tag.figure class: "hero-figure", data: player_data(:sequence, @featured.playback, loopable: false) do %>
+      <%= voiced_staff(@featured.staff_notes, data: {player_target: "staff"}) %>
       <figcaption>
         <%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I in rootless voicings
         over the root, voice-led so common tones are held.
+        <%= player_button "Hear it", class: "player-button-small" %>
       </figcaption>
-    </figure>
+    <% end %>
   <% end %>
 </section>
 
