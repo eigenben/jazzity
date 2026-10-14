@@ -46,6 +46,28 @@ RSpec.describe PlayerHelper, type: :helper do
     end
   end
 
+  describe "#progression_player_data" do
+    let(:progression) { Progression["Major ii-V-I"].in_key_of(Key["Eb"]) }
+
+    before { allow(helper).to receive(:voicing_params).and_return({}) }
+
+    it "plays the voiced chords for as many beats as they last, with the root in the bass" do
+      chords = chords_in(helper.progression_player_data(progression, progression.voiced_chords))
+
+      expect(chords.map { |chord| chord.values_at("symbol", "beats") }).to eq([["Fm7", 4], ["Bb7", 4], ["Ebmaj7", 4], ["Ebmaj7", 4]])
+      expect(chords.map { |chord| chord["left"].first % 12 }).to eq([5, 10, 3, 3])
+      expect(chords.first["names"].first).to eq("F2")
+    end
+
+    it "goes on to the next key round the cycle of fourths, keeping the voicing family" do
+      allow(helper).to receive(:voicing_params).and_return({:family => "guide-tones"})
+      data = helper.progression_player_data(progression, progression.voiced_chords)
+
+      expect(data[:player_next_key_url_value]).to eq("/keys/Ab/progressions/major-ii-v-i?family=guide-tones")
+      expect(data[:player_resume_key_value]).to eq("progression-major-ii-v-i")
+    end
+  end
+
   describe "#play_button" do
     it "is a toggle button labelled with what it plays" do
       button = Nokogiri::HTML.fragment(helper.play_button("Play Dm7")).at_css("button")

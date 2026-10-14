@@ -4,9 +4,11 @@
 
 <div class="with-dial">
   <div class="main-column">
-    <section class="feature">
-      <%= voiced_staff(@chord_sequence.staff_notes(@voiced_chords), class: "staff-large") %>
-    </section>
+    <%= tag.section class: "feature", data: chord_sequence_player_data(@chord_sequence, @voiced_chords) do %>
+      <%= render "players/transport", next_key: true %>
+      <%= voiced_staff(@chord_sequence.staff_notes(@voiced_chords), class: "staff-large", data: {player_target: "staff"}) %>
+      <%= render "players/keyboard", voiced_chords: @voiced_chords %>
+    <% end %>
 
     <%= render "chord_sequences/analysis", sequence: @chord_sequence %>
 

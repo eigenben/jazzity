@@ -4,12 +4,16 @@
 
 <div class="with-dial">
   <div class="main-column">
-    <section class="feature" aria-label="Chart">
+    <%= tag.section class: "feature", aria: {label: "Chart"}, data: progression_player_data(@progression, @voiced_chords) do %>
+      <% if @voiced_chords.any? %>
+        <%= render "players/transport", next_key: true %>
+      <% end %>
       <% if (chart = @progression.lead_sheet) %>
         <%= render "progressions/lead_sheet", chart: chart %>
       <% end %>
       <% if @voiced_chords.any? %>
-        <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large") %>
+        <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large", data: {player_target: "staff"}) %>
+        <%= render "players/keyboard", voiced_chords: @voiced_chords %>
       <% end %>
       <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
       <% if facts.any? %>
@@ -24,7 +28,7 @@
           <%= text_to_html @progression.information %>
         </div>
       <% end %>
-    </section>
+    <% end %>
 
     <% if @progression.chords.any? %>
       <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>

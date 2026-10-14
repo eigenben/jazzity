@@ -1,0 +1,17 @@
+<%# The controls for playing a progression or chord sequence: play and stop, the tempo, looping, a bar counted in and, with `next_key`, going on to the next key each time through (see PlayerHelper#sequence_player_data); and a link to `practice_path` when given. %>
+<div class="transport" role="group" aria-label="Playback">
+  <%= player_button "Play" %>
+  <div class="transport-tempo">
+    <label for="player-tempo">Tempo</label>
+    <input type="range" id="player-tempo" min="60" max="240" step="4" value="120" data-player-target="tempo" data-action="input->player#retempo">
+    <output for="player-tempo"><span data-player-target="tempoOutput">120</span> BPM</output>
+  </div>
+  <%= player_button "Loop", target: "loop", action: "player#toggleLoop", icon: "".html_safe, class: "player-toggle" %>
+  <%= player_button "Count in", target: "countIn", action: "player#toggleCountIn", icon: "".html_safe, class: "player-toggle" %>
+  <% if local_assigns[:next_key] %>
+    <%= player_button "Every key", target: "nextKey", action: "player#toggleNextKey", icon: "".html_safe, class: "player-toggle", title: "Loop, moving to the next key round the cycle of fourths after each time through" %>
+  <% end %>
+  <% if local_assigns[:practice_path] %>
+    <%= link_to "Practice in all 12 keys", practice_path, class: "transport-link" %>
+  <% end %>
+</div>

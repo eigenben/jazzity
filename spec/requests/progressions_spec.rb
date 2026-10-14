@@ -32,6 +32,23 @@ feature "Progressions" do
     expect(page).to have_css(".staff[data-controller='staff']")
   end
 
+  scenario "Playing Rhythm Changes, each lead-sheet cell marked as its chords sound" do
+    visit "/keys/Bb/progressions/rhythm-changes"
+
+    player = find(".feature[data-controller='player']")
+    chords = JSON.parse(player["data-player-chords-value"])
+    expect(player["data-player-kind-value"]).to eq("sequence")
+    expect(chords.sum { |chord| chord["beats"] }).to eq(32 * 4)
+    expect(chords.first(2).map { |chord| chord["symbol"] }).to eq(%w[Bb6 Gm7])
+
+    cells = all("[data-player-target='cell']").map { |cell| cell["data-indices"].split.map(&:to_i) }
+    expect(cells.flatten).to eq((0...chords.size).to_a)
+    expect(page).to have_css(".staff[data-player-target='staff']")
+    expect(page).to have_css("svg.keyboard[data-player-target='keyboard']")
+    expect(page).to have_css("button[aria-pressed='false']", text: "Play")
+    expect(player["data-player-next-key-url-value"]).to eq("/keys/Eb/progressions/rhythm-changes")
+  end
+
   scenario "Following a chord on the lead sheet to its page in the key" do
     visit "/keys/E/progressions/major-ii-v-i"
 

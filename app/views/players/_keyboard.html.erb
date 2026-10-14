@@ -1,0 +1,3 @@
+<%# A keyboard for a player of voiced chords: wide enough for them all, showing the first until the player marks the one sounding. %>
+<% first = voiced_chords.first %>
+<%= keyboard_tag(first.treble, left: first.bass, range: keyboard_range(voiced_chords.flat_map { |chord| chord.bass + chord.treble }), data: {player_target: "keyboard"}) %>
