@@ -3,9 +3,9 @@
 # must have a root.
 #
 # A sequence has a home key: the key of a known progression it matches,
-# or else the key its last chord settles in. `in_key_of` moves the whole
-# sequence into another key, each chord keeping its degree, so Dm7 G7 Cmaj7
-# in Bb is Cm7 F7 Bbmaj7.
+# or else the key its analysis hears it in (see HarmonicAnalysis).
+# `in_key_of` moves the whole sequence into another key, each chord keeping
+# its degree, so Dm7 G7 Cmaj7 in Bb is Cm7 F7 Bbmaj7.
 class ChordSequence
   include Routable
   include Enumerable
@@ -120,10 +120,14 @@ class ChordSequence
   end
 
   # The key the sequence is in: that of a known progression with the same
-  # chords, or else the key of its last chord when that's major or minor,
-  # the key it resolves to when that's a dominant, or the first chord's root.
+  # chords, or else the key its analysis finds.
   def home_key
-    @home_key ||= progressions.first&.key || closing_key
+    @home_key ||= progressions.first&.key || analysis.key&.tonic
+  end
+
+  # The chords analyzed in their key, see HarmonicAnalysis.
+  def analysis
+    @analysis ||= HarmonicAnalysis.new(chords, hint: @home_key || progressions.first&.key)
   end
 
   # Known progressions with chords of the same kinds on the same roots,
@@ -132,7 +136,7 @@ class ChordSequence
   def progressions
     return [] if chords.empty?
 
-    Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
+    @progressions ||= Progression.includes(:components => {:chord => :chord_quality}).filter_map do |progression|
       components = progression.changing_components
       next unless components.size == chords.size && components.all?(&:chord)
 
@@ -152,16 +156,5 @@ class ChordSequence
   def conventional_degree?(offset, letters)
     natural = Key::MajorScaleSteps[letters]
     [natural, (natural - 1) % 12].include?(offset) || Key::DegreeLetterOffsets[offset] == letters
-  end
-
-  def closing_key
-    last = chords.last
-    return if last.nil?
-
-    case last.chord_quality.name
-    when "Major", "Minor" then last.key
-    when "Dominant" then last.key.shifted(5, 3)
-    else chords.first.key
-    end
   end
 end
