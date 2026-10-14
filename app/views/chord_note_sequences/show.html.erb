@@ -5,7 +5,7 @@
       <%= @chord_note_sequence.title %>
     </h1>
     <h3>
-      <%= raw @chord_note_sequence.chords.reject(&:empty?).map { |g| g.map { |c| link_to(c.short_name, [c.key, c].compact) }.join(" or ") }.join(", &nbsp;&nbsp;") %>
+      <%= safe_join @chord_note_sequence.chords.reject(&:empty?).map { |group| links_to_chords(group, " or ") }, ", " %>
     </h3>
   </header>
 

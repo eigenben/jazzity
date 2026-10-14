@@ -1,7 +1,7 @@
 <header>
   <h1>
     <%= "#{@progression.title}: " %>
-    <%= raw @progression.chords.map { |c| link_to(c.short_name, [c.key, c].compact) }.join(", ") %>
+    <%= links_to_chords @progression.chords %>
   </h1>
 
   <% if @progression.meter %>
