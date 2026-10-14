@@ -1474,3 +1474,100 @@ a:hover {
     transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
   }
 }
+
+/* Print: black on white, just the music, a key never split across pages */
+
+@media print {
+  :root {
+    color-scheme: light;
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --ink: #000000;
+    --muted: #333333;
+    --rule: #999999;
+    --key-white: #ffffff;
+    --key-black: #1b2233;
+    --key-edge: #555555;
+    --key-label: #555555;
+    --hand-left: #7c9fe0;
+  }
+
+  @page {
+    margin: 1.2cm;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+    font-size: 10pt;
+  }
+
+  .masthead,
+  .colophon,
+  .key-dial,
+  .flash,
+  .practice-options,
+  .transport,
+  .player-controls,
+  .play-button,
+  .player-button {
+    display: none !important;
+  }
+
+  .page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .with-dial {
+    display: block;
+  }
+
+  .title-block {
+    margin-bottom: 0.4cm;
+  }
+
+  .title-block h1 {
+    font-size: 22pt;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .feature,
+  .card,
+  .practice-key {
+    border: 0;
+    padding: 0;
+  }
+
+  .practice-sheet {
+    gap: 0.5cm;
+  }
+
+  .practice-sheet-short {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .practice-key {
+    grid-template-columns: 1.4cm minmax(0, 1fr);
+    break-inside: avoid;
+  }
+
+  .practice-key-title {
+    font-size: 20pt;
+  }
+
+  .staff-large,
+  .staff {
+    overflow: visible;
+  }
+
+  .staff svg,
+  .staff-large svg {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
