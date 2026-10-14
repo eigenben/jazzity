@@ -92,9 +92,9 @@ export default class extends Controller {
 
     this.playing = mode
     this.sequencer = new Sequencer(this.stepsFor(mode), {
-      tempo: () => (mode === "sequence" ? this.settings.tempo : NOTE_TEMPO),
+      tempo: () => (mode === "sequence" ? this.tempo : NOTE_TEMPO),
       loop: () => mode === "sequence" && this.loopableValue && this.settings.loop && !this.nextKey,
-      countIn: mode === "sequence" && this.settings.countIn ? this.beatsPerBarValue : 0,
+      countIn: mode === "sequence" && this.hasCountInTarget && this.settings.countIn ? this.beatsPerBarValue : 0,
       onStep: (step) => this.sounding(step),
       onEnd: () => this.ended()
     })
@@ -185,6 +185,11 @@ export default class extends Controller {
 
   get keyboard() {
     return this.hasKeyboardTarget ? this.application.getControllerForElementAndIdentifier(this.keyboardTarget, "keyboard") : null
+  }
+
+  // The tempo set on the page's transport; a player without one keeps to a steady 120.
+  get tempo() {
+    return this.hasTempoTarget ? this.settings.tempo : 120
   }
 
   // Controls
