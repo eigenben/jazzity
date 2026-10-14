@@ -49,6 +49,20 @@ RSpec.describe Tones do
     end
   end
 
+  describe "#pitches" do
+    it "stacks the tones upward from a MIDI note" do
+      expect(major_triad.in_key_of("A").pitches(57).map(&:to_s)).to eq(["A/3", "C#/4", "E/4"])
+    end
+
+    it "starts on the first tone at or above the MIDI note" do
+      expect(major_triad.in_key_of("A").pitches(58).map(&:to_s)).to eq(["A/4", "C#/5", "E/5"])
+    end
+
+    it "puts a repeated tone an octave higher" do
+      expect(tones_for("u", "3", "5", "u").pitches(48).map(&:midi)).to eq([48, 52, 55, 60])
+    end
+  end
+
   it "exposes intervals between successive tones" do
     expect(major_triad.intervals).to eq([4, 3])
     expect(major_triad.interval_names).to eq(["M3", "m3"])
