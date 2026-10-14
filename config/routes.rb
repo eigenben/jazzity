@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get "up", to: "rails/health#show", as: :rails_health_check
 
+  get "analysis", to: "analyses#show", as: :analysis
+
   resources :searches, only: %i[create show] do
     get :autocomplete, on: :collection
   end

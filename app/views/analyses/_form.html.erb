@@ -1,0 +1,8 @@
+<%# A form for chord changes to analyze, see AnalysesController. %>
+<%= form_with url: analysis_path, method: :get, class: ["search", "analysis-form", local_assigns[:class]], data: {turbo: false} do %>
+  <%= label_tag :changes, local_assigns.fetch(:label, "Chord changes"), class: local_assigns[:label_class] %>
+  <div class="search-field">
+    <%= search_field_tag :changes, local_assigns[:value], id: local_assigns.fetch(:id, "changes"), required: true, autocomplete: "off", spellcheck: false, placeholder: "Dm7 G7 Cmaj7 A7" %>
+    <%= submit_tag "Analyze", name: nil %>
+  </div>
+<% end %>

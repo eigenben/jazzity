@@ -1,0 +1,27 @@
+<% content_for :title, "Analyze chord changes" %>
+
+<%= render "shared/title", eyebrow: "Analysis", title: "Analyze chord changes",
+      subtitle: "Type a run of chord symbols to find their key, each chord's roman numeral and role, the ii-Vs and turnarounds inside them, and a scale to play over each." %>
+
+<section class="feature analysis-start">
+  <% if @changes.present? %>
+    <p class="flash" role="alert">
+      <% if @unreadable.any? %>
+        Jazzity couldn't read <%= @unreadable.map { |name| "“#{name}”" }.to_sentence %> as <%= @unreadable.one? ? "a chord symbol" : "chord symbols" %>.
+      <% else %>
+        Type at least two chords to analyze.
+      <% end %>
+    </p>
+  <% end %>
+  <%= render "analyses/form", value: @changes, label: "Chord changes", class: "hero-search" %>
+  <p class="card-meta">Separate chords with spaces, commas or barlines, as in <code>Dm7 | G7 | Cmaj7</code>. Any common spelling works: <code>D-7</code>, <code>Bø7</code>, <code>C^7</code>, <code>G7(b9)</code>.</p>
+</section>
+
+<section class="group" aria-labelledby="examples-heading">
+  <h2 class="section-heading" id="examples-heading">Try these</h2>
+  <ul class="suggestion-list">
+    <% ["Dm7 G7 Cmaj7 A7", "Em7b5 A7 Dm7 Db7 Cmaj7", "Cm7 F7 Bbmaj7 Ebmaj7 Am7b5 D7 Gm6", "Fmaj7 Em7b5 A7 Dm7 G7 Cm7 F7 Bb7"].each do |changes| %>
+      <li><%= link_to changes, analysis_path(changes: changes) %></li>
+    <% end %>
+  </ul>
+</section>

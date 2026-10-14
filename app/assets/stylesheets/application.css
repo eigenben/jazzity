@@ -344,6 +344,12 @@ a:hover {
   color: var(--muted);
 }
 
+/* Chord symbols and numerals keep their case: Dm7 is not DM7, nor ii II. */
+.card-kind-cased {
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
 /* Titles keep their case: "Eb" and "ii-V-I" mean something different in capitals. */
 .title-block h1 {
   margin-top: 0.3rem;
@@ -657,13 +663,6 @@ a:hover {
   white-space: nowrap;
 }
 
-.lead-sheet-symbol .accidental {
-  font-family: var(--font-body);
-  font-size: 0.8em;
-  font-weight: 400;
-  margin-inline: 0.02em;
-}
-
 .lead-sheet-numeral {
   font: 400 0.75rem/1.2 var(--font-mono);
   color: var(--muted);
@@ -702,6 +701,93 @@ a:hover {
   .lead-sheet-label {
     margin-top: 0;
   }
+}
+
+/* Analysis of chord changes */
+
+.analysis-key {
+  margin-bottom: 1rem;
+  color: var(--muted);
+}
+
+.analysis-key strong {
+  color: var(--ink);
+  font: 600 1.35rem/1 var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+
+.analysis-table th,
+.analysis-table td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.analysis-table thead th {
+  font: 500 0.7rem/1.2 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.analysis-symbol {
+  font: 600 1.3rem/1 var(--font-display);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.analysis-symbol .accidental,
+.lead-sheet-symbol .accidental {
+  font-family: var(--font-body);
+  font-size: 0.8em;
+  font-weight: 400;
+  margin-inline: 0.02em;
+}
+
+.analysis-numeral {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.analysis-unclear .analysis-numeral {
+  color: var(--brass-ink);
+  font-weight: 500;
+}
+
+.analysis-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font: 500 0.75rem/1.2 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.analysis-form-inline {
+  max-width: 32rem;
+  margin-top: 1.5rem;
+}
+
+.analysis-start {
+  display: grid;
+  gap: 1rem;
+}
+
+.analysis-start .flash {
+  margin: 0;
 }
 
 /* Cards */

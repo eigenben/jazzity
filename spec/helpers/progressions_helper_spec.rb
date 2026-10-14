@@ -18,6 +18,7 @@ RSpec.describe ProgressionsHelper, type: :helper do
       expect(numeral("bVII7")).to eq("♭VII7")
       expect(numeral("#iv°7")).to eq("♯iv°7")
       expect(numeral("V7b9")).to eq("V7♭9")
+      expect(helper.roman_numeral("subV7/bVI")).to eq("subV7/♭VI")
     end
 
     it "drops the m or maj a chart uses to ask for a triad" do

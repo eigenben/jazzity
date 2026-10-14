@@ -11,7 +11,7 @@ module ProgressionsHelper
   # signs, and without the m or maj that a chart needs to name a triad
   # (im is i, Imaj is I).
   def roman_numeral(numeral)
-    numeral.to_s.sub(/\A([#b]?[iv]+)m(?!aj)/, "\\1").sub(/\A([#b]?[IV]+)maj\z/, "\\1").gsub(/b(?=[IViv\d])/, "♭").tr("#", "♯")
+    numeral.to_s.sub(/\A([#b]?[iv]+)m(?!aj)/, "\\1").sub(/\A([#b]?[IV]+)maj\z/, "\\1").gsub(/(?<![a-z])b(?=[IViv\d])/, "♭").tr("#", "♯")
   end
 
   # What a section of a lead sheet is called by a screen reader: "Section
