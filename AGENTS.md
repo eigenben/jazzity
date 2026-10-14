@@ -4,7 +4,7 @@ This file provides guidance for agentic coding assistants working on this codeba
 
 ## Project Overview
 
-Jazzity is a Rails 8.0 web application (Ruby 3.4.4) for exploring jazz theory. It uses RSpec for testing, FactoryBot for fixtures, and follows standard Rails conventions with an emphasis on domain modeling.
+Jazzity is a Rails 8.1 web application (Ruby 4.0) for exploring jazz theory. It uses RSpec for testing, SQLite for storage, Hotwire (Turbo and Stimulus) with importmap for the frontend, and VexFlow 5 for staff notation. It follows standard Rails conventions with an emphasis on domain modeling.
 
 ## Build/Test Commands
 
@@ -12,15 +12,19 @@ Jazzity is a Rails 8.0 web application (Ruby 3.4.4) for exploring jazz theory. I
 - Run all tests: `bundle exec rake` or `bundle exec rspec`
 - Run a single spec file: `bundle exec rspec spec/models/chord_spec.rb`
 - Run a single test at specific line: `bundle exec rspec spec/models/chord_spec.rb:15`
-- Run feature specs: `bundle exec rake cucumber:ok` or `bundle exec rake cucumber:all`
+- Run everything CI runs (RuboCop, Brakeman, bundler-audit, importmap audit, specs): `bin/ci`
+- Lint: `bin/rubocop` (autocorrect with `bin/rubocop -a`)
+
+The seed data is loaded before the suite runs (`spec/support/seeds.rb`), so specs can use real chords, scales and progressions. `spec/requests/site_crawl_spec.rb` crawls every page reachable from the home page and fails on any error response.
 
 ### Database Commands
 - Run migrations: `bundle exec rake db:migrate`
-- Seed database: `bundle exec rake db:seeds`
+- Seed database: `bundle exec rake db:seed`
 - Reset database: `bundle exec rake db:reset`
 
 ### Server
-- Start Rails server: `bin/rails server`
+- Set up and start: `bin/setup` (or `bin/dev` once set up)
+- Production image: `docker build -t jazzity .` then `docker run -p 3000:80 -e RAILS_FORCE_SSL=false jazzity`
 
 ## Code Style Guidelines
 
@@ -176,7 +180,12 @@ end
 - ERB templates for all views
 - Use partials with `render` for reusable components
 - Minimal logic in views - use helpers for complex computations
-- Use Turbo/Stimulus for dynamic interactions (importmap-rails setup present)
+- Use Turbo/Stimulus for dynamic interactions; controllers live in `app/javascript/controllers`
+- Render notation with the `staff_tag`, `chord_staff`, `scale_staff` and `voicing_staff` helpers (`app/helpers/staff_helper.rb`), never hand-written markup
+- Build keyed paths with `in_key(key, *parts)`, which drops the key for C
+- Use `shared/title` for page headings and `shared/key_dial` for the key picker
+- Styles are plain CSS in `app/assets/stylesheets/application.css`, built on the custom properties at the top of the file; there is no CSS build step
+- Vendored JavaScript lives in `vendor/javascript` and is pinned in `config/importmap.rb`
 
 ### General Principles
 
@@ -189,6 +198,7 @@ end
 - Domain objects should be rich with behavior, not just data containers
 - **String literals must use double quotes ("string"), not single quotes ('string')**
 - **NEVER change single quotes to double quotes or double quotes to single quotes when editing files**
+- RuboCop enforces double quotes; files that still contain legacy single-quoted strings are exempted in `.rubocop_todo.yml`
 
 ### Rails-Specific
 
