@@ -183,10 +183,10 @@ class Key
     from_name(value) || from_index(value)
   end
 
-  # A key typed by hand: a letter in either case with at most one sharp or
-  # flat, written # and b or ♯ and ♭, as in "f#", "Bb" or "E♭".
+  # A key typed by hand: a letter in either case with sharps or flats
+  # written # and b or ♯ and ♭, as in "f#", "Bb", "E♭" or "Bbb".
   def self.parse(text)
-    match = /\A([A-Ga-g])([#b♯♭]?)\z/.match(text.to_s.strip)
+    match = /\A([A-Ga-g])([#b♯♭]{0,2})\z/.match(text.to_s.strip)
     match && from_name(match[1].upcase + match[2].tr("♯♭", "#b"))
   end
 

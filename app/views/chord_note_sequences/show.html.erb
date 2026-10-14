@@ -19,7 +19,16 @@
         <% end %>
       </ol>
     </section>
+
+    <% if (progressions = @chord_note_sequence.progressions).any? %>
+      <section class="group" aria-labelledby="progressions-heading">
+        <h2 class="section-heading" id="progressions-heading">Known progressions</h2>
+        <ul class="card-grid">
+          <%= render progressions %>
+        </ul>
+      </section>
+    <% end %>
   </div>
 
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord_note_sequence) } %>
+  <%= render "shared/key_dial", current: @chord_note_sequence.home_key, path: ->(key) { @chord_note_sequence.in_key_of(key) } %>
 </div>

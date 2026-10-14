@@ -24,6 +24,25 @@ RSpec.describe NoteSequence do
     expect(described_class.new("G C E").chords.map(&:title)).to eq(["C Major Triad"])
   end
 
+  it "names chords from the notes as written" do
+    expect(described_class.new("F# A# C#").chords.map(&:title)).to eq(["F# Major Triad"])
+    expect(described_class.new("Gb Bb Db").chords.map(&:title)).to eq(["Gb Major Triad"])
+    expect(described_class.new("D F A C").chords.map(&:title)).to eq(["D Minor 7", "F Major 6"])
+  end
+
+  it "reads notes typed in lowercase or with double flats" do
+    expect(described_class.new("c eb gb bbb").notes).to eq(%w[C Eb Gb Bbb])
+  end
+
+  it "moves the notes so the first is in the key asked for" do
+    expect(described_class.new("C E G").in_key_of("Eb").notes).to eq(%w[Eb G Bb])
+    expect(described_class.new("D F A C").in_key_of("E").notes).to eq(%w[E G B D])
+  end
+
+  it "finds the scales that fit, in the chord's key" do
+    expect(described_class.new("D F A C").modes.map(&:title)).to include("D Dorian")
+  end
+
   describe ".resolve" do
     it "returns a sequence of valid notes" do
       expect(described_class["C E G"]).to be_a(described_class)
