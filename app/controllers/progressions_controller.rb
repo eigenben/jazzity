@@ -6,7 +6,7 @@ class ProgressionsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @progression_families = ProgressionFamily.all
+    @progression_families = ProgressionFamily.includes(:progressions => {:components => :chord}).order(:id)
 
     respond_with @progression_families do |format|
       format.json { render json: @progression_families.to_json(include: [:progressions]) }

@@ -793,6 +793,24 @@ a:hover {
   gap: 1rem;
 }
 
+.feature-heading {
+  font: 600 1.5rem/1.1 var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.analysis-start + .group {
+  margin-top: 3rem;
+}
+
+.card-numerals {
+  color: var(--ink);
+}
+
+.card-changes {
+  color: var(--muted);
+}
+
 .analysis-start .flash {
   margin: 0;
 }

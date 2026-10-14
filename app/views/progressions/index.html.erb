@@ -1,12 +1,24 @@
-<% content_for :title, "Progressions" %>
+<% content_for :title, ["Progressions", ("in #{@key}" if @key)].compact.join(" ") %>
 
-<%= render "shared/title", eyebrow: "Reference", title: "Progressions", subtitle: "Common chord movements and the tune forms built from them, with voice-led voicings in any key." %>
+<%= render "shared/title", eyebrow: "Reference", title: ["Progressions", ("in #{@key}" if @key)].compact.join(" "), subtitle: "Cadences, turnarounds, chains of ii-Vs, blues and tune forms, each written in roman numerals and voice-led in any key." %>
 
-<% @progression_families.each do |family| %>
-  <section class="group" aria-labelledby="<%= dom_id(family) %>">
-    <h2 class="section-heading" id="<%= dom_id(family) %>"><%= family %></h2>
-    <ul class="card-grid">
-      <%= render family.progressions %>
-    </ul>
-  </section>
-<% end %>
+<div class="with-dial">
+  <div class="main-column">
+    <section class="feature analysis-start" aria-labelledby="analyze-heading">
+      <h2 class="feature-heading" id="analyze-heading">Analyze your own changes</h2>
+      <%= render "analyses/form", label: "Chord changes", label_class: "visually-hidden" %>
+      <p class="card-meta">Type chord symbols to find their key, each chord's roman numeral and role, the ii-Vs and turnarounds inside them, and a scale for each.</p>
+    </section>
+
+    <% @progression_families.each do |family| %>
+      <section class="group" aria-labelledby="<%= dom_id(family) %>">
+        <h2 class="section-heading" id="<%= dom_id(family) %>"><%= family %></h2>
+        <ul class="card-grid card-grid-wide">
+          <%= render family.progressions.map { |progression| progression.in_key_of(@key) } %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+
+  <%= render "shared/key_dial", path: ->(key) { polymorphic_path(in_key(key, :progressions)) } %>
+</div>

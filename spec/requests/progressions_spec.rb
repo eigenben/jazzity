@@ -6,6 +6,20 @@ feature "Progressions" do
     navigate_to "Progressions"
   end
 
+  scenario "Browsing the progressions by family in a key" do
+    visit "/keys/Eb/progressions"
+
+    expect(page).to have_css("h1", text: "Progressions in Eb")
+    expect(all(".section-heading").map(&:text)).to eq(["Cadences", "Turnarounds", "Cycles & Chains", "Blues", "Tune Forms", "Vamps & Lines"])
+    within("#progression_#{Progression["Backdoor ii-V-I"].id}") do
+      expect(page).to have_css(".card-numerals", text: "iv7 | ♭VII7 | Imaj7 | %")
+      expect(page).to have_css(".card-changes", text: "Abm7 Db7 Ebmaj7")
+      expect(page).to have_link(href: "/keys/Eb/progressions/backdoor-ii-v-i")
+    end
+    expect(page).to have_link("A", href: "/keys/A/progressions")
+    expect(page).to have_css("form[action='/analysis'] input[name=changes]")
+  end
+
   scenario "Viewing Rhythm Changes in Bb" do
     visit "/keys/Bb/progressions/rhythm-changes"
 
@@ -33,8 +47,8 @@ feature "Progressions" do
     visit "/keys/F/progressions/jazz-blues"
 
     within("section[aria-labelledby=variations-heading]") do
-      expect(page).to have_link("Basic Blues Progression in F", href: "/keys/F/progressions/basic-blues")
-      expect(page).to have_link("Bird Blues Progression in F", href: "/keys/F/progressions/bird-blues")
+      expect(page).to have_link("Basic Blues", href: "/keys/F/progressions/basic-blues")
+      expect(page).to have_link("Bird Blues", href: "/keys/F/progressions/bird-blues")
     end
   end
 
