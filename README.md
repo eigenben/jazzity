@@ -21,7 +21,7 @@ A jazz theory reference that works in every key. Look up a chord, scale or progr
 
 The theory lives in plain Ruby domain objects in `app/models`, rather than in lookup tables:
 
-- **`Key`** models the 12 pitch classes and their enharmonic spellings. Each key has a chromatic index and a letter index, so transposing Eb up a major third gives G rather than F##.
+- **`Key`** models the 12 pitch classes and their enharmonic spellings. Each key has a chromatic index and a letter index, so transposing Eb up a major third gives G rather than F##. Progressions store each chord's scale degree as well as its distance in semitones from the key, so a ii-V-I in E reads F#m7 B7 Emaj7 rather than Gbm7 B7 Emaj7.
 - **`Tones`** is an immutable collection of chord or scale degrees stored relative to C. `in_key_of` and `in_mode` return new collections, so one chord record can be shown in any key, and a scale can be rotated into any of its modes.
 - **`Chord`**, **`Scale`**, **`Mode`** and **`Voicing`** are Active Record models that share that tone math through the `Toneable` and `KeyContext` concerns.
 - **`NoteSequence`**, **`ChordSequence`** and **`ChordNoteSequence`** parse free-form input ("C E G", "Dm7 G7 Cmaj7") and work out which chords, scales and progressions it matches.
