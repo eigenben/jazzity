@@ -183,6 +183,13 @@ class Key
     from_name(value) || from_index(value)
   end
 
+  # A key typed by hand: a letter in either case with at most one sharp or
+  # flat, written # and b or ♯ and ♭, as in "f#", "Bb" or "E♭".
+  def self.parse(text)
+    match = /\A([A-Ga-g])([#b♯♭]?)\z/.match(text.to_s.strip)
+    match && from_name(match[1].upcase + match[2].tr("♯♭", "#b"))
+  end
+
   # Splits a leading key name off a string such as "C#maj7" or "Bb Dorian",
   # preferring the longest name that matches. Returns [key, rest], or
   # [nil, string] when the string doesn't start with a key.

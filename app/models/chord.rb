@@ -67,28 +67,10 @@ class Chord < ActiveRecord::Base
     symbol_names[1..-1] || []
   end
 
-  # Resolves a chord symbol into a chord.
-  # Implementation is somewhat flakey due to the potential ambiguities arising
-  # from specifying key and symbols together.
+  # Resolves a chord symbol such as "Ebmaj7", "F#-7" or "C7(b9)" into a
+  # chord in its root's key, see ChordName.
   def self.resolve(symbol)
-    return nil if symbol.nil?
-
-    whole = symbol.gsub(/ Chord/i, "")
-    in_key, symbol = Key.extract(whole)
-    chord_symbol = ChordSymbol[symbol.strip]
-
-    # Perhaps the matched key was really part of the name of the chord, try that:
-    if chord_symbol.nil? && !in_key.nil?
-      in_key = nil
-      chord_symbol = ChordSymbol[whole]
-    end
-
-    # If still not found, must be invalid:
-    return nil if chord_symbol.nil?
-
-    chord = chord_symbol.chord
-    chord.key = in_key unless in_key.nil?
-    chord
+    ChordName.resolve(symbol)
   end
 
   class << self
