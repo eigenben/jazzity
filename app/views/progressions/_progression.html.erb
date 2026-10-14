@@ -1,9 +1,15 @@
+<%# A progression as a card: its chart in roman numerals, its changes in its key, and its summary. %>
 <li id="<%= dom_id(progression) %>">
   <%= link_to in_key(progression.key, progression), class: "card" do %>
-    <h3 class="card-title"><%= progression.title %></h3>
-    <% unless progression.full_tune? %>
-      <p class="notes"><%= progression.chords.map(&:short_name).join(" ") %></p>
+    <h3 class="card-title"><%= progression.name %></h3>
+    <% if (chart = progression.lead_sheet) %>
+      <p class="notes card-numerals"><%= chart_line(chart) %></p>
     <% end %>
+    <% changes = progression.changes %>
+    <p class="notes card-changes">
+      <span class="visually-hidden">In <%= progression.key || Key.default %>:</span>
+      <%= changes.first(8).map(&:lead_sheet_symbol).join(" ") %><%= " …" if changes.size > 8 %>
+    </p>
     <% if progression.summary.present? %>
       <p class="card-meta"><%= progression.summary %></p>
     <% end %>

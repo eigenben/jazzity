@@ -14,6 +14,13 @@ module ProgressionsHelper
     numeral.to_s.sub(/\A([#b]?[iv]+)m(?!aj)/, "\\1").sub(/\A([#b]?[IV]+)maj\z/, "\\1").gsub(/(?<![a-z])b(?=[IViv\d])/, "♭").tr("#", "♯")
   end
 
+  # A chart on one line in roman numerals, as "ii7 | V7 | Imaj7 | %", its
+  # first `limit` bars when it's longer.
+  def chart_line(chart, limit: 8)
+    bars = chart.bars.first(limit).map { |bar| bar.repeat? ? Chart::REPEAT : bar.numerals.map { |numeral| roman_numeral(numeral) }.join(" ") }
+    bars.join(" | ") + (chart.bars.size > limit ? " …" : "")
+  end
+
   # What a section of a lead sheet is called by a screen reader: "Section
   # A, bars 1 to 8".
   def lead_sheet_section_label(section)
