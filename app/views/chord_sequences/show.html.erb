@@ -5,7 +5,7 @@
 <div class="with-dial">
   <div class="main-column">
     <section class="feature">
-      <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+      <%= voiced_staff(@chord_sequence.staff_notes(@voiced_chords), class: "staff-large") %>
     </section>
 
     <%= render "progressions/voice_leading", chords: @chord_sequence.chords %>

@@ -33,6 +33,11 @@ class Voicing < ActiveRecord::Base
     chord.in_key_of(key)
   end
 
+  # This voicing played on its chord, over the root when it's rootless.
+  def voiced
+    VoiceLeader.new([chord_in_key], family: voicing_family, overrides: {0 => self}).voiced_chords.first
+  end
+
   def self.resolve(name)
     find_by(name: name)
   end

@@ -1,1 +1,1 @@
-<%= staff_tag(@staff_notes, clef: :grand, barlines: true) %>
+<%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar) %>
