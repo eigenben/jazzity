@@ -68,9 +68,23 @@ class ChordName
     quality = quality.to_s.strip
     return if quality.empty? && !bare
 
-    symbols = ChordSymbol.includes(:chord).to_a
-    exact = symbols.find { |symbol| symbol.case_sensitive? ? symbol.name == quality : symbol.name.casecmp?(quality) }
-    exact || named(quality) || index(symbols)[normalize(quality)]
+    symbols = known_symbols
+    exact = symbols.all.find { |symbol| symbol.case_sensitive? ? symbol.name == quality : symbol.name.casecmp?(quality) }
+    exact || symbols.named[quality.squish.downcase] || symbols.index[normalize(quality)]
+  end
+
+  # The chord symbols with their chords, by name and by normalized spelling,
+  # loaded once and kept until the symbols change (when the seeds are
+  # loaded again, say), which a cheap query notices.
+  KnownSymbols = Data.define(:fingerprint, :all, :named, :index)
+
+  def self.known_symbols
+    fingerprint = ChordSymbol.pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(id)"), Arel.sql("MAX(updated_at)"))
+    cached = @known_symbols
+    return cached if cached&.fingerprint == fingerprint
+
+    symbols = ChordSymbol.includes(:chord).to_a.freeze
+    @known_symbols = KnownSymbols.new(fingerprint: fingerprint, all: symbols, named: named(symbols), index: index(symbols))
   end
 
   # The common spellings of a quality rewritten in one way: "-7" and "min7"
@@ -100,8 +114,9 @@ class ChordName
     readings << [nil, text]
   end
 
-  def self.named(quality)
-    Chord.includes(:primary_symbol).find { |chord| chord.name.casecmp?(quality.squish) }&.primary_symbol
+  # Each chord's primary symbol under the chord's name, in lower case.
+  def self.named(symbols)
+    symbols.select(&:primary?).each_with_object({}) { |symbol, named| named[symbol.chord.name.downcase] ||= symbol }
   end
 
   # Each symbol under its normalized spelling. Where several symbols share a
@@ -112,7 +127,7 @@ class ChordName
     end
   end
 
-  private_class_method :readings, :named, :index
+  private_class_method :readings, :named, :index, :known_symbols
 
   def to_s
     "#{root}#{symbol unless bare?}#{"/#{bass}" if bass}"
