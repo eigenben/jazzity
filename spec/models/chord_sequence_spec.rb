@@ -59,6 +59,14 @@ RSpec.describe ChordSequence do
     expect(described_class.new("Am7 D7").home_key.name).to eq("G")
   end
 
+  it "takes its home key from its analysis when it makes no known progression" do
+    sequence = described_class.new("Dm7 G7 Cmaj7 A7")
+    expect(sequence.home_key.name).to eq("C")
+    expect(sequence.analysis.analyzed_chords.map(&:numeral)).to eq(%w[ii7 V7 Imaj7 V7/ii])
+    expect(sequence.in_key_of("Eb").name).to eq("Fm7, Bb7, Ebmaj7, C7")
+    expect(sequence.in_key_of("Eb").analysis.key.to_s).to eq("Eb major")
+  end
+
   it "measures the root movement between chords" do
     expect(sequence.chord_key_offsets).to eq([5, 5])
   end
