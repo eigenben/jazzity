@@ -89,6 +89,11 @@ RSpec.describe HarmonicAnalysis do
       expect(analyze("Am7b5 D7alt Gm6").analyzed_chords.map { |chord| chord.scale.title }).to eq(["A Locrian", "D Super Locrian", "G Melodic Minor"])
       expect(analyze("Am7 D7 Gmaj7").analyzed_chords.first.scale.key.name).to eq("G")
     end
+
+    it "suggests the scales players choose for secondary dominants and substitutes" do
+      scales = analyze("Em7b5 A7 Dm7 Db7 Cmaj7").analyzed_chords.map { |chord| chord.scale.title }
+      expect(scales).to eq(["E Locrian", "A Mixolydian b6", "D Dorian", "Db Lydian Dominant", "C Ionian"])
+    end
   end
 
   describe "#patterns" do
