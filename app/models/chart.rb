@@ -155,6 +155,12 @@ class Chart
     @tokens = []
   end
 
+  # Charts repeat their numerals, so each is read once.
+  def numeral(token)
+    @numerals ||= {}
+    @numerals.fetch(token) { @numerals[token] = RomanNumerals::Numeral.parse(token) }
+  end
+
   def read_bar(tokens, number)
     if tokens == [REPEAT]
       previous = @bars.last || bars.last
@@ -164,7 +170,7 @@ class Chart
     end
 
     numerals = tokens.map do |token|
-      RomanNumerals::Numeral.parse(token) or raise ParseError, "Bar #{number} has “#{token}”, which isn't a roman numeral"
+      numeral(token) or raise ParseError, "Bar #{number} has “#{token}”, which isn't a roman numeral"
     end
     Bar.new(numerals, number: number, chart: self)
   end
