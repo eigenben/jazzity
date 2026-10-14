@@ -2,7 +2,6 @@ class Chord < ActiveRecord::Base
   extend FriendlyId
   include KeyContext
   include Toneable
-  include Searchable::Model
 
   acts_as_tree optional: true
   friendly_id :name, use: :slugged
@@ -19,21 +18,6 @@ class Chord < ActiveRecord::Base
 
   validates :name, presence: true
   validates :chord_quality, presence: true
-
-  define_searchables do
-    searchables.create(name: "#{name} Chord")
-
-    symbols.each { |symbol| searchables.create(name: "#{symbol} Chord") }
-
-    Key.searchable.each do |key|
-      searchables.create(name: "#{key.name} #{name} Chord", key_name: key.name)
-      symbols.each { |symbol| searchables.create(name: "#{key.name}#{symbol} Chord", key_name: key.name) }
-
-      in_key_of(key).tap do |chord|
-        searchables.create(name: chord.notes.join(", "), display_name: "#{chord.notes.join(', ')} (#{title})", key_name: key.name, priority: 2)
-      end
-    end
-  end
 
   def to_s
     name

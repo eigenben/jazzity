@@ -23,7 +23,6 @@ ActiveRecord::Base.transaction do
     scales
     voicing_families
     voicings
-    searchables
   ].each do |table|
     ActiveRecord::Base.connection.execute "DELETE FROM #{table}"
   end
@@ -36,6 +35,4 @@ ActiveRecord::Base.transaction do
     voicings
     progressions
   ].each { |f| require Rails.root.join("db/seeds/#{f}.rb") }
-
-  Searchable.regenerate_all
 end

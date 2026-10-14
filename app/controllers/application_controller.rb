@@ -3,10 +3,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def path_to_searchable(searchable)
-    path_to_model(searchable.target)
-  end
-
   def path_to_model(model)
     parents = case model
     when Mode then [model.scale]
@@ -34,7 +30,6 @@ class ApplicationController < ActionController::Base
     choices.respond_to?(:permit) ? choices.permit(*choices.keys).to_h : {}
   end
 
-  helper_method :path_to_searchable
   helper_method :path_to_model
   helper_method :voicing_family
   helper_method :voicing_family_slug

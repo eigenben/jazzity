@@ -222,6 +222,50 @@ a:hover {
   border-color: transparent;
 }
 
+/* Search results and the page for nothing found */
+
+.section-count {
+  font: 500 0.8rem/1 var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0;
+}
+
+.more-results {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.suggestion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.suggestion-list a {
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.suggestion-list a:hover {
+  color: inherit;
+  border-color: var(--brass);
+}
+
+.suggestion-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.suggestion-detail {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* Flash */
 
 .flash {
