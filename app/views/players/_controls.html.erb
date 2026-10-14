@@ -1,0 +1,8 @@
+<%# The buttons for a chord, voicing, notes or scale player: play it, and for anything but a scale, play its notes one by one. %>
+<div class="player-controls" role="group" aria-label="Listen">
+  <%= player_button play_label %>
+  <% unless local_assigns[:kind] == :scale %>
+    <%= player_button "Arpeggiate", target: "arpeggio", action: "player#arpeggiate" %>
+  <% end %>
+  <span class="player-hint">Space plays and stops</span>
+</div>

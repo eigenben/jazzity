@@ -1,7 +1,7 @@
 <%# A mode as a card, in `key` (the key of its parent scale) when given, and labelled `kind` when given rather than by its scale. Only a scale's first mode repeats the scale's information. %>
 <% mode = mode.in_key_of(key) if local_assigns[:key] %>
 
-<li id="<%= dom_id(mode) %>">
+<%= tag.li id: dom_id(mode), class: "playable", data: player_data(:scale, playback_for(mode).first) do %>
   <%= link_to in_key(local_assigns[:key], mode.scale, (mode unless mode.main?)), class: "card" do %>
     <% if local_assigns[:kind] %>
       <p class="card-kind card-kind-cased"><%= kind %></p>
@@ -16,4 +16,5 @@
       <p class="card-meta">Mode <%= mode.mode %> of <%= mode.scale.name %></p>
     <% end %>
   <% end %>
-</li>
+  <%= play_button "Play #{mode.title}" %>
+<% end %>

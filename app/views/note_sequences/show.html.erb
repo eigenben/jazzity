@@ -4,9 +4,12 @@
 
 <div class="with-dial">
   <div class="main-column">
-    <section class="feature">
+    <% chords, hands = playback_for(@note_sequence) %>
+    <%= tag.section class: "feature", data: player_data(:chord, chords, shortcut: true) do %>
+      <%= render "players/controls", play_label: "Play notes" %>
       <%= staff_tag([@note_sequence.octavized_notes], class: "staff-large") %>
-    </section>
+      <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
+    <% end %>
 
     <% if @note_sequence.chords.any? %>
       <section class="group" aria-labelledby="chords-heading">

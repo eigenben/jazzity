@@ -1,9 +1,10 @@
 <% chord = chord.in_key_of(key) if local_assigns[:key] %>
 
-<li id="<%= dom_id(chord) %>">
+<%= tag.li id: dom_id(chord), class: "playable", data: player_data(:chord, playback_for(chord).first) do %>
   <%= link_to in_key(chord.key, chord), class: "card" do %>
     <h3 class="card-title"><%= chord.short_name %></h3>
     <%= chord_staff(chord) %>
     <p class="card-meta"><%= chord.title %></p>
   <% end %>
-</li>
+  <%= play_button "Play #{chord.short_name}" %>
+<% end %>

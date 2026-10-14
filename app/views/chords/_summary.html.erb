@@ -1,5 +1,8 @@
-<section class="feature">
+<% chords, hands = playback_for(@chord) %>
+<%= tag.section class: "feature", data: player_data(:chord, chords, shortcut: true) do %>
+  <%= render "players/controls", play_label: "Play chord" %>
   <%= chord_staff(@chord, class: "staff-large") %>
+  <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
   <dl class="facts">
     <div>
       <dt>Notes</dt>
@@ -19,4 +22,4 @@
   <% if @chord.information.present? %>
     <div class="prose"><%= text_to_html @chord.information %></div>
   <% end %>
-</section>
+<% end %>
