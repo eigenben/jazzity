@@ -32,6 +32,10 @@ RSpec.describe ChordSequence do
     expect(sequence.progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
   end
 
+  it "names the key of a progression found in a sharp key" do
+    expect(described_class.new("F#m7 B7 Emaj7").progressions.map(&:title)).to eq(["Major ii-V-I Progression in E"])
+  end
+
   describe ".resolve" do
     it "returns a sequence of two or more recognized chords" do
       expect(described_class["Dm7 G7"]).to be_a(described_class)
