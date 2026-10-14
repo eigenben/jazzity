@@ -27,10 +27,6 @@ gem "kaminari", "~> 1.2"
 gem "mini_magick"
 gem "RedCloth"
 
-group :development do
-  gem "capistrano", "~> 3.17"
-end
-
 group :test do
   gem "turn", require: false
   gem "minitest"
