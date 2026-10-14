@@ -18,6 +18,7 @@ RSpec.describe RomanNumerals do
 
   it "reads the quality after a lowercase numeral as minor" do
     expect(symbols("ii7 ii9 i6 iiø vii°7")).to eq(%w[Dm7 Dm9 Cm6 Dm7b5 Bdim7])
+    expect(symbols("imaj7 im")).to eq(%w[Cm(maj7) Cm])
   end
 
   it "assumes the seventh chords a jazz player would when no quality is written" do
