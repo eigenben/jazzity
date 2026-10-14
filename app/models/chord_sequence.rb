@@ -56,14 +56,9 @@ class ChordSequence
     end
   end
 
-  def chord_voicings(voicing_ids = {})
-    VoiceLeading.voicings_for_chords(chords, voicing_ids)
-  end
-
-  def chord_voicing_notes(voicing_ids = {})
-    chord_voicings(voicing_ids).map do |voicing|
-      voicing.octavized_notes(3)
-    end
+  # The chords voiced in a family, see VoiceLeader.
+  def voiced_chords(family: nil, overrides: {})
+    VoiceLeader.new(chords, family: family, overrides: overrides).voiced_chords
   end
 
   def notes
@@ -72,8 +67,9 @@ class ChordSequence
   def octavized_notes
     chords.map(&:octavized_notes)
   end
-  def staff_notes(voicing_ids = {})
-    chord_voicing_notes(voicing_ids)
+  # The voiced chords for a grand staff, a bar each.
+  def staff_notes(voiced = voiced_chords)
+    voiced.map(&:to_staff)
   end
 
   class << self

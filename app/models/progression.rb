@@ -23,8 +23,6 @@ class Progression < ActiveRecord::Base
     searchables.create(name: name)
   end
 
-  attr_accessor :chord_voicing_options
-
   def to_s
     name
   end
@@ -47,17 +45,14 @@ class Progression < ActiveRecord::Base
     end
   end
 
-  def component_durations
-    @component_durations ||= begin
-      last_i = nil
-      final = components.map(&:position).each_with_object([]) do |i, durations|
-        durations << (i - last_i) if last_i
-        last_i = i
-      end
+  # The beats each chord lasts. A progression with a bar count places its
+  # chords by position (positions_per_bar to the bar); otherwise each chord
+  # gets a bar of its own.
+  def chord_beats
+    return Array.new(chords.size, beats_per_bar) unless bars
 
-      # final << (bars) ? bars * positions_per_bar - last_i + 1 : 1
-      final
-    end
+    positions = components.select(&:chord).map(&:position) << bars * positions_per_bar + 1
+    positions.each_cons(2).map { |from, to| (to - from) * beats_per_bar / positions_per_bar }
   end
 
   def chords
@@ -66,14 +61,9 @@ class Progression < ActiveRecord::Base
     end.flatten.compact
   end
 
-  def chord_voicings(voicing_ids = {})
-    VoiceLeading.voicings_for_chords(chords, voicing_ids)
-  end
-
-  def chord_voicing_notes(voicing_ids = {})
-    chord_voicings(voicing_ids).map do |voicing|
-      voicing.octavized_notes(3)
-    end
+  # The chords voiced in a family, see VoiceLeader.
+  def voiced_chords(family: nil, overrides: {})
+    VoiceLeader.new(chords, family: family, overrides: overrides).voiced_chords
   end
 
   def notes
@@ -84,8 +74,13 @@ class Progression < ActiveRecord::Base
     chords.map(&:octavized_notes)
   end
 
-  def staff_notes(voicing_ids = {})
-    chord_voicing_notes(voicing_ids)
+  # The voiced chords for a grand staff, each with its symbol and length in beats.
+  def staff_notes(voiced = voiced_chords)
+    voiced.zip(chord_beats).map { |chord, beats| chord.to_staff.merge(:beats => beats) }
+  end
+
+  def beats_per_bar
+    meter&.beats || 4
   end
 
   def beats

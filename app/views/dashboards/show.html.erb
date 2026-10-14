@@ -12,7 +12,7 @@
 
   <% if @featured %>
     <figure class="hero-figure">
-      <%= staff_tag(@featured.staff_notes, clef: :grand, barlines: true) %>
+      <%= voiced_staff(@featured.staff_notes) %>
       <figcaption>
         <%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I with voice-led voicings.
         Reload for another set.

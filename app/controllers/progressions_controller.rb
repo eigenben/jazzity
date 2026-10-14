@@ -28,6 +28,6 @@ class ProgressionsController < ApplicationController
   def find_progression
     @progression = Progression.find_by!(slug: params[:id])
     @progression = @progression.in_key_of(@key) if @key
-    @staff_notes = @progression.staff_notes(voicing_choices)
+    @voiced_chords = @progression.voiced_chords(family: voicing_family, overrides: voicing_choices)
   end
 end

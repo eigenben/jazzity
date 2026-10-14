@@ -5,8 +5,8 @@
 <div class="with-dial">
   <div class="main-column">
     <section class="feature">
-      <% if @staff_notes.any? %>
-        <%= staff_tag(@staff_notes, clef: :grand, barlines: true, class: "staff-large") %>
+      <% if @voiced_chords.any? %>
+        <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large") %>
       <% end %>
       <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
       <% if facts.any? %>
