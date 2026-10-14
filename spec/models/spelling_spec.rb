@@ -94,6 +94,30 @@ RSpec.describe "Spelling in every key" do
 
         expect(progression_in("Chromatic b3-2-b2-I", key).chords.map { |chord| chord.key.name }).not_to include("Cb", "Fb")
       end
+
+      it "spells every seeded progression as its chart says, from the key's letters" do
+        scale = major_scale(key)
+
+        aggregate_failures do
+          Progression.includes(:components).find_each do |progression|
+            progression.in_key_of(Key[key])
+            numerals = progression.lead_sheet.numerals.to_a
+            chords = progression.chords
+
+            expect(progression.lead_sheet.chords.map(&:short_name)).to eq(chords.map(&:short_name)), progression.name
+            numerals.zip(chords).each do |numeral, chord|
+              message = "#{progression} in #{key}: #{numeral} is #{chord.short_name}"
+              expect((chord.key.index - Key[key].index) % 12).to eq(numeral.index), message
+              expect(chord.key).not_to be_double, message
+
+              # A chord on a degree of the key whose notes are all in the key
+              # is spelled with the key's own notes.
+              in_scale = chord.notes.map { |note| Key[note].index }.all? { |index| scale.map { |note| Key[note].index }.include?(index) }
+              expect(scale).to include(*chord.notes), message if numeral.accidental.zero? && numeral.of.nil? && in_scale
+            end
+          end
+        end
+      end
     end
   end
 
