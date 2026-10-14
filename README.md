@@ -1,106 +1,71 @@
 # Jazzity
 
-A web application for exploring jazz theory. Built with Rails 8.0 and Ruby 3.4.4.
+[![CI](https://github.com/eigenben/jazzity/actions/workflows/ci.yml/badge.svg)](https://github.com/eigenben/jazzity/actions/workflows/ci.yml)
 
-## Overview
+A jazz theory reference that works in every key. Look up a chord, scale or progression and see it written out on the staff, along with the scales that fit it and the voicings players use. You can also type the notes you're holding and Jazzity tells you which chords they spell.
 
-Jazzity provides an interactive platform for studying jazz theory concepts including:
+![Jazzity home page](docs/screenshots/home.png)
 
-- **Chords** - Explore chord qualities, voicings, and symbols in all keys
-- **Scales & Modes** - Browse musical scales and their modes with staff notation
-- **Progressions** - Study common chord progressions and their voice leading
-- **Voice Leading** - Analyze smooth transitions between chord voicings
+## What it does
 
-The application allows you to explore these concepts in any key, providing both theoretical knowledge and practical musical examples.
+- **Chords**: every chord quality in all twelve keys, with its intervals, alternate symbols, the scales that fit it, and common voicings on a grand staff.
+- **Scales and modes**: parent scales (major, melodic minor, diminished, bebop…) and the modes built on each degree.
+- **Progressions**: ii-V-Is, blues forms and rhythm changes, voiced so each chord moves smoothly to the next. You can pick a specific voicing for any chord.
+- **Search that understands notation**: `Ebmaj7`, `C7alt`, `Eb Lydian Augmented`, `Dm7 G7 Cmaj7` or `D F A C, G B D F` all resolve to the right thing.
 
-## Tech Stack
+| Eb major 7 in context | A ii-V-I in F, voice-led (dark mode) |
+| --- | --- |
+| ![Chord page](docs/screenshots/chord.png) | ![Progression page](docs/screenshots/progression-dark.png) |
 
-- **Ruby**: 3.4.4
-- **Rails**: 8.0.4
-- **Database**: SQLite (development)
-- **Testing**: RSpec, FactoryBot, Capybara, Shoulda Matchers
-- **Frontend**: Turbo, Stimulus, Importmap Rails
+## How it works
 
-## Getting Started
+The theory lives in plain Ruby domain objects in `app/models`, rather than in lookup tables:
 
-### Prerequisites
+- **`Key`** models the 12 pitch classes and their enharmonic spellings. Each key has a chromatic index and a letter index, so transposing Eb up a major third gives G rather than F##.
+- **`Tones`** is an immutable collection of chord or scale degrees stored relative to C. `in_key_of` and `in_mode` return new collections, so one chord record can be shown in any key, and a scale can be rotated into any of its modes.
+- **`Chord`**, **`Scale`**, **`Mode`** and **`Voicing`** are Active Record models that share that tone math through the `Toneable` and `KeyContext` concerns.
+- **`NoteSequence`**, **`ChordSequence`** and **`ChordNoteSequence`** parse free-form input ("C E G", "Dm7 G7 Cmaj7") and work out which chords, scales and progressions it matches.
+- **`VoiceLeading`** stores which voicing of one chord moves smoothly to which voicing of the next, at each root movement, and uses that to voice a whole progression.
 
-- Ruby 3.4.4
-- Bundler
+All content is seed data in `db/seeds`. Staff notation is drawn in the browser by a small Stimulus controller using [VexFlow](https://github.com/vexflow/vexflow).
 
-### Installation
+## Tech stack
 
-1. Clone the repository:
+- Ruby 4.0, Rails 8.1, SQLite
+- Hotwire (Turbo and Stimulus) with importmap, so there's no Node build step
+- VexFlow 5 for music notation
+- RSpec, Capybara and shoulda-matchers; RuboCop, Brakeman and bundler-audit in CI
+
+## Getting started
+
+You need Ruby 4.0.2 (see `.ruby-version`).
+
 ```bash
-git clone https://github.com/rubiety/jazzity.git
+git clone https://github.com/eigenben/jazzity.git
 cd jazzity
+bin/setup
 ```
 
-2. Install dependencies:
+`bin/setup` installs gems, creates and seeds the database, and starts the server at http://localhost:3000.
+
+## Tests and checks
+
 ```bash
-bundle install
+bundle exec rspec   # specs, including a crawl of every page reachable from the home page
+bin/ci              # everything CI runs: RuboCop, security audits and specs
 ```
 
-3. Set up the database:
+## Running with Docker
+
+The production image includes the seeded database, so it needs no setup:
+
 ```bash
-bundle exec rake db:migrate
-bundle exec rake db:seed
+docker build -t jazzity .
+docker run -p 3000:80 -e RAILS_FORCE_SSL=false jazzity
 ```
 
-4. Start the server:
-```bash
-bin/rails server
-```
+In production behind an SSL-terminating proxy, leave `RAILS_FORCE_SSL` unset and provide a stable `SECRET_KEY_BASE`.
 
-5. Visit the application:
-```
-http://localhost:3000
-```
+## History
 
-## Testing
-
-Run the full test suite:
-```bash
-bundle exec rake
-# or
-bundle exec rspec
-```
-
-Run a specific spec file:
-```bash
-bundle exec rspec spec/models/chord_spec.rb
-```
-
-## Database Management
-
-- Run migrations: `bundle exec rake db:migrate`
-- Seed database: `bundle exec rake db:seed`
-- Reset database: `bundle exec rake db:reset`
-
-## Key Models
-
-- **Key**: Represents musical keys with tonal relationships
-- **Chord**: Chord qualities with voicings and symbols
-- **Scale**: Musical scales with modes
-- **Mode**: Scale modes with chord relationships
-- **Progression**: Chord progressions with components
-- **Voicing**: Chord voicings with voice leading analysis
-- **VoiceLeading**: Analysis of transitions between voicings
-
-## Features
-
-### Search
-
-Comprehensive search across all jazz theory concepts with autocomplete support.
-
-### Staff Notation
-
-Musical notation display for chords, scales, modes, and progressions.
-
-### Key Context
-
-Explore any concept in any musical key (e.g., "Cmaj7", "Ab Blues Scale", "F Dorian Mode").
-
-### Voice Leading Analysis
-
-Examine smooth voice leading between chord voicings.
+Jazzity started in 2010 as a Rails 3 app. In 2026 it was brought up to date: Ruby 4.0 and Rails 8.1, the jQuery/Sprockets frontend replaced with Hotwire and VexFlow 5, and a long-standing bug fixed where chords were always written in C whatever key you asked for.
