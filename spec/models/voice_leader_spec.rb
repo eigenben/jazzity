@@ -45,7 +45,7 @@ RSpec.describe VoiceLeader do
 
   it "keeps rootless voicings in the right-hand register over a low root" do
     blues = Progression.find_by!(slug: "jazz-blues").in_key_of(Key["F"])
-    rhythm = Progression.find_by!(slug: "original-rhythm-changes").in_key_of(Key["Bb"])
+    rhythm = Progression.find_by!(slug: "rhythm-changes").in_key_of(Key["Bb"])
 
     (blues.voiced_chords + rhythm.voiced_chords).each do |voiced|
       expect(voiced.pitches.first.midi).to be >= described_class::RIGHT_HAND.low

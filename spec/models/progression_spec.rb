@@ -8,7 +8,7 @@ RSpec.describe Progression, type: :model do
 
   describe 'scopes' do
     it 'should scope full_tune' do
-      expect(described_class.full_tune.pluck(:name)).to include('Original Rhythm Changes')
+      expect(described_class.full_tune.pluck(:name)).to include('Rhythm Changes')
     end
 
     it 'should scope partial' do

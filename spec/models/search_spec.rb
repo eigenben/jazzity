@@ -40,7 +40,7 @@ RSpec.describe Search do
     end
 
     it "builds a chord sequence from roman numerals no progression matches" do
-      expect(destination("I vi ii V").name).to eq("Cmaj7, Am7, Dm7, G7")
+      expect(destination("I iii IV V").name).to eq("Cmaj7, Em7, Fmaj7, G7")
     end
 
     it "tells notes from chords" do
@@ -50,7 +50,7 @@ RSpec.describe Search do
     end
 
     it "goes to the only progression a name matches" do
-      expect(title_of("rhythm changes")).to eq("Original Rhythm Changes Progression")
+      expect(title_of("rhythm changes")).to eq("Rhythm Changes Progression")
       expect(title_of("jazz blues in F")).to eq("Jazz Blues Progression in F")
     end
 
@@ -77,11 +77,11 @@ RSpec.describe Search do
     end
 
     it "matches canonical names only, not every key" do
-      expect(groups_for("bebop").values.flatten).to contain_exactly("C Major Bebop", "C Dominant Bebop", "Bebop Blues")
+      expect(groups_for("bebop").values.flatten).to contain_exactly("C Major Bebop", "C Dominant Bebop", "Bebop Blues", "Bebop Rhythm Changes")
     end
 
     it "shows results in the key the query names" do
-      expect(groups_for("Eb bebop").values.flatten).to contain_exactly("Eb Major Bebop", "Eb Dominant Bebop", "Bebop Blues in Eb")
+      expect(groups_for("Eb bebop").values.flatten).to contain_exactly("Eb Major Bebop", "Eb Dominant Bebop", "Bebop Blues in Eb", "Bebop Rhythm Changes in Eb")
     end
 
     it "finds nothing for nonsense" do
