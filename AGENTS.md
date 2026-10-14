@@ -181,6 +181,7 @@ end
 - Minimal logic in views - use helpers for complex computations
 - Use Turbo/Stimulus for dynamic interactions; controllers live in `app/javascript/controllers`
 - Render notation with the `staff_tag`, `chord_staff`, `scale_staff` and `voicing_staff` helpers (`app/helpers/staff_helper.rb`), never hand-written markup
+- Draw piano keyboards with `keyboard_tag` (`app/helpers/keyboard_helper.rb`), and make things playable with `player_data`, `play_button` and the `players/` partials (`app/helpers/player_helper.rb`); sound comes from `app/javascript/audio.js`, plain Web Audio with no samples
 - Build keyed paths with `in_key(key, *parts)`, which drops the key for C
 - Use `shared/title` for page headings and `shared/key_dial` for the key picker
 - Styles are plain CSS in `app/assets/stylesheets/application.css`, built on the custom properties at the top of the file; there is no CSS build step
