@@ -1,5 +1,5 @@
-Jazzity::Application.routes.draw do
-  get '/contribute', to: redirect('https://github.com/rubiety/jazzity/wiki/Contributions')
+Rails.application.routes.draw do
+  get "up", to: "rails/health#show", as: :rails_health_check
 
   resources :searches, only: %i[create show] do
     get :autocomplete, on: :collection
