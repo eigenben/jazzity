@@ -29,6 +29,15 @@
     <% if @progression.chords.any? %>
       <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
     <% end %>
+
+    <% if (variations = @progression.variations).any? %>
+      <section class="group" aria-labelledby="variations-heading">
+        <h2 class="section-heading" id="variations-heading">Variations</h2>
+        <ul class="card-grid">
+          <%= render variations %>
+        </ul>
+      </section>
+    <% end %>
   </div>
 
   <%= render "shared/key_dial", path: ->(key) { polymorphic_path(in_key(key, @progression), voicing_params) } %>

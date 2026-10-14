@@ -69,6 +69,13 @@ class Progression < ActiveRecord::Base
     chords.chunk_while { |a, b| a.key == b.key && a.id == b.id }.map(&:first)
   end
 
+  # The progression this is a variation on and its other variations, or
+  # this progression's own variations, in its key.
+  def variations
+    parent = variant_of || self
+    ([parent] + parent.variants.to_a).reject { |progression| progression.id == id }.map { |progression| progression.in_key_of(key) }
+  end
+
   # The components as they change, see #changes.
   def changing_components
     components.to_a.chunk_while { |a, b| a.index == b.index && a.chord_id == b.chord_id }.map(&:first)
