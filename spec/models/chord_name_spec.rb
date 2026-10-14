@@ -66,4 +66,10 @@ RSpec.describe ChordName do
     second = described_class.parse("Ebmaj7").chord
     expect([first.key.name, second.key.name]).to eq(["C", "Eb"])
   end
+
+  it "reads a chord symbol added after the symbols were first read" do
+    expect(title_of("Cmaj7")).to eq("C Major 7")
+    ChordSymbol.create!(:chord => Chord.find_by(:name => "Major 7"), :name => "j7", :case_sensitive => true)
+    expect(title_of("Cj7")).to eq("C Major 7")
+  end
 end
