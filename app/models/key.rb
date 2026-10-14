@@ -1,6 +1,5 @@
 class Key
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
+  include Routable
 
   attr_reader :name, :long_name, :index, :letter_index, :cycle_index, :primary
 
