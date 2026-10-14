@@ -29,7 +29,7 @@ class RomanNumerals
   class Numeral
     PATTERN = %r{\A(?<accidental>[#b♯♭]?)(?<numeral>VII|VI|V|IV|III|II|I|vii|vi|v|iv|iii|ii|i)(?<quality>[^/]*)(?:/(?<of>.+))?\z}
     NUMERALS = %w[I II III IV V VI VII].freeze
-    MINOR_QUALITIES = /\A(?:m|-|min|ø|Ø|°|o|dim|\+|aug)/
+    MINOR_QUALITIES = /\A(?:m(?!aj)|-|min|ø|Ø|°|o|dim|\+|aug)/
     IMPLIED = {:minor => %w[Minor Diminished], :major => %w[Major Dominant Suspended Augmented]}.freeze
 
     attr_reader :degree, :accidental, :symbol, :of, :text
