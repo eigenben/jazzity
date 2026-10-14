@@ -7,7 +7,7 @@ class Searchable < ActiveRecord::Base
   default_scope { order('priority') }
 
   def to_s
-    display_name || name
+    display_name || name || target.to_s
   end
 
   def target
