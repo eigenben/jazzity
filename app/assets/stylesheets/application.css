@@ -1090,13 +1090,17 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.transport {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  margin: -0.5rem 0 1rem;
-  padding-block: 0.5rem;
-  background: var(--surface);
+/* On a screen with room for it, the transport stays in view while a long
+   chart scrolls by. */
+@media (min-width: 40rem) {
+  .transport {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: -0.5rem 0 1rem;
+    padding-block: 0.5rem;
+    background: var(--surface);
+  }
 }
 
 .player-button {
