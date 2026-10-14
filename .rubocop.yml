@@ -1,0 +1,23 @@
+inherit_from: .rubocop_todo.yml
+
+# Rails' omakase style, adjusted to the conventions in AGENTS.md.
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+AllCops:
+  Exclude:
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "tmp/**/*"
+    - "vendor/**/*"
+
+# Hash literals use rockets ({:key => value}) while keyword-style arguments
+# use colons (class_name: "Chord"); RuboCop can't tell the two apart.
+Style/HashSyntax:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBraces: no_space
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
