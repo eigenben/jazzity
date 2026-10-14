@@ -6,6 +6,7 @@ class Chord < ActiveRecord::Base
 
   acts_as_tree optional: true
   friendly_id :name, use: :slugged
+  include MusicalSlugs
   
   belongs_to :chord_quality
 

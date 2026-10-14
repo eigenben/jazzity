@@ -7,6 +7,7 @@ class Voicing < ActiveRecord::Base
 
   acts_as_tree optional: true
   friendly_id :name, use: :scoped, scope: :chord
+  include MusicalSlugs
 
   belongs_to :voicing_family
   belongs_to :chord
