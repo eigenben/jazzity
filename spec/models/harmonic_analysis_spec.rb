@@ -96,6 +96,11 @@ RSpec.describe HarmonicAnalysis do
       expect(analyze("Am7 D7 Gmaj7").analyzed_chords.first.scale.key.name).to eq("G")
     end
 
+    it "suggests Lydian for a major 7th on IV, where Ionian's 4th would be outside the key" do
+      scales = analyze("Cmaj7 Fmaj7 Dm7 G7").analyzed_chords.map { |chord| chord.scale.title }
+      expect(scales).to eq(["C Ionian", "F Lydian", "D Dorian", "G Mixolydian"])
+    end
+
     it "suggests the scales players choose for secondary dominants and substitutes" do
       scales = analyze("Em7b5 A7 Dm7 Db7 Cmaj7").analyzed_chords.map { |chord| chord.scale.title }
       expect(scales).to eq(["E Locrian", "A Mixolydian b6", "D Dorian", "Db Lydian Dominant", "C Ionian"])
