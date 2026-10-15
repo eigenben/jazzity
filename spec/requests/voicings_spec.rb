@@ -66,6 +66,15 @@ RSpec.describe "Choosing voicings", type: :request do
     expect(response).to have_http_status(:ok)
   end
 
+  it "carries only real families and picks into links to other keys" do
+    choices = {"0" => first_voicing.id, "1" => "<b>", "x" => "1", ChordSequence::MAX_CHORDS.to_s => "1"}
+    choices.merge!((2...ChordSequence::MAX_CHORDS).to_h { |position| [position.to_s, ""] })
+    get progression_path(progression), params: {family: "nonsense", v: choices}
+
+    expect(response.body).to include(%(href="/keys/F/progressions/major-ii-v?v%5B0%5D=#{first_voicing.id}"))
+    expect(response.body).not_to include("nonsense", "%3Cb%3E", "v%5Bx%5D", "v%5B#{ChordSequence::MAX_CHORDS}%5D")
+  end
+
   it "renders a chord sequence with a family and voicing choices" do
     get chord_sequence_path("Dm7,G7,Cmaj7"), params: {family: "rootless-3-note-shells", v: {"0" => "", "1" => "", "2" => ""}}
 
