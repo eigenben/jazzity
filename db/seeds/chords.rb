@@ -44,7 +44,9 @@ ChordQuality.create!(:name => 'Major', :code => 'MAJ').tap do |q|
     end
 
     c.chord_scales << ChordScale.new(:mode => Scale['Major'].modes[0], :offset => 0)
-    c.chord_scales << ChordScale.new(:mode => Scale["Major Bebop"].modes[0], :strength => 2, :offset => 0)
+    # Lydian raises the avoid note, the 4th, so it fits a major 7th anywhere.
+    c.chord_scales << ChordScale.new(:mode => Scale["Major"].modes[3], :strength => 2, :offset => -5)
+    c.chord_scales << ChordScale.new(:mode => Scale["Major Bebop"].modes[0], :strength => 3, :offset => 0)
   end
 
   q.chords.create!(:name => 'Major 6', :specify_tones => "u 3 5 6").tap do |c|
@@ -92,6 +94,7 @@ ChordQuality.create!(:name => 'Minor', :code => 'MIN').tap do |q|
 
     c.chord_scales << ChordScale.new(:mode => Scale['Major'].modes[1], :offset => -2)
     c.chord_scales << ChordScale.new(:mode => Scale['Major'].modes[5], :strength => 2, :offset => 3)
+    c.chord_scales << ChordScale.new(:mode => Scale["Blues"].modes[1], :strength => 3, :offset => 3)
 
     c.children.create!(:chord_quality => q, :name => "Minor 9", :specify_tones => "u b3 5 b7 9").tap do |cc|
       cc.symbols.create!(:name => "min9", :primary => true)
@@ -169,12 +172,17 @@ ChordQuality.create!(:name => 'Dominant', :code => 'DOM').tap do |q|
 
     c.chord_scales << ChordScale.new(:mode => Scale['Major'].modes[4], :offset => 5)
     c.chord_scales << ChordScale.new(:mode => Scale["Dominant Bebop"].modes[0], :strength => 2, :offset => 0)
+    c.chord_scales << ChordScale.new(:mode => Scale["Melodic Minor"].modes[3], :strength => 3, :offset => -5)
+    # The blues scale from the root, its b3 rubbing against the chord's 3rd.
+    c.chord_scales << ChordScale.new(:mode => Scale["Blues"].modes[1], :strength => 4, :offset => 3)
 
     c.children.create!(:chord_quality => q, :name => 'Dominant 9', :specify_tones => "u 3 5 b7 2").tap do |cc|
       cc.symbols.create!(:name => '9', :primary => true)
       cc.symbols.create!(:name => 'dom9')
 
       cc.chord_scales << ChordScale.new(:mode => Scale['Major'].modes[4], :offset => 5)
+      cc.chord_scales << ChordScale.new(:mode => Scale["Dominant Bebop"].modes[0], :strength => 2, :offset => 0)
+      cc.chord_scales << ChordScale.new(:mode => Scale["Melodic Minor"].modes[3], :strength => 3, :offset => -5)
     end
 
     c.children.create!(:chord_quality => q, :name => "Dominant 13", :specify_tones => "u 3 5 b7 9 13").tap do |cc|
@@ -182,6 +190,8 @@ ChordQuality.create!(:name => 'Dominant', :code => 'DOM').tap do |q|
       cc.symbols.create!(:name => "dom13")
 
       cc.chord_scales << ChordScale.new(:mode => Scale["Major"].modes[4], :offset => 5)
+      cc.chord_scales << ChordScale.new(:mode => Scale["Dominant Bebop"].modes[0], :strength => 2, :offset => 0)
+      cc.chord_scales << ChordScale.new(:mode => Scale["Melodic Minor"].modes[3], :strength => 3, :offset => -5)
     end
 
     c.children.create!(:chord_quality => q, :name => 'Dominant b9', :specify_tones => "u 3 5 b7 b2").tap do |cc|
