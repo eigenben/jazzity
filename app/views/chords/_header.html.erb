@@ -1,3 +1,4 @@
 <% content_for :title, @chord.title %>
 
-<%= render "shared/title", eyebrow: "Chord", title: @chord.title, accent: @chord.key || Key.default, aliases: @chord.symbol_names, key_path: key_path %>
+<%= render "shared/title", eyebrow: "Chord", title: @chord.title, accent: @chord.key || Key.default, aliases: @chord.symbol_names, key_path: key_path,
+      readable: ->(key) { @chord.clone.in_key_of(key).readable? } %>

@@ -234,6 +234,12 @@ class Key
     name == 'C'
   end
 
+  # The same pitch written with another letter and at most one sharp or
+  # flat: C# for Db, Gb for F#, B for Cb. Nil when there's none, as for D.
+  def enharmonic
+    Key.all.find { |k| k.index == index && k != self && !k.double? }
+  end
+
   # Sharps (positive) or flats (negative) in the name: 1 for F#, -2 for Bbb.
   def accidental
     name[1..].count("#") - name[1..].count("b")

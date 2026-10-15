@@ -12,6 +12,16 @@ module ApplicationHelper
     request.base_url + request.path.sub(%r{\A/keys/C(?=/)}, "")
   end
 
+  # The key to offer in place of `key` when the page in it would need
+  # double sharps or flats, as `readable` (called with a key) tells:
+  # Ebø7 is Eb Gb Bbb Db, so D#ø7 is offered instead.
+  def readable_key(key, readable)
+    return key if readable.call(key)
+
+    alternative = key.enharmonic
+    alternative && readable.call(alternative) ? alternative : key
+  end
+
   # Builds a polymorphic path in the given key. C is the reference key, so
   # its pages live at the unprefixed URL.
   def in_key(key, *parts)

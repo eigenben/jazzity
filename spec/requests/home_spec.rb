@@ -14,7 +14,15 @@ feature "Home" do
     expect(File).to exist(Rails.public_path.join("og.png"))
   end
 
-  scenario "Trying an example progression" do
+  scenario "Seeing the reference spelled without double sharps or flats" do
+    10.times do
+      visit root_path
+
+      expect(all(".cover-notes").map(&:text).join(" ")).not_to match(/\b[A-G](bb|##)/)
+    end
+  end
+
+    scenario "Trying an example progression" do
     visit root_path
     click_on "Coltrane changes"
 

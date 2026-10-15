@@ -1,4 +1,4 @@
-<%# Page heading, set in the band under the masthead: a small label naming the kind of thing, then its name, a subtitle and other names (`aliases`) when given, any :title_nav content, and links to the page in each key when given `key_path` (see shared/key_picker, which also takes `key`). `accent` picks out the start of the title in brass, the key a chord or scale is in. %>
+<%# Page heading, set in the band under the masthead: a small label naming the kind of thing, then its name, a subtitle and other names (`aliases`) when given, any :title_nav content, and links to the page in each key when given `key_path` (see shared/key_picker, which also takes `key` and `readable`). `accent` picks out the start of the title in brass, the key a chord or scale is in. %>
 <% accent = local_assigns[:accent]&.to_s %>
 <% content_for :band do %>
   <div class="band-inner">
@@ -20,7 +20,7 @@
     </header>
     <%= content_for :title_nav %>
     <% if local_assigns[:key_path] %>
-      <%= render "shared/key_picker", path: key_path, current: local_assigns[:key] %>
+      <%= render "shared/key_picker", path: key_path, current: local_assigns[:key], readable: local_assigns[:readable] %>
     <% end %>
   </div>
 <% end %>

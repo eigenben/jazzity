@@ -128,4 +128,14 @@ RSpec.describe Key, type: :model do
       expect(described_class[3].name).to eq("Eb")
     end
   end
+
+  describe "#enharmonic" do
+    it "names the same pitch with another letter and at most one accidental" do
+      expect(%w[Db F# Eb Cb].map { |name| described_class[name].enharmonic.name }).to eq(%w[C# Gb D# B])
+    end
+
+    it "is nil when the only other names need two accidentals" do
+      expect(described_class["D"].enharmonic).to be_nil
+    end
+  end
 end
