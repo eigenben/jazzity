@@ -34,6 +34,21 @@ module VoicingSeeds
     "Dominant 7 sus4" => %w[4 b7], "Dominant 9 sus4" => %w[4 b7], "Dominant 7 sus4 b9" => %w[4 b7],
     "Half Diminished" => %w[b3 b7], "Diminished 7" => %w[b3 bb7]
   }
+
+  # The four notes of each seventh (or sixth) chord, root first.
+  SEVENTH_CHORDS = {
+    "Major 7" => %w[u 3 5 7],
+    "Major 6" => %w[u 3 5 6],
+    "Minor 7" => %w[u b3 5 b7],
+    "Minor 6" => %w[u b3 5 6],
+    "Minor b6" => %w[u b3 5 b6],
+    "Minor-Major 7" => %w[u b3 5 7],
+    "Dominant 7" => %w[u 3 5 b7],
+    "Dominant b5" => %w[u 3 b5 b7],
+    "Augmented 7" => %w[u 3 #5 b7],
+    "Dominant 7 sus4" => %w[u 4 5 b7],
+    "Half Diminished" => %w[u b3 b5 b7]
+  }
 end
 
 VoicingSeeds.instance_exec do
@@ -55,19 +70,7 @@ VoicingSeeds.instance_exec do
 
   VoicingFamily.create!(:name => "4-Note Rooted", :voicing_tones_count => 4, :rootless => false).tap do |family|
     # Root position, and the 5th and 7th on the bottom with the root and 3rd above.
-    {
-      "Major 7" => %w[u 3 5 7],
-      "Major 6" => %w[u 3 5 6],
-      "Minor 7" => %w[u b3 5 b7],
-      "Minor 6" => %w[u b3 5 6],
-      "Minor b6" => %w[u b3 5 b6],
-      "Minor-Major 7" => %w[u b3 5 7],
-      "Dominant 7" => %w[u 3 5 b7],
-      "Dominant b5" => %w[u 3 b5 b7],
-      "Augmented 7" => %w[u 3 #5 b7],
-      "Dominant 7 sus4" => %w[u 4 5 b7],
-      "Half Diminished" => %w[u b3 b5 b7]
-    }.each do |chord_name, (root, third, fifth, seventh)|
+    VoicingSeeds::SEVENTH_CHORDS.each do |chord_name, (root, third, fifth, seventh)|
       voice(family, chord_name, "Rooted I" => [root, third, fifth, seventh].join(" "), "Rooted II" => [fifth, seventh, root, third].join(" "))
     end
 
@@ -158,19 +161,53 @@ VoicingSeeds.instance_exec do
   end
 
 
+  VoicingFamily.create!(:name => "Drop 2", :voicing_tones_count => 4, :rootless => true).tap do |family|
+    # Each inversion of the chord in close position with the second note from
+    # the top dropped an octave, played over the root: Drop 2 I is C E G B
+    # with the G dropped, G C E B.
+    names = ["Drop 2 I", "Drop 2 II", "Drop 2 III", "Drop 2 IV"]
+
+    VoicingSeeds::SEVENTH_CHORDS.merge("Diminished 7" => %w[u b3 b5 bb7]).each do |chord_name, tones|
+      voicings = (0..3).map do |inversion|
+        *lower, second, top = tones.rotate(inversion)
+        [second, *lower, top].join(" ")
+      end
+      voice(family, chord_name, names.zip(voicings).to_h)
+    end
+  end
+
+
   VoicingFamily.create!(:name => "4-Note Shell Extensions", :voicing_tones_count => 4, :rootless => true)
   VoicingFamily.create!(:name => "5-Note Shell Extensions", :voicing_tones_count => 5, :rootless => true)
-  VoicingFamily.create!(:name => "5-Note Quartal", :voicing_tones_count => 5, :rootless => true)
+
+  VoicingFamily.create!(:name => "5-Note Quartal", :voicing_tones_count => 5, :rootless => false, :left_hand_tones_count => 3).tap do |family|
+    # Three 4ths and a major 3rd, as Bill Evans voiced the Dorian chords of
+    # "So What": D G C F A on Dm7, and E A D G B from the 9th. The left hand
+    # takes the 4ths and the right hand the 4th and 3rd on top.
+    ["Minor 7", "Minor 9", "Minor 11"].each do |chord_name|
+      voice(family, chord_name, "So What I" => "u 11 b7 b3 5", "So What II" => "9 5 u 11 13")
+    end
+  end
+
   VoicingFamily.create!(:name => "6-Note Quartal", :voicing_tones_count => 6, :rootless => true)
 
 
-  VoicingFamily.create!(:name => "Upper Structures", :voicing_tones_count => 5, :rootless => true).tap do |family|
-    # An Ab major triad (the #5, root and #9 of C7alt) over its 3rd and 7th.
-    voice(family, "Altered", {
-      "Dominant #5 Upper Structure I" => "3 b7 b6 u b3",
-      "Dominant #5 Upper Structure I 1st Inversion" => "3 b7 b3 b6 u",
-      "Dominant #5 Upper Structure II" => "b7 3 u b3 b6",
-      "Dominant #5 Upper Structure II 1st Inversion" => "b7 3 b3 b6 u"
-    })
+  VoicingFamily.create!(:name => "Upper Structures", :voicing_tones_count => 5, :rootless => true, :left_hand_tones_count => 2).tap do |family|
+    # A major triad in the right hand over the 3rd and 7th in the left, the
+    # triad's notes the chord's tensions: on C7, Ab (the #5, root and #9 of
+    # C7alt), Gb (b5, b7 and b9 of C7b9) or D (9, #11 and 13 of C7#11).
+    {
+      "Altered" => ["bVI", %w[b6 u b3]],
+      "Dominant b9" => ["bV", %w[b5 b7 b9]],
+      "Dominant #11" => ["II", %w[9 #11 13]]
+    }.each do |chord_name, (numeral, triad)|
+      voicings = {}
+      {"3rd and 7th" => "3 b7", "7th and 3rd" => "b7 3"}.each do |shell, shell_tones|
+        ["", ", 1st Inversion", ", 2nd Inversion"].each_with_index do |inversion, i|
+          voicings["#{numeral} over #{shell}#{inversion}"] = [shell_tones, *triad.rotate(i)].join(" ")
+        end
+      end
+      voice(family, chord_name, voicings)
+    end
   end
 end

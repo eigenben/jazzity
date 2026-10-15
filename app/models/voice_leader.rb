@@ -40,6 +40,10 @@ class VoiceLeader
   # LOWER_INTERVAL_LIMITS.
   LEFT_HAND = Register.new(low: 40, high: 64, centre: 52)
 
+  # Two-handed voicings that aren't played over the root, such as the So
+  # What chords, from C3 to A5 and centred on D4.
+  TWO_HANDS = Register.new(low: 48, high: 81, centre: 62)
+
   # The root under a right-hand voicing, C2 to D3.
   BASS = Register.new(low: 36, high: 50, centre: 43)
 
@@ -137,9 +141,8 @@ class VoiceLeader
     sources = voicings.any? ? voicings.map { |v| [v, v.tones.in_key_of(key)] } : [[nil, chord.tones.in_key_of(key)]]
 
     candidates = sources.flat_map do |voicing, tones|
-      over_root = played_over_root?(voicing)
-      register = over_root ? RIGHT_HAND : LEFT_HAND
-      placements(tones, register).map { |pitches| Candidate.new(voicing, pitches, over_root) }
+      candidate = Candidate.new(voicing, nil, played_over_root?(voicing))
+      placements(tones, register_for(candidate)).map { |pitches| candidate.with(pitches: pitches) }
     end
 
     candidates.select { |c| fits?(c) }.presence || closest_fits(candidates)
@@ -151,12 +154,24 @@ class VoiceLeader
     (register.low - 12..register.high).select { |midi| midi % 12 == first.index }.map { |midi| tones.pitches(midi) }
   end
 
+  # Two-handed voicings with the root in them, or no need of it, are played
+  # as they are; others go over the root when their family or the family
+  # being voiced is rootless.
   def played_over_root?(voicing)
-    voicing&.voicing_family&.rootless? || family&.rootless? || false
+    own = voicing&.voicing_family
+    return false if own&.two_handed? && !own.rootless?
+
+    own&.rootless? || family&.rootless? || false
   end
 
   def register_for(candidate)
-    candidate.over_root ? RIGHT_HAND : LEFT_HAND
+    if candidate.over_root
+      RIGHT_HAND
+    elsif candidate.voicing&.voicing_family&.two_handed?
+      TWO_HANDS
+    else
+      LEFT_HAND
+    end
   end
 
   def fits?(candidate)

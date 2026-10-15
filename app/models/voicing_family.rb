@@ -10,4 +10,10 @@ class VoicingFamily < ActiveRecord::Base
   def to_s
     name
   end
+
+  # Whether its voicings are split between the hands, the left hand taking
+  # the lowest `left_hand_tones_count` notes.
+  def two_handed?
+    left_hand_tones_count.present?
+  end
 end
