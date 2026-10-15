@@ -15,3 +15,4 @@
 
 /config/master.key
 /.claude/settings.local.json
+/.claude/launch.json
