@@ -1,7 +1,7 @@
-<%# A progression as a card: its chart in roman numerals, its changes in its key, and its summary. %>
+<%# A progression as a card: its chart in roman numerals, its changes in its key, and its summary. With `show_key`, a progression in a key other than C says so by its name. %>
 <li id="<%= dom_id(progression) %>">
   <%= link_to in_key(progression.key, progression), class: "card" do %>
-    <h3 class="card-title"><%= progression.name %></h3>
+    <h3 class="card-title"><%= progression.name %><% if local_assigns[:show_key] && progression.key %> <span class="card-title-key">in <%= progression.key %></span><% end %></h3>
     <% if (chart = progression.lead_sheet) %>
       <p class="notes card-numerals"><%= chart_line(chart) %></p>
     <% end %>

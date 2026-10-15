@@ -49,9 +49,11 @@ RSpec.describe Search do
       expect(destination("D F A C, G B D F")).to be_a(ChordNoteSequence)
     end
 
-    it "goes to the only progression a name matches" do
-      expect(title_of("rhythm changes")).to eq("Rhythm Changes")
-      expect(title_of("jazz blues in F")).to eq("Jazz Blues in F")
+    it "goes to the only progression a name matches, in its home key unless another is named" do
+      expect(title_of("rhythm changes")).to eq("Rhythm Changes in Bb")
+      expect(title_of("rhythm changes in C")).to eq("Rhythm Changes in C")
+      expect(title_of("jazz blues in Eb")).to eq("Jazz Blues in Eb")
+      expect(title_of("backdoor")).to eq("Backdoor ii-V-I Progression")
     end
 
     it "corrects misspelled words" do
@@ -77,7 +79,7 @@ RSpec.describe Search do
     end
 
     it "matches canonical names only, not every key" do
-      expect(groups_for("bebop").values.flatten).to contain_exactly("C Major Bebop", "C Dominant Bebop", "Bebop Blues", "Bebop Rhythm Changes")
+      expect(groups_for("bebop").values.flatten).to contain_exactly("C Major Bebop", "C Dominant Bebop", "Bebop Blues in F", "Bebop Rhythm Changes in Bb")
     end
 
     it "shows results in the key the query names" do

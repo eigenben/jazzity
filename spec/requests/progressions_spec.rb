@@ -95,4 +95,18 @@ feature "Progressions" do
     visit "/progressions/modal-aaba"
     expect(page).to have_css("section[aria-labelledby=reharmonize-heading] .empty")
   end
+
+  scenario "Finding tunes in the keys they're played in" do
+    visit "/progressions"
+
+    expect(page).to have_link("Rhythm Changes in Bb", href: "/keys/Bb/progressions/rhythm-changes")
+    expect(page).to have_link("Bird Blues in F", href: "/keys/F/progressions/bird-blues")
+    expect(page).to have_link(href: "/progressions/major-ii-v-i")
+
+    visit "/keys/Eb/progressions"
+    expect(page).to have_link("Rhythm Changes", href: "/keys/Eb/progressions/rhythm-changes")
+
+    visit "/progressions/rhythm-changes"
+    within(".facts") { expect(page).to have_link("Bb", href: "/keys/Bb/progressions/rhythm-changes") }
+  end
 end

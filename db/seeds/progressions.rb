@@ -100,13 +100,14 @@ ProgressionFamily.create!(:name => "Cycles & Chains").tap do |family|
     :summary => "ii-Vs falling by half steps: iii-VI, the ii-V a half step lower, then ii-V-I.",
     :information => "The middle ii-V (Ebm7 Ab7 in C) is a chromatic step between the other two, and Ab7 is also the tritone substitute for D7, the V of V. Sliding ii-Vs like these are a staple of bebop reharmonization. Practice them as a sequence: play one idea on the first ii-V and move it down a half step for each of the others.")
 
-  cycle.call(:name => "Coltrane Changes", :chart => "| ii7 bIII7 | bVImaj7 VII7 | IIImaj7 V7 | Imaj7 |",
+  cycle.call(:name => "Coltrane Changes", :home_key_name => "D", :chart => "| ii7 bIII7 | bVImaj7 VII7 | IIImaj7 V7 | Imaj7 |",
     :summary => "John Coltrane's substitution for a ii-V-I: the music passes through three keys a major third apart, I, bVI and III, each reached by its own dominant, before arriving home.",
     :information => "In C the chords are Dm7 Eb7, Abmaj7 B7, Emaj7 G7 and Cmaj7: the keys of C, Ab and E split the octave into equal major thirds. Coltrane used the cycle in his own compositions of the late 1950s and to reharmonize standards. Practice it slowly, arpeggiating each chord or playing a 1-2-3-5 pattern on each, until the key centres feel familiar.")
 end
 
 ProgressionFamily.create!(:name => "Blues").tap do |family|
-  blues = ->(attributes) { family.progressions.create!({:seeding => true, :full_tune => true, :meter => four_four, :form => Form["A-B-C"]}.merge(attributes)) }
+  # Jazz musicians play the blues in F more than any other key.
+  blues = ->(attributes) { family.progressions.create!({:seeding => true, :full_tune => true, :meter => four_four, :form => Form["A-B-C"], :home_key_name => "F"}.merge(attributes)) }
 
   basic = blues.call(:name => "Basic Blues", :chart => "| I7 | IV7 | I7 | % | IV7 | % | I7 | % | V7 | IV7 | I7 | V7 |",
     :summary => "The 12-bar blues in its simplest form, with dominant 7th chords on I, IV and V; the most commonly played progression in jazz.",
@@ -128,7 +129,7 @@ ProgressionFamily.create!(:name => "Blues").tap do |family|
     :summary => "The blues as Charlie Parker reharmonized it: a major I chord, then ii-Vs falling by step through the first four bars and by half step through bars 6 to 8.",
     :information => "In F the first four bars run Fmaj7, Em7b5 A7, Dm7 G7, Cm7 F7, each ii-V pointing a step lower until the last one lands on IV. Bars 6 to 8 bring it back down to ii with ii-Vs a half step apart: Bbm7 Eb7, Am7 D7, Abm7 Db7. Learn the chords as a run of ii-Vs and practice them slowly with guide tones before bringing the blues scale back in.")
 
-  blues.call(:name => "Minor Blues", :chart => "| i7 | % | % | % | iv7 | % | i7 | % | bVI7 | V7alt | i7 | iiø7 V7alt |",
+  blues.call(:name => "Minor Blues", :home_key_name => "C", :chart => "| i7 | % | % | % | iv7 | % | i7 | % | bVI7 | V7alt | i7 | iiø7 V7alt |",
     :summary => "The 12-bar blues in a minor key: minor 7ths on i and iv, and a bVI7 falling by half step to an altered V7 in bars 9 and 10.",
     :information => "From bVI7 to V7 (Ab7 to G7alt in C minor) the bass slides down a half step and so do the 3rd and 7th. The long stretches on i leave room for modal playing: Dorian on the minor chords, Lydian dominant on the bVI7 and the altered scale on the V. Practice the minor pentatonic and the blues scale over the whole form, then target the changes.")
 end
@@ -137,13 +138,13 @@ ProgressionFamily.create!(:name => "Tune Forms").tap do |family|
   form = ->(attributes) { family.progressions.create!({:seeding => true, :full_tune => true, :meter => four_four}.merge(attributes)) }
 
   rhythm_a = "| I6 vi7 | ii7 V7 | I6 vi7 | ii7 V7 | I6 I7 | IV6 #iv°7 | I6 V7 | I6 |"
-  rhythm = form.call(:name => "Rhythm Changes", :form => Form["A-A-B-A"],
+  rhythm = form.call(:name => "Rhythm Changes", :home_key_name => "Bb", :form => Form["A-A-B-A"],
     :chart => "A: #{rhythm_a}\nA: #{rhythm_a}\nB: | III7 | % | VI7 | % | II7 | % | V7 | % |\nA: #{rhythm_a}",
     :summary => "The 32-bar A-A-B-A form of Gershwin's “I Got Rhythm”, the second most commonly played progression in jazz: I-vi-ii-V turnarounds in the A sections and a bridge of dominant 7ths around the cycle of fifths (III7, VI7, II7, V7).",
     :information => "Bebop musicians wrote dozens of new melodies over these changes. The A sections spin I-vi-ii-V turnarounds (players often make the vi a VI7 or a #i°7), and the bridge moves through dominants two bars at a time. Practice the A sections as a loop of ii-Vs in Bb, the traditional key, then the bridge with guide tones until you can hear each dominant coming.")
 
   bebop_a = "| I6 VI7 | ii7 V7 | iii7 VI7 | ii7 V7 | v7 I7 | IV7 #iv°7 | iii7 VI7 | ii7 V7 |"
-  form.call(:name => "Bebop Rhythm Changes", :form => Form["A-A-B-A"], :variant_of => rhythm,
+  form.call(:name => "Bebop Rhythm Changes", :home_key_name => "Bb", :form => Form["A-A-B-A"], :variant_of => rhythm,
     :chart => "A: #{bebop_a}\nA: #{bebop_a}\nB: | vii7 III7 | % | iii7 VI7 | % | vi7 II7 | % | ii7 V7 | % |\nA: #{bebop_a.sub("| iii7 VI7 | ii7 V7 |", "| ii7 V7 | I6 |")}",
     :summary => "Rhythm changes as bebop players play them: VI7 and iii-VI turnarounds in the A sections, a ii-V into IV in bar 5, and a ii-V on each dominant of the bridge.",
     :information => "With a new chord every two beats, the A sections become an almost continuous chain of ii-Vs, which is why the form is a test piece at jam sessions, usually fast and in Bb. Rhythm sections mix these changes with the original ones freely. Practice the A section in two-bar pieces, and the bridge as four ii-Vs falling in fifths.")
@@ -159,7 +160,7 @@ ProgressionFamily.create!(:name => "Tune Forms").tap do |family|
     :summary => "A 16-bar form in two eight-bar halves: a statement that ends on V, and an answer that visits IV and the minor iv before cadencing home.",
     :information => "Many standards and jazz originals are 16 bars long, and a lot of them follow this outline: the first half wanders to a half cadence on V, then the second turns I7 into a dominant of IV, darkens to the minor iv with a backdoor ii-V, and comes home with a turnaround. Practice it as a template, and once its sound is in your ear, compare it with tunes you know.")
 
-  form.call(:name => "Modal AABA", :form => Form["A-A-B-A"],
+  form.call(:name => "Modal AABA", :home_key_name => "D", :form => Form["A-A-B-A"],
     :chart => "A: | i7 | % | % | % | % | % | % | % |\nA: | i7 | % | % | % | % | % | % | % |\nB: | bii7 | % | % | % | % | % | % | % |\nA: | i7 | % | % | % | % | % | % | % |",
     :summary => "A 32-bar AABA form with one minor 7th chord to each section: eight bars of Dorian on i, and a bridge a half step higher.",
     :information => "Modal jazz of the late 1950s and the 1960s traded quick changes for long stretches of a single mode, leaving the soloist to create the motion. Play Dorian over the i7, and in the bridge move everything up a half step, then back down. Practice building lines from fourths and from pentatonic shapes within the mode, and listen for the lift when the bridge arrives.")

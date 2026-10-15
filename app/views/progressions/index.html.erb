@@ -13,7 +13,11 @@
   <section class="group" aria-labelledby="<%= dom_id(family) %>">
     <h2 class="section-heading" id="<%= dom_id(family) %>"><%= family %></h2>
     <ul class="card-grid card-grid-wide">
-      <%= render family.progressions.map { |progression| progression.in_key_of(@key) } %>
+      <% if @key %>
+        <%= render family.progressions.map { |progression| progression.in_key_of(@key) } %>
+      <% else %>
+        <%= render partial: "progressions/progression", collection: family.progressions.map(&:in_home_key), locals: {show_key: true} %>
+      <% end %>
     </ul>
   </section>
 <% end %>

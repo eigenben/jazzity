@@ -17,7 +17,8 @@
     <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, max_bars_per_line: 8, min_bar_width: 140, class: "staff-large staff-score", data: {player_target: "staff"}) %>
     <%= render "players/keyboard", voiced_chords: @voiced_chords %>
   <% end %>
-  <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
+  <% home_key = (link_to(@progression.home_key, in_key(@progression.home_key, @progression)) if @progression.home_key_name) %>
+  <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars, "Usual key" => home_key}.compact %>
   <% if facts.any? %>
     <dl class="facts">
       <% facts.each do |term, value| %>

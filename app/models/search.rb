@@ -194,7 +194,7 @@ class Search
   def progression_named(text)
     KeyedQuery.parse(text).each do |reading|
       progression = Progression.where("lower(name) = ?", reading.text.downcase).first
-      return progression.in_key_of(reading.key) if progression
+      return (reading.key ? progression.in_key_of(reading.key) : progression.in_home_key) if progression
     end
 
     nil
