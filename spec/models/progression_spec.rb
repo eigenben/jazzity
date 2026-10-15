@@ -97,4 +97,9 @@ RSpec.describe Progression, type: :model do
     expect(progressions[2].changes.map(&:lead_sheet_symbol)).to eq(%w[Gm7 C7 Fmaj7])
     expect(progressions.first.changes.map(&:lead_sheet_symbol)).to eq(%w[Fm7 Bb7 Ebmaj7])
   end
+
+  it "gives every progression a readable slug, never one FriendlyId had to make unique" do
+    expect(Progression.pluck(:slug)).to all(match(/\A[a-z0-9-]+\z/)).and(all(satisfy { |slug| !slug.match?(/\h{8}-\h{4}-/) }))
+    expect(Progression.find_by!(slug: "major-i-vi7-ii-v").name).to eq("Major I-VI-ii-V")
+  end
 end

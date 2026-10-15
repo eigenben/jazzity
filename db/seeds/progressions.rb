@@ -51,7 +51,8 @@ ProgressionFamily.create!(:name => "Turnarounds").tap do |family|
     :summary => "The basic turnaround: diatonic chords falling in fifths from vi back to I, two to a bar, to bring a tune back to the top.",
     :information => "Rhythm sections fill the last two bars of a phrase with it, and some songs use it as the whole of their A section. From vi on, each root falls a fifth to the next, so it's a chain of small resolutions. Practice it as a loop in all keys, then try the variations, which change one or two chords at a time.")
 
-  turnaround.call(:name => "Major I-VI-ii-V", :chart => "| Imaj7 VI7 | ii7 V7 |", :variant_of => basic,
+  # Slugs ignore case, so this would collide with the I-vi-ii-V above.
+  turnaround.call(:name => "Major I-VI-ii-V", :slug => "major-i-vi7-ii-v", :chart => "| Imaj7 VI7 | ii7 V7 |", :variant_of => basic,
     :summary => "The standard turnaround back to the top of a major tune, with VI7, the dominant of ii, in place of the diatonic vi chord.",
     :information => "Making the vi a dominant (A7 in C) turns it into the V of ii, so the turnaround becomes two dominant resolutions in a row. Its 3rd, C#, is outside the key and pushes up to the D of Dm7. Over the VI7 try Mixolydian b6 or the half-whole diminished scale.")
 
