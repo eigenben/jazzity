@@ -1,6 +1,7 @@
 class ChordSequencesController < ApplicationController
   include KeyScoped
 
+  rate_limit_typed_input
   before_action :find_chord_sequence
 
   respond_to :html

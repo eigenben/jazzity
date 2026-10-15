@@ -2,6 +2,8 @@
 # goes to the changes' own chord sequence page, which carries the analysis.
 # Without changes, or with changes it can't read, it shows the form.
 class AnalysesController < ApplicationController
+  rate_limit_typed_input
+
   def show
     @changes = params[:changes].is_a?(String) ? params[:changes].squish : ""
 
