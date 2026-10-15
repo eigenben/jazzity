@@ -2,8 +2,9 @@
 # rootless voicing, the root under it in the left hand. Knows which notes
 # go on which staff of a grand staff.
 class VoicedChord
-  # A voicing wider than this (a two-handed upper structure) is split at its
-  # widest gap, and its lower notes join the root in the left hand.
+  # A voicing wider than this is split at its widest gap, and its lower
+  # notes join the root in the left hand, unless its family says where to
+  # split it.
   ONE_HAND_SPAN = 16
 
   attr_reader :chord, :voicing, :pitches, :root
@@ -32,11 +33,11 @@ class VoicedChord
   end
 
   def treble
-    over_root? ? pitches.drop(left_hand_count) : []
+    split? ? pitches.drop(left_hand_count) : []
   end
 
   def bass
-    over_root? ? [root, *pitches.first(left_hand_count)] : pitches
+    split? ? [root, *pitches.first(left_hand_count)].compact : pitches
   end
 
   # Everything the staff needs to draw this chord: its symbol and the notes
@@ -53,10 +54,20 @@ class VoicedChord
 
   private
 
+  def split?
+    over_root? || two_handed?
+  end
+
+  def two_handed?
+    voicing&.voicing_family&.two_handed? || false
+  end
+
   def left_hand_count
     @left_hand_count ||= begin
       midis = pitches.map(&:midi)
-      if midis.last - midis.first > ONE_HAND_SPAN
+      if two_handed?
+        voicing.voicing_family.left_hand_tones_count
+      elsif midis.last - midis.first > ONE_HAND_SPAN
         gaps = midis.each_cons(2).map { |a, b| b - a }
         gaps.index(gaps.max) + 1
       else

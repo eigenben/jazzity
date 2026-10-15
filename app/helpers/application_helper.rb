@@ -61,7 +61,8 @@ module ApplicationHelper
     "Rootless 3-Note Shells" => ["Shells", "Three-note rootless voicings: the 3rd and 7th with one more tone, played over the root."],
     "Guide Tones" => ["Guide tones", "Just the 3rd and 7th, the notes that define each chord, played over the root."],
     "Rooted Guide Tones" => ["Rooted shells", "The root, 3rd and 7th in the left hand, as bebop pianists comped."],
-    "4-Note Rooted" => ["Rooted", "Four-note voicings with the root on the bottom or inside, in the left hand."]
+    "4-Note Rooted" => ["Rooted", "Four-note voicings with the root on the bottom or inside, in the left hand."],
+    "Drop 2" => ["Drop 2", "Four-note chords in close position with the second note from the top dropped an octave, played over the root."]
   }.freeze
 
   def voicing_family_choices

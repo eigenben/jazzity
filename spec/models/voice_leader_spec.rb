@@ -105,11 +105,35 @@ RSpec.describe VoiceLeader do
   end
 
   it "splits a two-handed upper structure between the hands" do
-    upper = chords("C7alt").first.voicings.find_by!(name: "Dominant #5 Upper Structure I")
+    upper = chords("C7alt").first.voicings.find_by!(name: "bVI over 3rd and 7th")
     voiced = voice("C7alt", overrides: {0 => upper}).first
 
     expect(voiced.bass.map(&:to_s)).to eq(%w[C/3 E/3 Bb/3])
     expect(voiced.treble.map(&:to_s)).to eq(%w[Ab/4 C/5 Eb/5])
+  end
+
+  it "splits an upper structure after the 3rd and 7th, leaving the triad to the right hand" do
+    upper = chords("C7#11").first.voicings.find_by!(name: "II over 3rd and 7th")
+    voiced = voice("C7#11", overrides: {0 => upper}).first
+
+    expect(voiced.bass.map(&:to_s)).to eq(%w[C/3 E/3 Bb/3])
+    expect(voiced.treble.map(&:to_s)).to eq(%w[D/4 F#/4 A/4])
+  end
+
+  it "plays a So What chord with both hands and no separate root" do
+    so_what = chords("Dm7").first.voicings.find_by!(name: "So What II")
+    voiced = voice("Dm7", overrides: {0 => so_what}).first
+
+    expect(voiced.bass.map(&:to_s)).to eq(%w[E/3 A/3 D/4])
+    expect(voiced.treble.map(&:to_s)).to eq(%w[G/4 B/4])
+  end
+
+  it "voices a ii-V-I in drop 2 voicings over the root" do
+    voiced = voice("Dm7 G7 Cmaj7", family: family("Drop 2"))
+
+    expect(voiced.map { |chord| chord.voicing.voicing_family.name }.uniq).to eq(["Drop 2"])
+    expect(voiced.map(&:over_root?)).to all(be(true))
+    expect(voiced.map { |chord| chord.pitches.last.midi - chord.pitches.first.midi }).to all(be_between(13, 16))
   end
 
   it "describes each chord for the staff" do

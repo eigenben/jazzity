@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_15_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_15_150000) do
   create_table "chord_qualities", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -153,6 +153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_140000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.integer "left_hand_tones_count"
     t.index ["slug"], name: "index_voicing_families_on_slug"
   end
 
