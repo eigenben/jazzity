@@ -268,6 +268,7 @@ a:hover {
 .masthead-search {
   margin-left: auto;
   flex: 1 1 18rem;
+  min-width: 0;
   max-width: 26rem;
 }
 
@@ -636,6 +637,14 @@ a:hover {
   min-width: min(var(--staff-width), 40rem);
 }
 
+/* On a phone, though, a single chord or scale shrinks to fit rather than
+   hide its last notes off the edge; only a chart scrolls. */
+@media (max-width: 30rem) {
+  .staff-large:not(.staff-score) svg {
+    min-width: 0;
+  }
+}
+
 .staff-only {
   padding: 1rem;
   background: var(--surface);
@@ -990,6 +999,7 @@ a:hover {
 
 .analysis-start {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
@@ -1029,6 +1039,24 @@ a:hover {
 
 .card-grid-compact .card-title {
   font-size: 1.4rem;
+}
+
+/* On a phone, compact cards go two abreast rather than one to a row, so
+   that a page of chords or voicings isn't a long scroll of half-empty
+   cards. */
+@media (max-width: 30rem) {
+  .card-grid-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .card-grid-compact .card {
+    padding: 0.8rem 0.75rem;
+  }
+
+  .card-grid-compact .card-title {
+    font-size: 1.2rem;
+  }
 }
 
 /* Scales are long runs of notes, so give them room to stay legible. */
@@ -1510,6 +1538,51 @@ a:hover {
 @media (hover: none) {
   .player-hint {
     display: none;
+  }
+}
+
+/* On a phone, player buttons are a little smaller, so that a pair like
+   Play voicing and Arpeggiate share a line; the tempo slider shares a line
+   with Play (its BPM reading standing for its label); and the toggles
+   shrink further to fit on one line together. */
+@media (max-width: 40rem) {
+  .player-button {
+    padding: 0.5rem 1rem 0.5rem 0.8rem;
+    font-size: 1rem;
+  }
+
+  .transport {
+    gap: 0.5rem;
+  }
+
+  .transport-tempo {
+    flex: 1 1 9rem;
+  }
+
+  .transport-tempo label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .transport-tempo input {
+    flex: 1;
+    width: 0;
+    min-width: 4rem;
+  }
+
+  .transport-tempo output {
+    min-width: 7ch;
+  }
+
+  .transport .player-toggle {
+    min-height: 2.5rem;
+    padding: 0.4rem 0.8rem 0.4rem 0.7rem;
+    gap: 0.4rem;
+    font-size: 0.85rem;
   }
 }
 
