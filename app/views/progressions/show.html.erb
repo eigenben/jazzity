@@ -1,52 +1,47 @@
 <% content_for :title, @progression.title %>
 
-<%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: @progression.summary %>
+<%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: @progression.summary,
+      key_path: ->(key) { polymorphic_path(in_key(key, @progression), voicing_params) } %>
 
-<div class="with-dial">
-  <div class="main-column">
-    <%= tag.section class: "feature", aria: {label: "Chart"}, data: progression_player_data(@progression, @voiced_chords) do %>
-      <% if @voiced_chords.any? %>
-        <%= render "players/transport", next_key: true, practice_path: polymorphic_path(in_key(@key, @progression), {:action => :practice}.merge(voicing_params)) %>
+<%= tag.section class: "feature", aria: {label: "Chart"}, data: progression_player_data(@progression, @voiced_chords) do %>
+  <% if @voiced_chords.any? %>
+    <%= render "players/transport", next_key: true, practice_path: polymorphic_path(in_key(@key, @progression), {:action => :practice}.merge(voicing_params)) %>
+  <% end %>
+  <% if (chart = @progression.lead_sheet) %>
+    <%= render "progressions/lead_sheet", chart: chart %>
+  <% end %>
+  <% if @voiced_chords.any? %>
+    <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large", data: {player_target: "staff"}) %>
+    <%= render "players/keyboard", voiced_chords: @voiced_chords %>
+  <% end %>
+  <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
+  <% if facts.any? %>
+    <dl class="facts">
+      <% facts.each do |term, value| %>
+        <div><dt><%= term %></dt><dd><%= value %></dd></div>
       <% end %>
-      <% if (chart = @progression.lead_sheet) %>
-        <%= render "progressions/lead_sheet", chart: chart %>
-      <% end %>
-      <% if @voiced_chords.any? %>
-        <%= voiced_staff(@progression.staff_notes(@voiced_chords), beats_per_bar: @progression.beats_per_bar, class: "staff-large", data: {player_target: "staff"}) %>
-        <%= render "players/keyboard", voiced_chords: @voiced_chords %>
-      <% end %>
-      <% facts = {"Meter" => @progression.meter, "Form" => @progression.form, "Bars" => @progression.bars}.compact %>
-      <% if facts.any? %>
-        <dl class="facts">
-          <% facts.each do |term, value| %>
-            <div><dt><%= term %></dt><dd><%= value %></dd></div>
-          <% end %>
-        </dl>
-      <% end %>
-      <% if @progression.information.present? %>
-        <div class="prose">
-          <%= text_to_html @progression.information %>
-        </div>
-      <% end %>
-    <% end %>
+    </dl>
+  <% end %>
+  <% if @progression.information.present? %>
+    <div class="prose">
+      <%= text_to_html @progression.information %>
+    </div>
+  <% end %>
+<% end %>
 
-    <% if @progression.chords.any? %>
-      <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
-    <% end %>
+<% if @progression.chords.any? %>
+  <%= render "progressions/voice_leading", voiced_chords: @voiced_chords %>
+<% end %>
 
-    <% if @progression.changes.many? %>
-      <%= render "progressions/reharmonize", progression: @progression %>
-    <% end %>
+<% if @progression.changes.many? %>
+  <%= render "progressions/reharmonize", progression: @progression %>
+<% end %>
 
-    <% if (variations = @progression.variations).any? %>
-      <section class="group" aria-labelledby="variations-heading">
-        <h2 class="section-heading" id="variations-heading">Variations</h2>
-        <ul class="card-grid">
-          <%= render variations %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
-
-  <%= render "shared/key_dial", path: ->(key) { polymorphic_path(in_key(key, @progression), voicing_params) } %>
-</div>
+<% if (variations = @progression.variations).any? %>
+  <section class="group" aria-labelledby="variations-heading">
+    <h2 class="section-heading" id="variations-heading">Variations</h2>
+    <ul class="card-grid">
+      <%= render variations %>
+    </ul>
+  </section>
+<% end %>

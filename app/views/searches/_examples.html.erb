@@ -1,18 +1,19 @@
-<%# Example searches, grouped by what they find, each a link that runs it. %>
+<%# Example searches, grouped by what they find like the sides of a record, each a link that runs it. %>
 <div class="example-groups">
   <% {
     "Chord symbols" => ["Ebmaj7", "F#-7", "Bø7", "C7(b9)", "G7alt"],
     "Scales & modes" => ["D Dorian", "lydian in F", "f# melodic minor", "Ab Lydian Augmented"],
     "Progressions" => ["ii V I in Eb", "backdoor", "Coltrane changes", "Bird Blues in F", "Rhythm Changes"],
     "Changes & notes" => ["analyze Dm7 G7 Cmaj7 A7", "Dm7 | G7 | Cmaj7", "iv7 bVII7 I", "Eb G Bb D", "D F A C, G B D F"]
-  }.each do |group, examples| %>
+  }.each_with_index do |(group, examples), i| %>
+    <% side = ("A".ord + i).chr %>
     <div class="example-group">
-      <h3><%= group %></h3>
-      <ul>
-        <% examples.each do |example| %>
-          <li><%= link_to_search_example example %></li>
+      <h3><span class="example-side">Side <%= side %></span> <%= group %></h3>
+      <ol>
+        <% examples.each_with_index do |example, track| %>
+          <li><span class="example-track" aria-hidden="true"><%= side %><%= track + 1 %></span> <%= link_to_search_example example %></li>
         <% end %>
-      </ul>
+      </ol>
     </div>
   <% end %>
 </div>

@@ -1,30 +1,24 @@
-<%= render "chords/header" %>
+<%= render "chords/header", key_path: ->(key) { in_key(key, @chord) } %>
 
-<div class="with-dial">
-  <div class="main-column">
-    <%= render "chords/summary" %>
+<%= render "chords/summary" %>
 
-    <section class="group" aria-labelledby="scales-heading">
-      <h2 class="section-heading" id="scales-heading">Scales that fit</h2>
-      <ul class="card-grid card-grid-wide">
-        <% @chord.chord_scales.each do |chord_scale| %>
-          <%= render chord_scale.mode, key: (@chord.key || Key.default).shifted(chord_scale.offset) %>
-        <% end %>
-      </ul>
-    </section>
-
-    <% if @chord.voicings.any? %>
-      <section class="group" aria-labelledby="voicings-heading">
-        <h2 class="section-heading" id="voicings-heading">
-          Voicings
-          <%= link_to "All #{@chord.voicings.size}", in_key(@chord.key, @chord, :voicings), class: "section-link" %>
-        </h2>
-        <ul class="card-grid card-grid-compact">
-          <%= render @chord.voicings.first(6), key: @key %>
-        </ul>
-      </section>
+<section class="group" aria-labelledby="scales-heading">
+  <h2 class="section-heading" id="scales-heading">Scales that fit</h2>
+  <ol class="tracklist">
+    <% @chord.chord_scales.each do |chord_scale| %>
+      <%= render chord_scale.mode, key: (@chord.key || Key.default).shifted(chord_scale.offset) %>
     <% end %>
-  </div>
+  </ol>
+</section>
 
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord) } %>
-</div>
+<% if @chord.voicings.any? %>
+  <section class="group" aria-labelledby="voicings-heading">
+    <h2 class="section-heading" id="voicings-heading">
+      Voicings
+      <%= link_to "All #{@chord.voicings.size}", in_key(@chord.key, @chord, :voicings), class: "section-link" %>
+    </h2>
+    <ul class="card-grid card-grid-compact">
+      <%= render @chord.voicings.first(6), key: @key %>
+    </ul>
+  </section>
+<% end %>

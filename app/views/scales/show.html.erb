@@ -1,52 +1,49 @@
 <% content_for :title, @mode.title %>
 
-<%= render "shared/title", eyebrow: @mode.main? ? "Scale" : "Mode #{@mode.mode} of #{@scale.title.delete_prefix("The ")}", title: @mode.main? ? @scale.title.delete_prefix("The ") : @mode.title %>
-
-<div class="with-dial">
-  <div class="main-column">
-    <% if @scale.modes.many? %>
-      <nav class="mode-tabs" aria-label="Modes of <%= @scale.name %>">
-        <% @scale.modes.each do |mode| %>
-          <%= link_to mode.name, in_key(@key, @scale, (mode unless mode.main?)), aria: {current: ("page" if mode == @mode)} %>
-        <% end %>
-      </nav>
-    <% end %>
-
-    <% chords, hands = playback_for(@mode) %>
-    <%= tag.section class: "feature", data: player_data(:scale, chords, shortcut: true) do %>
-      <%= render "players/controls", play_label: @mode.main? ? "Play scale" : "Play mode", kind: :scale %>
-      <%= scale_staff(@mode, class: "staff-large") %>
-      <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
-      <dl class="facts">
-        <div>
-          <dt>Notes</dt>
-          <dd class="notes"><%= @mode.notes.join(" ") %></dd>
-        </div>
-        <div>
-          <dt>Steps</dt>
-          <dd class="notes"><%= @mode.step_names.join(" ") %></dd>
-        </div>
-        <div>
-          <dt>Intervals</dt>
-          <dd class="notes"><%= @mode.interval_names.join(" ") %></dd>
-        </div>
-      </dl>
-      <% if @mode.information.present? %>
-        <div class="prose"><%= text_to_html @mode.information %></div>
+<% if @scale.modes.many? %>
+  <% content_for :title_nav do %>
+    <nav class="mode-tabs" aria-label="Modes of <%= @scale.name %>">
+      <% @scale.modes.each do |mode| %>
+        <%= link_to mode.name, in_key(@key, @scale, (mode unless mode.main?)), aria: {current: ("page" if mode == @mode)} %>
       <% end %>
-    <% end %>
+    </nav>
+  <% end %>
+<% end %>
 
-    <% if @mode.chord_scales.any? %>
-      <section class="group" aria-labelledby="chords-heading">
-        <h2 class="section-heading" id="chords-heading">Chords it fits</h2>
-        <ul class="card-grid card-grid-compact">
-          <% @mode.chord_scales.each do |chord_scale| %>
-            <%= render chord_scale.chord, key: (@scale.key || Key.default).shifted(-1 * chord_scale.offset) %>
-          <% end %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
+<%= render "shared/title", eyebrow: @mode.main? ? "Scale" : "Mode #{@mode.mode} of #{@scale.title.delete_prefix("The ")}", title: @mode.main? ? @scale.title.delete_prefix("The ") : @mode.title,
+      accent: @mode.notes.first, key_path: ->(key) { in_key(key, @scale, (@mode unless @mode.main?)) } %>
 
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @scale, (@mode unless @mode.main?)) } %>
-</div>
+<% chords, hands = playback_for(@mode) %>
+<%= tag.section class: "feature", data: player_data(:scale, chords, shortcut: true) do %>
+  <%= render "players/controls", play_label: @mode.main? ? "Play scale" : "Play mode", kind: :scale %>
+  <%= scale_staff(@mode, class: "staff-large") %>
+  <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
+  <dl class="facts">
+    <div class="facts-wide">
+      <dt>Notes</dt>
+      <dd><%= note_tiles(@mode.notes, root: true) %></dd>
+    </div>
+    <div>
+      <dt>Steps</dt>
+      <dd class="notes"><%= @mode.step_names.join(" ") %></dd>
+    </div>
+    <div>
+      <dt>Intervals</dt>
+      <dd class="notes"><%= @mode.interval_names.join(" ") %></dd>
+    </div>
+  </dl>
+  <% if @mode.information.present? %>
+    <div class="prose"><%= text_to_html @mode.information %></div>
+  <% end %>
+<% end %>
+
+<% if @mode.chord_scales.any? %>
+  <section class="group" aria-labelledby="chords-heading">
+    <h2 class="section-heading" id="chords-heading">Chords it fits</h2>
+    <ul class="card-grid card-grid-compact">
+      <% @mode.chord_scales.each do |chord_scale| %>
+        <%= render chord_scale.chord, key: (@scale.key || Key.default).shifted(-1 * chord_scale.offset) %>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

@@ -19,33 +19,42 @@
   </head>
 
   <body>
-    <header class="masthead">
-      <div class="masthead-inner">
-        <%= link_to root_path, class: "wordmark" do %><%= render "shared/logo_mark" %>Jazzity<% end %>
-        <nav class="primary-nav" aria-label="Sections">
-          <%= navigation_link_to "Chords", chords_path, [ChordsController, VoicingsController] %>
-          <%= navigation_link_to "Scales", scales_path, [ScalesController, ModesController] %>
-          <%= navigation_link_to "Progressions", progressions_path, [ProgressionsController, ChordSequencesController] %>
-        </nav>
-        <% unless controller.is_a?(DashboardsController) %>
-          <%= render "searches/form", class: "masthead-search", label_class: "visually-hidden" %>
-        <% end %>
-      </div>
-    </header>
+    <%# The masthead and the page's title share the midnight band, like the front of a record sleeve; the page's first panel overlaps its foot. %>
+    <div class="band">
+      <header class="masthead">
+        <div class="masthead-inner">
+          <%= link_to root_path, class: "wordmark" do %><%= render "shared/logo_mark" %>Jazzity<% end %>
+          <nav class="primary-nav" aria-label="Sections">
+            <%= navigation_link_to "Chords", chords_path, [ChordsController, VoicingsController] %>
+            <%= navigation_link_to "Scales", scales_path, [ScalesController, ModesController] %>
+            <%= navigation_link_to "Progressions", progressions_path, [ProgressionsController] %>
+            <%= navigation_link_to "Analyze", analysis_path, [AnalysesController, ChordSequencesController] %>
+          </nav>
+          <% unless controller.is_a?(DashboardsController) %>
+            <%= render "searches/form", class: "masthead-search", label_class: "visually-hidden" %>
+          <% end %>
+        </div>
+      </header>
 
-    <% flash.each do |type, message| %>
-      <p class="flash flash-<%= type %>" role="status"><%= message %></p>
-    <% end %>
+      <%= yield :band %>
+
+      <% flash.each do |type, message| %>
+        <p class="flash flash-<%= type %>" role="status"><%= message %></p>
+      <% end %>
+    </div>
 
     <main class="page">
       <%= yield %>
     </main>
 
     <footer class="colophon">
-      <p>
-        Jazzity is a jazz theory reference by Ben Hughes.
-        <%= link_to "Source on GitHub", "https://github.com/eigenben/jazzity" %>
-      </p>
+      <div class="colophon-inner">
+        <%= link_to root_path, class: "wordmark wordmark-small" do %><%= render "shared/logo_mark" %>Jazzity<% end %>
+        <p>
+          A jazz theory reference by Ben Hughes.
+          <%= link_to "Source on GitHub", "https://github.com/eigenben/jazzity" %>
+        </p>
+      </div>
     </footer>
   </body>
 </html>

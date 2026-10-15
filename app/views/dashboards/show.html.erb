@@ -1,37 +1,48 @@
-<section class="hero">
-  <div class="hero-text">
-    <h1 class="hero-title">Jazz theory,<br>in every key.</h1>
-    <p class="hero-lede">
-      Look up a chord, scale or progression and see it written out on the staff,
-      with the scales that fit it and the voicings players reach for.
-      Or type the notes you're holding and find out what they spell.
-    </p>
+<% content_for :band do %>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-text">
+      <p class="eyebrow">A jazz theory reference</p>
+      <h1 class="hero-title" id="hero-title">Jazz theory,<br><span class="title-accent">in every key.</span></h1>
+      <p class="hero-lede">
+        Look up a chord, scale or progression and see it written out on the staff,
+        with the scales that fit it and the voicings players reach for.
+        Or type the notes you're holding and find out what they spell.
+      </p>
 
-    <%= render "searches/form", class: "hero-search", label: "Search chords, scales, progressions or notes", label_class: "visually-hidden" %>
-  </div>
+      <%= render "searches/form", class: "hero-search", label: "Search chords, scales, progressions or notes", label_class: "visually-hidden" %>
+    </div>
+
+    <% if @featured %>
+      <%= tag.figure class: "hero-figure", data: player_data(:sequence, @featured.playback, loopable: false) do %>
+        <p class="hero-figure-label"><span>Track 1 · The <span class="cased">ii-V-I</span> in C</span> <span>Rootless voicings</span></p>
+        <div class="hero-figure-staff">
+          <%= voiced_staff(@featured.staff_notes, data: {player_target: "staff"}) %>
+        </div>
+        <figcaption>
+          <%= player_button "Hear it" %>
+          <span><%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I voiced over the root, voice-led so common tones are held.</span>
+        </figcaption>
+      <% end %>
+    <% end %>
+  </section>
 
   <% if @featured %>
-    <%= tag.figure class: "hero-figure", data: player_data(:sequence, @featured.playback, loopable: false) do %>
-      <%= voiced_staff(@featured.staff_notes, data: {player_target: "staff"}) %>
-      <figcaption>
-        <%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I in rootless voicings
-        over the root, voice-led so common tones are held.
-        <%= player_button "Hear it", class: "player-button-small" %>
-      </figcaption>
-    <% end %>
+    <div class="band-inner band-keys">
+      <%= render "shared/key_picker", label: safe_join(["The ", tag.span("ii-V-I", class: "cased"), " in"]), current: Key.default, path: ->(key) { polymorphic_path(in_key(key, @featured.in_key_of(key))) } %>
+    </div>
   <% end %>
-</section>
+<% end %>
 
-<section class="examples" aria-labelledby="examples-heading">
-  <h2 id="examples-heading" class="section-heading">Things to try</h2>
+<section class="group examples" aria-labelledby="examples-heading">
+  <h2 id="examples-heading" class="section-heading">Things to try <span class="section-note">Type any of these into search</span></h2>
   <%= render "searches/examples" %>
 </section>
 
-<section aria-labelledby="discover-heading">
+<section class="group" aria-labelledby="discover-heading">
   <h2 id="discover-heading" class="section-heading">From the reference</h2>
-  <ul class="card-grid card-grid-wide">
+  <ul class="covers">
     <% @reference.each do |result| %>
-      <li><%= render "searches/result", result: result %></li>
+      <li><%= render "dashboards/cover", model: result.target %></li>
     <% end %>
   </ul>
 </section>

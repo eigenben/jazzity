@@ -12,6 +12,16 @@ module ApplicationHelper
     [(key unless key.nil? || key.main?), *parts].compact
   end
 
+  # Notes as tiles, with `intervals` between them (the interval from each note
+  # to the next) and, with `root`, the first picked out.
+  def note_tiles(notes, intervals: [], root: false)
+    tiles = notes.each_with_index.flat_map do |note, i|
+      interval = intervals[i] if i < notes.size - 1
+      [tag.span(note, class: ["note-tile", ("note-tile-root" if root && i.zero?)]), (tag.span(interval, class: "note-interval") if interval)]
+    end
+    tag.span(safe_join(tiles.compact), class: "note-tiles")
+  end
+
   # Renders a Textile description, expanding {{Cmaj7}}-style references into staff notation.
   def text_to_html(text)
     html = RedCloth.new(StaffNotation.parse(text.to_s)).to_html

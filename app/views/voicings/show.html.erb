@@ -1,32 +1,27 @@
 <% content_for :title, @voicing.title %>
 
-<%= render "shared/title", eyebrow: "Voicing of #{@chord.title}", title: @voicing.name, subtitle: link_to("Back to #{@chord.short_name}", in_key(@chord.key, @chord)) %>
+<%= render "shared/title", eyebrow: "Voicing of #{@chord.title}", title: @voicing.name, subtitle: link_to("Back to #{@chord.short_name}", in_key(@chord.key, @chord)),
+      key_path: ->(key) { in_key(key, @chord, @voicing) } %>
 
-<div class="with-dial">
-  <div class="main-column">
-    <% voiced = @voicing.voiced %>
-    <%= tag.section class: "feature", data: player_data(:chord, [voiced.to_playback], shortcut: true) do %>
-      <%= render "players/controls", play_label: "Play voicing" %>
-      <%= voicing_staff(@voicing, class: "staff-large") %>
-      <%= keyboard_tag(voiced.treble, left: voiced.bass, data: {player_target: "keyboard"}) %>
-      <dl class="facts">
-        <div>
-          <dt>Left hand</dt>
-          <dd class="notes"><%= voiced.bass.map(&:name).join(" ") %></dd>
-        </div>
-        <% if voiced.treble.any? %>
-          <div>
-            <dt>Right hand</dt>
-            <dd class="notes"><%= voiced.treble.map(&:name).join(" ") %></dd>
-          </div>
-        <% end %>
-        <div>
-          <dt>Family</dt>
-          <dd><%= @voicing.voicing_family %></dd>
-        </div>
-      </dl>
+<% voiced = @voicing.voiced %>
+<%= tag.section class: "feature feature-split", data: player_data(:chord, [voiced.to_playback], shortcut: true) do %>
+  <%= render "players/controls", play_label: "Play voicing" %>
+  <%= voicing_staff(@voicing, class: "staff-large") %>
+  <%= keyboard_tag(voiced.treble, left: voiced.bass, data: {player_target: "keyboard"}) %>
+  <dl class="facts">
+    <div>
+      <dt>Left hand</dt>
+      <dd><%= note_tiles(voiced.bass.map(&:name)) %></dd>
+    </div>
+    <% if voiced.treble.any? %>
+      <div>
+        <dt>Right hand</dt>
+        <dd><%= note_tiles(voiced.treble.map(&:name)) %></dd>
+      </div>
     <% end %>
-  </div>
-
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord, @voicing) } %>
-</div>
+    <div>
+      <dt>Family</dt>
+      <dd><%= @voicing.voicing_family %></dd>
+    </div>
+  </dl>
+<% end %>

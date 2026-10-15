@@ -1,37 +1,32 @@
 <% content_for :title, @chord_note_sequence.title %>
 
-<%= render "shared/title", eyebrow: "Chords from notes", title: @chord_note_sequence.name %>
+<%= render "shared/title", eyebrow: "Chords from notes", title: @chord_note_sequence.name,
+      key: @chord_note_sequence.home_key, key_path: ->(key) { @chord_note_sequence.in_key_of(key) } %>
 
-<div class="with-dial">
-  <div class="main-column">
-    <% chords = @chord_note_sequence.octavized_notes.map { |notes| pitches_of(notes) } %>
-    <%= tag.section class: "feature", data: player_data(:sequence, chords.map { |pitches| playback_of(pitches) }, shortcut: true) do %>
-      <%= render "players/transport" %>
-      <%= staff_tag(@chord_note_sequence.octavized_notes, barlines: true, class: "staff-large", data: {player_target: "staff"}) %>
-      <%= keyboard_tag(chords.first, range: keyboard_range(chords.flatten), data: {player_target: "keyboard"}) %>
-      <ol class="spelled-chords">
-        <% @chord_note_sequence.note_sequences.zip(@chord_note_sequence.chords).each do |notes, chords| %>
-          <li>
-            <span class="notes"><%= notes %></span>
-            <% if chords.any? %>
-              <%= links_to_chords(chords, " or ") %>
-            <% else %>
-              <span class="muted">No known chord</span>
-            <% end %>
-          </li>
+<% chords = @chord_note_sequence.octavized_notes.map { |notes| pitches_of(notes) } %>
+<%= tag.section class: "feature", data: player_data(:sequence, chords.map { |pitches| playback_of(pitches) }, shortcut: true) do %>
+  <%= render "players/transport" %>
+  <%= staff_tag(@chord_note_sequence.octavized_notes, barlines: true, class: "staff-large", data: {player_target: "staff"}) %>
+  <%= keyboard_tag(chords.first, range: keyboard_range(chords.flatten), data: {player_target: "keyboard"}) %>
+  <ol class="spelled-chords">
+    <% @chord_note_sequence.note_sequences.zip(@chord_note_sequence.chords).each do |notes, chords| %>
+      <li>
+        <span class="notes"><%= notes %></span>
+        <% if chords.any? %>
+          <%= links_to_chords(chords, " or ") %>
+        <% else %>
+          <span class="muted">No known chord</span>
         <% end %>
-      </ol>
+      </li>
     <% end %>
+  </ol>
+<% end %>
 
-    <% if (progressions = @chord_note_sequence.progressions).any? %>
-      <section class="group" aria-labelledby="progressions-heading">
-        <h2 class="section-heading" id="progressions-heading">Known progressions</h2>
-        <ul class="card-grid">
-          <%= render progressions %>
-        </ul>
-      </section>
-    <% end %>
-  </div>
-
-  <%= render "shared/key_dial", current: @chord_note_sequence.home_key, path: ->(key) { @chord_note_sequence.in_key_of(key) } %>
-</div>
+<% if (progressions = @chord_note_sequence.progressions).any? %>
+  <section class="group" aria-labelledby="progressions-heading">
+    <h2 class="section-heading" id="progressions-heading">Known progressions</h2>
+    <ul class="card-grid">
+      <%= render progressions %>
+    </ul>
+  </section>
+<% end %>

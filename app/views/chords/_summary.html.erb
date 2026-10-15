@@ -1,16 +1,12 @@
 <% chords, hands = playback_for(@chord) %>
-<%= tag.section class: "feature", data: player_data(:chord, chords, shortcut: true) do %>
+<%= tag.section class: "feature feature-split", data: player_data(:chord, chords, shortcut: true) do %>
   <%= render "players/controls", play_label: "Play chord" %>
   <%= chord_staff(@chord, class: "staff-large") %>
   <%= keyboard_tag(hands[:right], data: {player_target: "keyboard"}) %>
   <dl class="facts">
-    <div>
-      <dt>Notes</dt>
-      <dd class="notes"><%= @chord.notes.join(" ") %></dd>
-    </div>
-    <div>
-      <dt>Intervals</dt>
-      <dd class="notes"><%= @chord.interval_names.join(" ") %></dd>
+    <div class="facts-wide">
+      <dt>Notes and intervals</dt>
+      <dd><%= note_tiles(@chord.notes, intervals: @chord.interval_names, root: true) %></dd>
     </div>
     <% if @chord.parent %>
       <div>

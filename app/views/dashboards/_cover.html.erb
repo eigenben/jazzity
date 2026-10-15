@@ -1,0 +1,11 @@
+<%# A chord, scale or mode from the reference as a record cover: what it is, its name in big type, its notes and other names. %>
+<%= link_to path_to_model(model), class: "cover" do %>
+  <span class="cover-kind"><%= model.is_a?(Mode) ? "Mode of #{model.scale}" : model.class.model_name.human %></span>
+  <span class="cover-body">
+    <span class="cover-title"><%= model.title %></span>
+    <span class="cover-notes"><%= model.notes.join(" ") %></span>
+    <% if model.respond_to?(:symbol_names) %>
+      <span class="cover-meta"><%= model.symbol_names.first(3).join(" · ") %></span>
+    <% end %>
+  </span>
+<% end %>

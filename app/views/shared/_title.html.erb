@@ -1,8 +1,26 @@
-<%# Page heading: a small label naming the kind of thing, then its name. %>
-<header class="title-block">
-  <p class="eyebrow"><%= eyebrow %></p>
-  <h1><%= title %></h1>
-  <% if local_assigns[:subtitle].present? %>
-    <p class="subtitle"><%= subtitle %></p>
-  <% end %>
-</header>
+<%# Page heading, set in the band under the masthead: a small label naming the kind of thing, then its name, a subtitle and other names (`aliases`) when given, any :title_nav content, and links to the page in each key when given `key_path` (see shared/key_picker, which also takes `key`). `accent` picks out the start of the title in brass, the key a chord or scale is in. %>
+<% accent = local_assigns[:accent]&.to_s %>
+<% content_for :band do %>
+  <div class="band-inner">
+    <header class="title-block">
+      <p class="eyebrow"><%= eyebrow %></p>
+      <h1 class="<%= "title-long" if title.to_s.length > 24 %>">
+        <% if accent && title.start_with?("#{accent} ") %><span class="title-accent"><%= accent %></span><%= title.delete_prefix(accent) %><% else %><%= title %><% end %>
+      </h1>
+      <% if local_assigns[:subtitle].present? %>
+        <p class="subtitle"><%= subtitle %></p>
+      <% end %>
+      <% if local_assigns[:aliases].present? %>
+        <ul class="aliases" aria-label="Also written">
+          <% aliases.each do |name| %>
+            <li><%= name %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </header>
+    <%= content_for :title_nav %>
+    <% if local_assigns[:key_path] %>
+      <%= render "shared/key_picker", path: key_path, current: local_assigns[:key] %>
+    <% end %>
+  </div>
+<% end %>

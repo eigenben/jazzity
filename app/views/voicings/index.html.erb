@@ -1,16 +1,10 @@
-<%= render "chords/header" %>
+<%= render "chords/header", key_path: ->(key) { in_key(key, @chord, :voicings) } %>
 
-<div class="with-dial">
-  <div class="main-column">
-    <%= render "chords/summary" %>
+<%= render "chords/summary" %>
 
-    <section class="group" aria-labelledby="voicings-heading">
-      <h2 class="section-heading" id="voicings-heading">All voicings</h2>
-      <ul class="card-grid card-grid-compact">
-        <%= render @voicings, key: @key %>
-      </ul>
-    </section>
-  </div>
-
-  <%= render "shared/key_dial", path: ->(key) { in_key(key, @chord, :voicings) } %>
-</div>
+<section class="group" aria-labelledby="voicings-heading">
+  <h2 class="section-heading" id="voicings-heading">All voicings</h2>
+  <ul class="card-grid card-grid-compact">
+    <%= render @voicings, key: @key %>
+  </ul>
+</section>
