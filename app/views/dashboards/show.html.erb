@@ -13,24 +13,21 @@
     </div>
 
     <% if @featured %>
-      <%= tag.figure class: "hero-figure", data: player_data(:sequence, @featured.playback, loopable: false) do %>
-        <p class="hero-figure-label"><span>Track 1 · The <span class="cased">ii-V-I</span> in C</span> <span>Rootless voicings</span></p>
-        <div class="hero-figure-staff">
-          <%= voiced_staff(@featured.staff_notes, data: {player_target: "staff"}) %>
-        </div>
-        <figcaption>
-          <%= player_button "Hear it" %>
-          <span><%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I voiced over the root, voice-led so common tones are held.</span>
-        </figcaption>
-      <% end %>
+      <div class="hero-side">
+        <%= tag.figure class: "hero-figure", data: player_data(:sequence, @featured.playback, loopable: false) do %>
+          <p class="hero-figure-label"><span>Track 1 · The <span class="cased">ii-V-I</span> in C</span> <span>Rootless voicings</span></p>
+          <div class="hero-figure-staff">
+            <%= voiced_staff(@featured.staff_notes, data: {player_target: "staff"}) %>
+          </div>
+          <figcaption>
+            <%= player_button "Hear it" %>
+            <span><%= link_to "Dm7 G7 Cmaj7", @featured %>, a ii-V-I voiced over the root, voice-led so common tones are held.</span>
+          </figcaption>
+        <% end %>
+        <%= render "shared/key_picker", label: safe_join(["The ", tag.span("ii-V-I", class: "cased"), " in"]), current: Key.default, path: ->(key) { polymorphic_path(in_key(key, @featured.in_key_of(key))) } %>
+      </div>
     <% end %>
   </section>
-
-  <% if @featured %>
-    <div class="band-inner band-keys">
-      <%= render "shared/key_picker", label: safe_join(["The ", tag.span("ii-V-I", class: "cased"), " in"]), current: Key.default, path: ->(key) { polymorphic_path(in_key(key, @featured.in_key_of(key))) } %>
-    </div>
-  <% end %>
 <% end %>
 
 <section class="group examples" aria-labelledby="examples-heading">
