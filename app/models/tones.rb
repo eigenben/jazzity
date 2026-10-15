@@ -46,6 +46,11 @@ class Tones
     keys.map(&:name)
   end
 
+  # Whether every note is written with at most one sharp or flat.
+  def readable?
+    keys.none?(&:double?)
+  end
+
   def octavized_notes(octave = 4)
     self.class.octavize(keys, octave)
   end

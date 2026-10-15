@@ -9,6 +9,7 @@ module Toneable
     delegate :intervals, :to => :tones
     delegate :step_names, :to => :tones
     delegate :interval_names, :to => :tones
+    delegate :readable?, :to => :tones
   end
 
   def tones

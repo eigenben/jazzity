@@ -63,4 +63,13 @@ RSpec.describe Chord, type: :model do
       expect(described_class["Amin"].lead_sheet_symbol).to eq("Am")
     end
   end
+
+  describe "#readable?" do
+    it "says whether the chord can be spelled without double sharps or flats" do
+      half_diminished = Chord.find_by!(name: "Half Diminished")
+
+      expect(half_diminished.clone.in_key_of("C#")).to be_readable
+      expect(half_diminished.clone.in_key_of("Db")).not_to be_readable
+    end
+  end
 end
