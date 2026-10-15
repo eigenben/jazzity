@@ -1,7 +1,8 @@
-<%# Picks the voicing family a progression is voiced in, with a disclosure for picking a voicing for any chord; chords left alone are voice-led. %>
-<section class="group" aria-labelledby="voicing-heading">
-  <h2 class="section-heading" id="voicing-heading">Voicings</h2>
-  <%= form_with url: request.path, method: :get, class: "voicing-form", data: {controller: "autosubmit", turbo_action: "replace"} do %>
+<%# Picks the voicing family a progression is voiced in, with a disclosure for picking a voicing for any chord; chords left alone are voice-led. It sits in the chart, over the staff it voices, and keeps the page where it is when a pick reloads it. %>
+<% turbo_refreshes_with scroll: :preserve %>
+<%= form_with url: request.path, method: :get, class: "voicing-form", data: {controller: "autosubmit", turbo_action: "replace"} do %>
+  <div class="voicing-bar">
+    <span class="eyebrow" aria-hidden="true">Voicings</span>
     <fieldset class="segmented">
       <legend class="visually-hidden">Voicing family</legend>
       <% voicing_family_choices.each do |family, label| %>
@@ -12,21 +13,21 @@
       <% end %>
     </fieldset>
     <p class="voicing-family-description"><%= voicing_family_description(voicing_family) %></p>
+  </div>
 
-    <details class="voicing-details"<% if voicing_choices.values.any?(&:present?) %> open<% end %>>
-      <summary>Customize each chord</summary>
-      <ol class="voicing-choices">
-        <% voiced_chords.each_with_index do |voiced, i| %>
-          <li>
-            <%= label_tag "v_#{i}", voiced.chord.lead_sheet_symbol %>
-            <%= select_tag "v[#{i}]", voicing_options_for_select(voiced, i), data: {action: "autosubmit#submit"} %>
-          </li>
-        <% end %>
-      </ol>
-      <% if voicing_choices.values.any?(&:present?) %>
-        <p class="voicing-reset"><%= link_to "Voice-lead every chord", url_for(family: voicing_family_slug) %></p>
+  <details class="voicing-details"<% if voicing_choices.values.any?(&:present?) %> open<% end %>>
+    <summary>Customize each chord</summary>
+    <ol class="voicing-choices">
+      <% voiced_chords.each_with_index do |voiced, i| %>
+        <li>
+          <%= label_tag "v_#{i}", voiced.chord.lead_sheet_symbol %>
+          <%= select_tag "v[#{i}]", voicing_options_for_select(voiced, i), data: {action: "autosubmit#submit"} %>
+        </li>
       <% end %>
-    </details>
-    <noscript><%= submit_tag "Update voicings", name: nil %></noscript>
-  <% end %>
-</section>
+    </ol>
+    <% if voicing_choices.values.any?(&:present?) %>
+      <p class="voicing-reset"><%= link_to "Voice-lead every chord", url_for(family: voicing_family_slug), data: {turbo_action: "replace"} %></p>
+    <% end %>
+  </details>
+  <noscript><%= submit_tag "Update voicings", name: nil %></noscript>
+<% end %>

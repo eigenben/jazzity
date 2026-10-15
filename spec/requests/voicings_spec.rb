@@ -22,6 +22,14 @@ RSpec.describe "Choosing voicings", type: :request do
     expect(checked_family).to eq("4-note-rootless-type-i-ii")
   end
 
+  it "picks voicings in the chart, keeping the page where it is" do
+    get progression_path(progression)
+
+    page = Nokogiri::HTML(response.body)
+    expect(page.at_css(".feature .voicing-form + [data-controller=staff]")).to be_present
+    expect(page.at_css("meta[name=turbo-refresh-scroll]")["content"]).to eq("preserve")
+  end
+
   it "voices the progression in the family picked" do
     get progression_path(progression), params: {family: "guide-tones"}
 

@@ -1283,20 +1283,42 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* In the chart, between the lead sheet and the staff it voices. */
+.voicing-form {
+  margin-block: 1.25rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--rule);
+}
+
+.transport + .voicing-form {
+  margin-top: 0;
+}
+
+.voicing-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+
 .voicing-family-description {
-  margin-top: 0.75rem;
+  flex: 1 1 16rem;
   color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .voicing-details {
-  margin-top: 1.25rem;
-  border-top: 1px solid var(--rule);
+  margin-top: 0.75rem;
 }
 
 .voicing-details summary {
-  padding-block: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.voicing-details[open] summary {
+  margin-bottom: 1rem;
 }
 
 .voicing-details summary:hover {
