@@ -7,13 +7,14 @@
     <meta name="description" content="<%= description %>">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#0f2d63">
+    <link rel="canonical" href="<%= canonical_url %>">
 
     <%# The link preview in iMessage, Slack and the like. The card's source is docs/og. %>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Jazzity">
     <meta property="og:title" content="<%= content_for(:title) || "Jazzity: jazz theory, in every key" %>">
     <meta property="og:description" content="<%= description %>">
-    <meta property="og:url" content="<%= request.base_url + request.path %>">
+    <meta property="og:url" content="<%= canonical_url %>">
     <meta property="og:image" content="<%= request.base_url %>/og.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">

@@ -10,6 +10,14 @@ class ApplicationController < ActionController::Base
     }
   end
 
+  # Keeps pages out of search engines: pages made from whatever's typed
+  # (there's no end to them) and the bare staves drawn for printing.
+  def self.noindex(**options)
+    before_action(**options) { response.headers["X-Robots-Tag"] = "noindex" }
+  end
+
+  noindex if: -> { action_name == "staff" }
+
   protected
 
   def path_to_model(model)

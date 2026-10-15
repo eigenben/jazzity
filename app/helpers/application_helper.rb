@@ -6,6 +6,12 @@ module ApplicationHelper
     link_to name, path, :aria => {:current => ("page" if current)}
   end
 
+  # The address search engines should file this page under: without its
+  # query, and without /keys/C, since C pages live at the unprefixed URL.
+  def canonical_url
+    request.base_url + request.path.sub(%r{\A/keys/C(?=/)}, "")
+  end
+
   # Builds a polymorphic path in the given key. C is the reference key, so
   # its pages live at the unprefixed URL.
   def in_key(key, *parts)
