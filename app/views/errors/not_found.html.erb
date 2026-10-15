@@ -1,0 +1,9 @@
+<% content_for :title, "Page not found" %>
+
+<%= render "shared/title", eyebrow: "404", title: "That page isn't in the book",
+      subtitle: "The link may be old or mistyped. Search for what you were after above, or try one of these." %>
+
+<section class="group" aria-labelledby="examples-heading">
+  <h2 class="section-heading" id="examples-heading">Things to try</h2>
+  <%= render "searches/examples" %>
+</section>

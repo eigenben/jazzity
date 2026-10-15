@@ -18,6 +18,16 @@ module Jazzity
 
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # A 404 is rendered by the app, with search; anything else gets the
+    # static page in public/, since the app may be what's broken.
+    config.exceptions_app = lambda do |env|
+      if env["PATH_INFO"] == "/404"
+        ErrorsController.action(:not_found).call(env)
+      else
+        ActionDispatch::PublicExceptions.new(Rails.public_path).call(env)
+      end
+    end
+
     config.generators do |g|
       g.test_framework :rspec, fixture: false, views: false
       g.fixture_replacement :factory_bot, dir: "spec/factories"
