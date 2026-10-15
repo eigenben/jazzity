@@ -32,12 +32,15 @@ function audioContext() {
   const AudioContext = window.AudioContext || window.webkitAudioContext
   context = new AudioContext({ latencyHint: "interactive" })
 
+  // A safety net, not a sound: ordinary chords stay under the threshold.
+  // Squeezing them, and fast enough to follow a bass note's waveform,
+  // smears gritty distortion under everything.
   const compressor = context.createDynamicsCompressor()
-  compressor.threshold.value = -20
+  compressor.threshold.value = -10
   compressor.knee.value = 12
   compressor.ratio.value = 4
-  compressor.attack.value = 0.004
-  compressor.release.value = 0.2
+  compressor.attack.value = 0.02
+  compressor.release.value = 0.3
   compressor.connect(context.destination)
 
   const tone = context.createBiquadFilter()
