@@ -84,3 +84,7 @@ In production behind an SSL-terminating proxy, leave `RAILS_FORCE_SSL` unset and
 ## History
 
 Jazzity started in 2010 as a Rails 3 app. In 2026 it was brought up to date: Ruby 4.0 and Rails 8.1, the jQuery/Sprockets frontend replaced with Hotwire and VexFlow 5, and a long-standing bug fixed where chords were always written in C whatever key you asked for.
+
+## License
+
+Jazzity is released under the [MIT License](LICENSE).
