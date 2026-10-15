@@ -1,6 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  # Pages made from what's typed into them (searches, analyses and
+  # sequences) take far longer than pages looked up by name, so each
+  # visitor gets only so many a minute.
+  def self.rate_limit_typed_input(to: 60, **options)
+    rate_limit to: to, within: 1.minute, **options, with: -> {
+      render plain: "Too many requests. Please wait a minute and try again.", status: :too_many_requests
+    }
+  end
+
   protected
 
   def path_to_model(model)

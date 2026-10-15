@@ -1,4 +1,6 @@
 class SearchesController < ApplicationController
+  rate_limit_typed_input to: 120
+
   respond_to :html, :json
 
   def create
