@@ -18,7 +18,7 @@
       <%= link_to "All #{@chord.voicings.size}", in_key(@chord.key, @chord, :voicings), class: "section-link" %>
     </h2>
     <ul class="card-grid card-grid-compact">
-      <%= render @chord.voicings.first(6), key: @key %>
+      <%= render @chord.voicings.first(15), key: @key %>
     </ul>
   </section>
 <% end %>
