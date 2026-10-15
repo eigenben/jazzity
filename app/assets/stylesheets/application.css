@@ -455,13 +455,13 @@ a:hover {
    capitals. */
 .title-block h1 {
   margin-top: 0.6rem;
-  font: 800 clamp(3.25rem, 10vw, 8.5rem)/0.86 var(--font-display);
+  font: 800 clamp(2.75rem, 7vw, 5.5rem)/0.88 var(--font-display);
   letter-spacing: -0.005em;
   overflow-wrap: break-word;
 }
 
 .title-block h1.title-long {
-  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+  font-size: clamp(2.25rem, 4.75vw, 3.75rem);
   line-height: 0.9;
 }
 
@@ -502,10 +502,10 @@ a:hover {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.5rem 1.25rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
   border-bottom: 6px solid var(--ink);
-  font: 800 clamp(2.25rem, 5vw, 3.75rem)/0.9 var(--font-display);
+  font: 800 clamp(1.6rem, 3vw, 2.25rem)/0.95 var(--font-display);
   text-transform: uppercase;
 }
 
@@ -524,7 +524,7 @@ a:hover {
 
 .group + .group,
 .feature + .group {
-  margin-top: clamp(3rem, 7vw, 5rem);
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 .empty {
@@ -1107,7 +1107,7 @@ a:hover {
 }
 
 .tracklist .card-title {
-  font-size: 2.1rem;
+  font-size: 1.8rem;
 }
 
 .tracklist .card-meta {
@@ -1167,19 +1167,19 @@ a:hover {
   grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 24rem);
   gap: 1.5rem;
   align-items: center;
-  padding: 1.75rem 0;
+  padding: 1.4rem 0;
   border-bottom: 1px solid var(--rule);
   counter-increment: track;
 }
 
 .scale-entry::before {
   content: counter(track, decimal-leading-zero);
-  font: 800 3rem/1 var(--font-display);
+  font: 800 2.4rem/1 var(--font-display);
   color: var(--brass);
 }
 
 .scale-entry-title {
-  font: 800 clamp(2rem, 4vw, 2.75rem)/1 var(--font-display);
+  font: 800 clamp(1.6rem, 3vw, 2.1rem)/1 var(--font-display);
 }
 
 .scale-entry-title a {
@@ -1197,7 +1197,7 @@ a:hover {
   }
 
   .scale-entry::before {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }
 
@@ -1617,7 +1617,7 @@ a:hover {
 }
 
 .practice-key-title {
-  font: 800 2.25rem/1 var(--font-display);
+  font: 800 1.9rem/1 var(--font-display);
 }
 
 @media (max-width: 40rem) {
@@ -1867,7 +1867,7 @@ a:hover {
 }
 
 .cover-title {
-  font: 800 clamp(2.25rem, 4vw, 3.25rem)/0.9 var(--font-display);
+  font: 800 clamp(1.9rem, 3vw, 2.5rem)/0.9 var(--font-display);
   overflow-wrap: break-word;
 }
 
