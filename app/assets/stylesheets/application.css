@@ -1066,6 +1066,11 @@ a:hover {
   letter-spacing: 0.01em;
 }
 
+/* The key a progression is shown in on the index, when it isn't C. */
+.card-title-key {
+  color: var(--brass-ink);
+}
+
 .card .staff {
   margin-block: 0.25rem;
 }

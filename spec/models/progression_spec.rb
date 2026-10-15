@@ -102,4 +102,23 @@ RSpec.describe Progression, type: :model do
     expect(Progression.pluck(:slug)).to all(match(/\A[a-z0-9-]+\z/)).and(all(satisfy { |slug| !slug.match?(/\h{8}-\h{4}-/) }))
     expect(Progression.find_by!(slug: "major-i-vi7-ii-v").name).to eq("Major I-VI-ii-V")
   end
+
+  describe "#home_key" do
+    it "is the key the progression is usually played in" do
+      expect(Progression.find_by!(name: "Rhythm Changes").home_key.name).to eq("Bb")
+      expect(Progression.find_by!(name: "Bird Blues").home_key.name).to eq("F")
+      expect(Progression.find_by!(name: "Minor Blues").home_key.name).to eq("C")
+    end
+
+    it "is C for progressions with no home key of their own" do
+      expect(Progression.find_by!(name: "Major ii-V-I").home_key).to eq(Key.default)
+    end
+  end
+
+  describe "#in_home_key" do
+    it "puts the progression in its home key, leaving C unkeyed" do
+      expect(Progression.find_by!(name: "Rhythm Changes").in_home_key.key.name).to eq("Bb")
+      expect(Progression.find_by!(name: "Minor Blues").in_home_key.key).to be_nil
+    end
+  end
 end

@@ -29,6 +29,17 @@ class Progression < ActiveRecord::Base
     name
   end
 
+  # The key it's usually played in, as the tunes built on it are: Rhythm
+  # Changes in Bb, the blues in F, and C for cadences and the like.
+  def home_key
+    Key[home_key_name] || Key.default
+  end
+
+  # The progression in its home key, with no key for C.
+  def in_home_key
+    in_key_of((home_key unless home_key.main?))
+  end
+
   def title
     title = name.match?(SELF_DESCRIBING) ? name : "#{name} Progression"
     key ? "#{title} in #{key}" : title

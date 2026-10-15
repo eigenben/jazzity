@@ -54,14 +54,15 @@ class SearchEntry
 
   # The chord, scale or progression in a key: for a scale or mode, the key
   # it starts on. Without a key, chords and scales are shown in C (so a
-  # mode as it falls in the C major scale, D Dorian).
+  # mode as it falls in the C major scale, D Dorian), and progressions in
+  # their home key.
   def target(key = nil)
     item = model.clone
 
     case kind
     when :chord then item.in_key_of(key || Key.default)
     when :scale then key ? ScaleName.new(key, item).target : item.in_key_of(Key.default)
-    else item.in_key_of(key)
+    else key ? item.in_key_of(key) : item.in_home_key
     end
   end
 
