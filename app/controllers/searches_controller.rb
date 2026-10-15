@@ -1,5 +1,6 @@
 class SearchesController < ApplicationController
   rate_limit_typed_input to: 120
+  noindex
 
   respond_to :html, :json
 

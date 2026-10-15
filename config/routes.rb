@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get "up", to: "rails/health#show", as: :rails_health_check
 
+  get "sitemap.xml", to: "sitemaps#show", as: :sitemap, defaults: {format: :xml}
+  get "robots.txt", to: "sitemaps#robots", as: :robots, defaults: {format: :text}
+
   get "analysis", to: "analyses#show", as: :analysis
 
   resources :searches, only: %i[create show] do

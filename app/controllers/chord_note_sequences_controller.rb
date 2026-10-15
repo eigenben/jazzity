@@ -2,6 +2,7 @@ class ChordNoteSequencesController < ApplicationController
   include KeyScoped
 
   rate_limit_typed_input
+  noindex
   before_action :find_chord_note_sequence
 
   respond_to :html
