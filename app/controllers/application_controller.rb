@@ -25,18 +25,30 @@ class ApplicationController < ActionController::Base
   # The voicing family a progression is voiced in, from its slug in the
   # `family` parameter, defaulting to rootless voicings.
   def voicing_family
-    @voicing_family ||= (VoicingFamily.find_by(slug: voicing_family_slug) if voicing_family_slug) || VoiceLeader.default_family
+    @voicing_family ||= picked_voicing_family || VoiceLeader.default_family
   end
 
+  # The slug of the family picked, when it names one.
   def voicing_family_slug
-    params[:family].presence if params[:family].is_a?(String)
+    picked_voicing_family&.slug
+  end
+
+  def picked_voicing_family
+    return @picked_voicing_family if defined?(@picked_voicing_family)
+
+    slug = params[:family] if params[:family].is_a?(String)
+    @picked_voicing_family = (VoicingFamily.find_by(slug: slug) if slug.present?)
   end
 
   # The voicing picked for each chord position, e.g. {"0" => "878", "1" => ""}.
-  # Anything other than a flat hash of positions is ignored.
+  # Only positions a sequence can have and voicing ids are kept, since
+  # they're carried into every link to another key.
   def voicing_choices
-    choices = params[:v]
-    choices.respond_to?(:permit) ? choices.permit(*choices.keys).to_h : {}
+    @voicing_choices ||= begin
+      choices = params[:v]
+      choices = choices.respond_to?(:permit) ? choices.permit(*choices.keys).to_h : {}
+      choices.select { |position, voicing| position.match?(/\A\d+\z/) && position.to_i < ChordSequence::MAX_CHORDS && voicing.to_s.match?(/\A\d*\z/) }
+    end
   end
 
   helper_method :path_to_model
