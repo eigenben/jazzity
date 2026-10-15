@@ -718,10 +718,17 @@ a:hover {
     grid-row: 2 / span 2;
     align-self: stretch;
     flex-direction: column;
+    flex-wrap: nowrap;
     margin-top: 0;
     padding: 0 0 0 3rem;
     border-top: 0;
     border-left: 1px solid var(--rule);
+  }
+
+  /* Stacked in a column, a wide fact is as tall as it needs, not the whole
+     column. */
+  .feature-split > .facts > .facts-wide {
+    flex-basis: auto;
   }
 }
 
