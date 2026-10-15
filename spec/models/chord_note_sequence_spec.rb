@@ -46,5 +46,10 @@ RSpec.describe ChordNoteSequence do
     it "returns nil if any group contains an invalid note" do
       expect(described_class["C E G, F X C"]).to be_nil
     end
+
+    it "returns nil for more than MAX_GROUPS groups" do
+      expect(described_class[(["C E G"] * ChordNoteSequence::MAX_GROUPS).join(", ")]).to be_a(described_class)
+      expect(described_class[(["C E G"] * (ChordNoteSequence::MAX_GROUPS + 1)).join(", ")]).to be_nil
+    end
   end
 end

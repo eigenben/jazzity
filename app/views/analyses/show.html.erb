@@ -8,6 +8,8 @@
     <p class="flash" role="alert">
       <% if @unreadable.any? %>
         Jazzity couldn't read <%= @unreadable.map { |name| "“#{name}”" }.to_sentence %> as <%= @unreadable.one? ? "a chord symbol" : "chord symbols" %>.
+      <% elsif @too_many %>
+        Jazzity analyzes up to <%= ChordSequence::MAX_CHORDS %> chords at a time.
       <% else %>
         Type at least two chords to analyze.
       <% end %>

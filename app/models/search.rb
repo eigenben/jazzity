@@ -57,11 +57,15 @@ class Search
   PER_GROUP = 8
   ANALYZE = /\A(?:analy[sz]e|analysis(?:\s+of)?)\s+/i
   WORDS = %w[scale mode chord chords progression in on of the key changes].freeze
+  # Longer queries aren't read at all, since spelling correction and name
+  # matching take longer with every word.
+  MAX_LENGTH = 500
 
   attr_reader :query
 
   def initialize(query)
     @query = query.to_s.squish
+    @query = "" if @query.length > MAX_LENGTH
   end
 
   # The one thing the query names, if it names one: something it parses as,

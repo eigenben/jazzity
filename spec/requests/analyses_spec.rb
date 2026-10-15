@@ -32,6 +32,12 @@ RSpec.describe "Analyzing chord changes", type: :request do
     expect(page.css("[role=alert]").text).to include("at least two chords")
   end
 
+  it "says how many chords it analyzes at most" do
+    get analysis_path(changes: (%w[Dm7 G7] * ChordSequence::MAX_CHORDS).join(" "))
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(page.css("[role=alert]").text.squish).to eq("Jazzity analyzes up to #{ChordSequence::MAX_CHORDS} chords at a time.")
+  end
+
   it "ignores changes that aren't text" do
     get analysis_path, params: {changes: {"x" => "1"}}
     expect(response).to have_http_status(:ok)

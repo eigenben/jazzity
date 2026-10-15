@@ -6,6 +6,11 @@ class ChordNoteSequence
   # The most readings of the notes as chords tried against the progressions.
   READINGS = 48
 
+  # The most chords of notes a sequence can have: a chord a bar through a
+  # 32-bar tune. Each is read every way it can be, so they cost more than
+  # chord symbols.
+  MAX_GROUPS = 32
+
   attr_accessor :key_groups
   attr_accessor :note_sequences
   attr_accessor :invalid_note_sequences
@@ -77,7 +82,7 @@ class ChordNoteSequence
   class << self
     def resolve(value)
       sequence = new(value)
-      if sequence.invalid_note_sequences.empty? and sequence.note_sequences.size > 1
+      if sequence.invalid_note_sequences.empty? and sequence.note_sequences.size.between?(2, MAX_GROUPS)
         sequence
       else
         nil

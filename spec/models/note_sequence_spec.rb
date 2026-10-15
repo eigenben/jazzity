@@ -51,5 +51,10 @@ RSpec.describe NoteSequence do
     it "returns nil if any note is invalid" do
       expect(described_class["C X G"]).to be_nil
     end
+
+    it "returns nil for more than MAX_NOTES notes" do
+      expect(described_class[(["C"] * NoteSequence::MAX_NOTES).join(" ")]).to be_a(described_class)
+      expect(described_class[(["C"] * (NoteSequence::MAX_NOTES + 1)).join(" ")]).to be_nil
+    end
   end
 end

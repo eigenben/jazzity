@@ -5,6 +5,9 @@ class NoteSequence
   include Enumerable
   include KeyContext
 
+  # The most notes a sequence can have.
+  MAX_NOTES = 48
+
   attr_accessor :keys
   attr_accessor :invalid_keys
 
@@ -71,7 +74,7 @@ class NoteSequence
   class << self
     def resolve(value)
       sequence = new(value)
-      if sequence.invalid_keys.empty? and sequence.keys.size > 0
+      if sequence.invalid_keys.empty? and sequence.keys.size.between?(1, MAX_NOTES)
         sequence
       else
         nil
