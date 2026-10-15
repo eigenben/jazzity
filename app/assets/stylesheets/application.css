@@ -1802,7 +1802,7 @@ a:hover {
   color: var(--brass);
 }
 
-/* Things to try, as the sides of a record and their tracks */
+/* Things to try, in groups by what they find */
 
 .example-groups {
   display: grid;
@@ -1824,27 +1824,16 @@ a:hover {
   font: 800 1.35rem/1.05 var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-.example-side {
   color: var(--brass-ink);
 }
 
-.example-group ol {
+.example-group ul {
   display: grid;
   gap: 0.5rem;
 }
 
 .example-group li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
   font: 400 1rem/1.3 var(--font-mono);
-}
-
-.example-track {
-  min-width: 1.6rem;
-  color: var(--muted);
 }
 
 @media (max-width: 40rem) {
