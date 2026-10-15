@@ -16,6 +16,14 @@ RSpec.describe ChordNoteSequence do
     expect(described_class.new("D F A C, G B D F, C E G B").progressions.map(&:title)).to eq(["Major ii-V-I Progression in C"])
   end
 
+  it "tries a bounded number of readings however many ways each group reads" do
+    diminished = described_class.new((["C Eb Gb A"] * 16).join(", "))
+    expect(diminished.chords.map(&:size).uniq).to eq([4])
+
+    expect(ChordSequence).to receive(:new).at_most(ChordNoteSequence::READINGS).times.and_call_original
+    expect(Timeout.timeout(5) { diminished.progressions }).to eq([])
+  end
+
   it "is in the key of the progression it makes, and moves from there" do
     expect(sequence.home_key.name).to eq("C")
     expect(sequence.in_key_of("A").name).to eq("B D F# A, E G# B D")

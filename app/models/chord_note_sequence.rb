@@ -3,6 +3,9 @@ class ChordNoteSequence
   include Enumerable
   include KeyContext
 
+  # The most readings of the notes as chords tried against the progressions.
+  READINGS = 48
+
   attr_accessor :key_groups
   attr_accessor :note_sequences
   attr_accessor :invalid_note_sequences
@@ -87,9 +90,13 @@ class ChordNoteSequence
   delegate :each, :to => :note_sequences
 
   # Known progressions that some reading of the notes as chords matches,
-  # trying at most a few dozen readings.
+  # trying at most READINGS readings. The readings are cut short as they're
+  # built, since each group of notes can multiply them (four diminished 7ths
+  # in every group of C Eb Gb A).
   def progressions
-    readings = chords.reduce([[]]) { |partial, group| partial.product(group).map(&:flatten) }.first(48)
-    readings.flat_map { |reading| ChordSequence.new(reading).progressions }.uniq { |progression| [progression.id, progression.key&.name] }
+    @progressions ||= begin
+      readings = chords.reduce([[]]) { |partial, group| partial.product(group).map(&:flatten).first(READINGS) }
+      readings.flat_map { |reading| ChordSequence.new(reading).progressions }.uniq { |progression| [progression.id, progression.key&.name] }
+    end
   end
 end
