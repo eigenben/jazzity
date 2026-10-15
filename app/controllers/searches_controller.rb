@@ -23,6 +23,7 @@ class SearchesController < ApplicationController
           flash[:notice] = @search.note if @search.note
           redirect_to path_to_model(destination)
         elsif @search.strong_results.empty?
+          log_nothing_found
           render :empty
         end
       end
@@ -35,6 +36,12 @@ class SearchesController < ApplicationController
   end
 
   protected
+
+  # What people look for and don't find is what the reference should
+  # cover next, so each such query is logged on a line of its own.
+  def log_nothing_found
+    logger.info("Search found nothing: #{@query.truncate(200).inspect}")
+  end
 
   def describe(results)
     results.map do |result|

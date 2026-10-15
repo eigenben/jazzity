@@ -62,6 +62,16 @@ RSpec.describe "Searching", type: :request do
     expect(response.body).to include("Nothing matched “xyzzy”", "Things to try", "ii V I in Eb")
   end
 
+  it "logs each query that finds nothing" do
+    allow(Rails.logger).to receive(:info)
+
+    get search_path("autumn leaves")
+    get search_path("Cmaj7")
+
+    expect(Rails.logger).to have_received(:info).with('Search found nothing: "autumn leaves"').once
+    expect(Rails.logger).not_to have_received(:info).with(/Search found nothing: "Cmaj7"/)
+  end
+
   it "suggests close names when nothing matches outright" do
     get search_path("dorien bebip")
     expect(response.body).to include("Did you mean")
