@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!--
+      The Open Graph card: rendered to public/og.png at exactly 1200x630. Serve
+      docs/ as the web root so the logo and screenshot resolve, then screenshot
+      the .card element. See docs/og/README.md.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=Instrument+Sans:wght@400&display=swap">
+    <style>
+      :root {
+        --midnight: #0f2d63;
+        --midnight-ink: #e9edf5;
+        --brass: #d9a441;
+        --band-text: #c3cbdb;
+        --band-rule: #3a5a96;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #808080;
+      }
+
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: var(--midnight);
+        color: var(--midnight-ink);
+        font-family: "Instrument Sans", system-ui, sans-serif;
+      }
+
+      /* Grooves, faint, as on the record the sleeve holds. */
+      .grooves {
+        position: absolute;
+        top: 50%;
+        left: 930px;
+        width: 1100px;
+        height: 1100px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: repeating-radial-gradient(circle, transparent 0 14px, rgb(255 255 255 / 0.035) 14px 15px);
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        width: 640px;
+        padding: 64px 0 64px 72px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lockup {
+        height: 54px;
+        align-self: flex-start;
+      }
+
+      .headline-wrap {
+        margin: auto 0;
+      }
+
+      .eyebrow {
+        font: 500 17px/1.2 "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--brass);
+      }
+
+      .headline {
+        margin-top: 18px;
+        font: 800 112px/0.96 "Big Shoulders Display", "Arial Narrow", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: -0.005em;
+      }
+
+      .headline .accent {
+        color: var(--brass);
+      }
+
+      .lede {
+        margin-top: 28px;
+        max-width: 520px;
+        font-size: 25px;
+        line-height: 1.4;
+        color: var(--band-text);
+      }
+
+      /* The home page's ii-V-I in brass, slid out at an angle like a sheet from its sleeve. */
+      .shot {
+        position: absolute;
+        z-index: 3;
+        top: 118px;
+        right: -70px;
+        width: 560px;
+        height: 383px;
+        border-radius: 6px;
+        background: url("../screenshots/home.png") no-repeat;
+        background-size: 1346px auto;
+        background-position: -745px -107px;
+        box-shadow:
+          0 40px 70px -20px rgb(0 0 0 / 0.55),
+          0 14px 28px -10px rgb(0 0 0 / 0.35);
+        transform: rotate(-3deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="grooves"></div>
+      <div class="content">
+        <img class="lockup" src="../logo/lockup-reversed.svg" alt="">
+
+        <div class="headline-wrap">
+          <p class="eyebrow">A jazz theory reference</p>
+          <h1 class="headline">Jazz theory,<br><span class="accent">in every key.</span></h1>
+          <p class="lede">Chords, scales, voicings and progressions, written out on the staff and ready to play.</p>
+        </div>
+      </div>
+
+      <div class="shot"></div>
+    </div>
+  </body>
+</html>

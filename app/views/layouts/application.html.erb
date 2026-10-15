@@ -3,8 +3,22 @@
   <head>
     <title><%= [content_for(:title), "Jazzity"].compact.join(" · ") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Explore jazz chords, scales, voicings and progressions in every key, written out in staff notation.">
+    <% description = "Explore jazz chords, scales, voicings and progressions in every key, written out in staff notation." %>
+    <meta name="description" content="<%= description %>">
     <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#0f2d63">
+
+    <%# The link preview in iMessage, Slack and the like. The card's source is docs/og. %>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Jazzity">
+    <meta property="og:title" content="<%= content_for(:title) || "Jazzity: jazz theory, in every key" %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:url" content="<%= request.base_url + request.path %>">
+    <meta property="og:image" content="<%= request.base_url %>/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Jazzity: jazz theory, in every key. A ii-V-I written out on the staff.">
+    <meta name="twitter:card" content="summary_large_image">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
