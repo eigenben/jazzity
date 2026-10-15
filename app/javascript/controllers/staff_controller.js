@@ -168,12 +168,17 @@ export default class extends Controller {
 
   // Lines of bars, as even as possible: 12 bars at four to the line are
   // three lines of four, and 5 bars are lines of three and two. A few bars
-  // stay on one line and shrink to fit instead.
+  // stay on one line and shrink to fit instead. Where the lines can't come
+  // out even, forms of four-bar phrases keep them whole: 32 bars at six to
+  // the line are lines of four, not five lines of six and one of two.
   linesFor(measures) {
     if (measures.length <= this.maxBarsPerLineValue) return [measures]
 
-    const count = Math.ceil(measures.length / this.barsPerLine)
-    const perLine = Math.ceil(measures.length / count)
+    const fit = this.barsPerLine
+    let perLine = Math.ceil(measures.length / Math.ceil(measures.length / fit))
+    if (measures.length % perLine !== 0) {
+      perLine = [8, 4].find((bars) => bars <= fit && measures.length % bars === 0) ?? perLine
+    }
     const lines = []
     for (let i = 0; i < measures.length; i += perLine) lines.push(measures.slice(i, i + perLine))
     return lines

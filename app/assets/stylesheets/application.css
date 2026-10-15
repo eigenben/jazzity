@@ -629,6 +629,13 @@ a:hover {
   min-width: min(calc(var(--staff-width) * 1.1), 40rem);
 }
 
+/* A whole chart of chords is drawn barely larger than it engraves, so that
+   eight bars fit on a line. */
+.staff-score svg {
+  max-width: calc(var(--staff-width) * 1.2);
+  min-width: min(var(--staff-width), 40rem);
+}
+
 .staff-only {
   padding: 1rem;
   background: var(--surface);

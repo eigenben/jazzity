@@ -6,7 +6,7 @@
 <% chords = @chord_note_sequence.octavized_notes.map { |notes| pitches_of(notes) } %>
 <%= tag.section class: "feature", data: player_data(:sequence, chords.map { |pitches| playback_of(pitches) }, shortcut: true) do %>
   <%= render "players/transport" %>
-  <%= staff_tag(@chord_note_sequence.octavized_notes, barlines: true, class: "staff-large", data: {player_target: "staff"}) %>
+  <%= staff_tag(@chord_note_sequence.octavized_notes, barlines: true, max_bars_per_line: 8, min_bar_width: 140, class: "staff-large staff-score", data: {player_target: "staff"}) %>
   <%= keyboard_tag(chords.first, range: keyboard_range(chords.flatten), data: {player_target: "keyboard"}) %>
   <ol class="spelled-chords">
     <% @chord_note_sequence.note_sequences.zip(@chord_note_sequence.chords).each do |notes, chords| %>
