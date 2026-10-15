@@ -65,10 +65,10 @@
     <footer class="colophon">
       <div class="colophon-inner">
         <%= link_to root_path, class: "wordmark wordmark-small" do %><%= render "shared/logo_mark" %>Jazzity<% end %>
-        <p>
-          A jazz theory reference by Ben Hughes.
-          <%= link_to "Source on GitHub", "https://github.com/eigenben/jazzity" %>
-        </p>
+        <div class="colophon-credits">
+          <p>A jazz theory reference by <%= link_to "Ben Hughes", "https://eigenben.com" %>.</p>
+          <%= link_to "https://github.com/eigenben/jazzity", class: "colophon-source" do %>Source on GitHub <span aria-hidden="true">↗</span><% end %>
+        </div>
       </div>
     </footer>
   </body>

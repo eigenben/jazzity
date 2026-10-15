@@ -1983,6 +1983,28 @@ a:hover {
   color: var(--brass);
 }
 
+.colophon-credits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+/* The source link stands apart from the credit, as a button. */
+.colophon-source {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--band-rule);
+  border-radius: 999px;
+  font: 500 0.75rem/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+}
+
+.colophon a.colophon-source:hover {
+  border-color: var(--brass);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .card,
   .cover,
