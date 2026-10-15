@@ -96,5 +96,10 @@ RSpec.describe ChordSequence do
     it "returns nil if any chord is unrecognized" do
       expect(described_class["Dm7 Xyz"]).to be_nil
     end
+
+    it "returns nil for more than MAX_CHORDS chords" do
+      expect(described_class[(["Dm7"] * ChordSequence::MAX_CHORDS).join(" ")]).to be_a(described_class)
+      expect(described_class[(["Dm7"] * (ChordSequence::MAX_CHORDS + 1)).join(" ")]).to be_nil
+    end
   end
 end

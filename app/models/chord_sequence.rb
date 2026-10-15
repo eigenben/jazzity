@@ -15,6 +15,9 @@ class ChordSequence
   # before a root (Dm7-G7-C), though not the dash of a minor chord (C-7).
   SEPARATORS = /[\s,|]+|-(?=[A-G])/
 
+  # The most chords a sequence can have, twice the longest progression's.
+  MAX_CHORDS = 128
+
   attr_accessor :chords
   attr_accessor :chord_names
   attr_accessor :invalid_chords
@@ -101,7 +104,7 @@ class ChordSequence
 
     def resolve(value)
       collection = new(value)
-      if collection.invalid_chords.empty? and collection.chords.size > 1
+      if collection.invalid_chords.empty? and collection.chords.size.between?(2, MAX_CHORDS)
         collection
       else
         nil

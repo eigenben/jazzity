@@ -88,6 +88,14 @@ RSpec.describe Search do
       expect(described_class.new("xyzzy").destination).to be_nil
       expect(groups_for("xyzzy")).to be_empty
     end
+
+    it "doesn't read a query longer than MAX_LENGTH" do
+      long = (["dorian"] * 100).join(" ")
+      expect(long.length).to be > Search::MAX_LENGTH
+      expect(described_class.new(long).destination).to be_nil
+      expect(described_class.new(long).results).to be_empty
+      expect(described_class.new(long).suggestions).to be_empty
+    end
   end
 
   describe "#suggestions" do

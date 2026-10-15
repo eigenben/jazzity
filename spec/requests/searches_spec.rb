@@ -77,6 +77,15 @@ RSpec.describe "Searching", type: :request do
     expect(response.parsed_body).to include({"label" => "D Dorian", "detail" => "scale", "url" => "/scales/major/modes/dorian"})
     expect(response.parsed_body.size).to be <= 8
   end
+
+  it "finds nothing for a query too long to read" do
+    get search_path((["dorian"] * 100).join(" "))
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Nothing matched")
+
+    get autocomplete_searches_path(format: :json), params: {q: (["dorian"] * 100).join(" ")}
+    expect(response.parsed_body).to eq([])
+  end
 end
 
 RSpec.describe "Missing pages", type: :request do
@@ -85,6 +94,17 @@ RSpec.describe "Missing pages", type: :request do
     expect(response).to have_http_status(:not_found)
 
     get "/keys/H/chords/major-7"
+    expect(response).to have_http_status(:not_found)
+  end
+
+  it "responds with 404 for sequences too long to show" do
+    get "/chord-sequences/#{(%w[Dm7 G7] * ChordSequence::MAX_CHORDS).join(",")}"
+    expect(response).to have_http_status(:not_found)
+
+    get "/notes/#{(["C"] * (NoteSequence::MAX_NOTES + 1)).join("%20")}"
+    expect(response).to have_http_status(:not_found)
+
+    get "/chord-notes/#{(["C%20E%20G"] * (ChordNoteSequence::MAX_GROUPS + 1)).join(",")}"
     expect(response).to have_http_status(:not_found)
   end
 end

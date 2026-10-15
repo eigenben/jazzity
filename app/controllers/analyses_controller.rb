@@ -8,7 +8,9 @@ class AnalysesController < ApplicationController
     if (sequence = ChordSequence[@changes])
       redirect_to polymorphic_path(sequence, anchor: "analysis")
     elsif @changes.present?
-      @unreadable = ChordSequence.new(@changes).invalid_chords
+      typed = ChordSequence.new(@changes)
+      @unreadable = typed.invalid_chords
+      @too_many = typed.chords.size > ChordSequence::MAX_CHORDS
       render :show, status: :unprocessable_content
     end
   end
