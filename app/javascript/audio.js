@@ -25,6 +25,10 @@ const voices = new Set()
 function audioContext() {
   if (context) return context
 
+  // iOS plays Web Audio as a ringer sound, silenced by the phone's silent
+  // switch, unless the page says it's playing media.
+  if (navigator.audioSession) navigator.audioSession.type = "playback"
+
   const AudioContext = window.AudioContext || window.webkitAudioContext
   context = new AudioContext({ latencyHint: "interactive" })
 
