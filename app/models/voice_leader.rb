@@ -55,18 +55,18 @@ class VoiceLeader
   # Cost of the average pitch of a voicing straying from the register's centre, per semitone.
   DRIFT_WEIGHT = 0.5
 
-  DEFAULT_FAMILY = "4-Note Rootless (Type I/II)"
+  DEFAULT_FAMILY = "4-Note Rootless (Type A/B)"
 
   # For each family, the families to voice a chord from when it has no
   # voicings in that family (triads and sus4 chords, say): rootless families
   # fall back on other rootless families before rooted ones, and vice versa.
   FALLBACKS = {
-    "4-Note Rootless (Type I/II)" => ["Rootless 3-Note Shells", "Guide Tones", "4-Note Rooted", "Rooted Guide Tones", "Triads"],
-    "Rootless 3-Note Shells" => ["4-Note Rootless (Type I/II)", "Guide Tones", "Rooted Guide Tones", "4-Note Rooted", "Triads"],
-    "Guide Tones" => ["Rootless 3-Note Shells", "4-Note Rootless (Type I/II)", "Rooted Guide Tones", "4-Note Rooted", "Triads"],
-    "Rooted Guide Tones" => ["4-Note Rooted", "Triads", "Guide Tones", "Rootless 3-Note Shells", "4-Note Rootless (Type I/II)"],
-    "4-Note Rooted" => ["Rooted Guide Tones", "Triads", "4-Note Rootless (Type I/II)", "Rootless 3-Note Shells", "Guide Tones"],
-    "Triads" => ["4-Note Rooted", "Rooted Guide Tones", "4-Note Rootless (Type I/II)", "Rootless 3-Note Shells", "Guide Tones"]
+    "4-Note Rootless (Type A/B)" => ["Rootless 3-Note Shells", "Guide Tones", "4-Note Rooted", "Rooted Guide Tones", "Triads"],
+    "Rootless 3-Note Shells" => ["4-Note Rootless (Type A/B)", "Guide Tones", "Rooted Guide Tones", "4-Note Rooted", "Triads"],
+    "Guide Tones" => ["Rootless 3-Note Shells", "4-Note Rootless (Type A/B)", "Rooted Guide Tones", "4-Note Rooted", "Triads"],
+    "Rooted Guide Tones" => ["4-Note Rooted", "Triads", "Guide Tones", "Rootless 3-Note Shells", "4-Note Rootless (Type A/B)"],
+    "4-Note Rooted" => ["Rooted Guide Tones", "Triads", "4-Note Rootless (Type A/B)", "Rootless 3-Note Shells", "Guide Tones"],
+    "Triads" => ["4-Note Rooted", "Rooted Guide Tones", "4-Note Rootless (Type A/B)", "Rootless 3-Note Shells", "Guide Tones"]
   }.freeze
 
   # One way to play a chord: a voicing (nil for the chord's own tones) at

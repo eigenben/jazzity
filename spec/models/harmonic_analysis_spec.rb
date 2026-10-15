@@ -111,7 +111,7 @@ RSpec.describe HarmonicAnalysis do
       expect(patterns("Dm7 G7 Cmaj7 A7")).to eq([["Major ii-V-I Progression", 0, 2]])
       expect(patterns("Em7b5 A7 Dm7 Db7 Cmaj7")).to eq([["Minor ii-V-I Progression in D", 0, 2], ["Tritone Sub ii-V-I Progression", 2, 4]])
       expect(patterns("Cm7 F7 Bbmaj7 Ebmaj7 Am7b5 D7 Gm6")).to eq([["Major ii-V-I Progression in Bb", 0, 2], ["Minor ii-V-I Progression in G", 4, 6]])
-      expect(patterns("Cmaj7 C#dim7 Dm7 G7")).to eq([["Diminished Passing Turnaround Progression", 0, 3]])
+      expect(patterns("Cmaj7 C#dim7 Dm7 G7")).to eq([["Diminished Passing Turnaround", 0, 3]])
     end
 
     it "leaves out a pattern found inside a longer one" do

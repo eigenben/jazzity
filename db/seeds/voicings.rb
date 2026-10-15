@@ -121,10 +121,10 @@ VoicingSeeds.instance_exec do
   end
 
 
-  VoicingFamily.create!(:name => "4-Note Rootless (Type I/II)", :voicing_tones_count => 4, :rootless => true).tap do |family|
-    # Type I has the 3rd on the bottom and Type II the 7th, with the 9th (or
+  VoicingFamily.create!(:name => "4-Note Rootless (Type A/B)", :voicing_tones_count => 4, :rootless => true).tap do |family|
+    # Type A has the 3rd on the bottom and Type B the 7th, with the 9th (or
     # another tension) in place of the root.
-    voice_all(family, ["Type I", "Type II"], {
+    voice_all(family, ["Type A", "Type B"], {
       "Major 7" => ["3 5 7 9", "7 9 3 5"],
       "Major 9" => ["3 5 7 9", "7 9 3 5"],
       "Major 7 #11" => ["3 #11 7 9", "7 9 3 #11"],
@@ -154,7 +154,7 @@ VoicingSeeds.instance_exec do
       "Half Diminished" => ["b3 b5 b7 9", "b7 9 b3 b5"]
     })
 
-    voice(family, "Diminished 7", "Type I" => "b3 b5 bb7 9", "Type II" => "bb7 9 b3 b5", "Type III" => "b5 bb7 9 b3")
+    voice(family, "Diminished 7", "Type A" => "b3 b5 bb7 9", "Type B" => "bb7 9 b3 b5", "Type C" => "b5 bb7 9 b3")
   end
 
 

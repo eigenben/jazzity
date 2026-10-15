@@ -34,7 +34,7 @@ class Search
     def label
       case target
       when Chord then target.lead_sheet_symbol
-      when Scale then target.title.delete_prefix("The ").delete_suffix(" Scale")
+      when Scale then target.title.delete_suffix(" Scale")
       when Mode then target.title
       when Progression then [target.name, ("in #{target.key}" if target.key)].compact.join(" ")
       else target.title

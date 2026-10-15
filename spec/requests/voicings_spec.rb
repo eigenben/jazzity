@@ -19,7 +19,7 @@ RSpec.describe "Choosing voicings", type: :request do
     expect(staff_chords.size).to eq(2)
     expect(staff_chords.map { |chord| chord["symbol"] }).to eq(%w[Dm7 G7])
     expect(staff_chords.map { |chord| chord["treble"].size }).to eq([4, 4])
-    expect(checked_family).to eq("4-note-rootless-type-i-ii")
+    expect(checked_family).to eq("4-note-rootless-type-a-b")
   end
 
   it "picks voicings in the chart, keeping the page where it is" do

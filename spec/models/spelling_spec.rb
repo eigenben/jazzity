@@ -124,11 +124,11 @@ RSpec.describe "Spelling in every key" do
   end
 
   it "spells progressions in sharp and flat keys from the key's letters" do
-    expect(progression_in("Major ii-V-I", "E").changes.map(&:short_name)).to eq(%w[F#min7 B7 Emaj7])
-    expect(progression_in("Major ii-V-I", "F#").changes.map(&:short_name)).to eq(%w[G#min7 C#7 F#maj7])
-    expect(progression_in("Major ii-V-I", "Gb").changes.map(&:short_name)).to eq(%w[Abmin7 Db7 Gbmaj7])
-    expect(progression_in("Minor ii-V-I", "A").changes.map(&:short_name)).to eq(%w[Bm7b5 E7alt Amin6])
-    expect(progression_in("Tritone Sub Turnaround", "Db").chords.map(&:short_name)).to eq(%w[Dbmaj7 E7 Ebmin7 D7])
+    expect(progression_in("Major ii-V-I", "E").changes.map(&:short_name)).to eq(%w[F#m7 B7 Emaj7])
+    expect(progression_in("Major ii-V-I", "F#").changes.map(&:short_name)).to eq(%w[G#m7 C#7 F#maj7])
+    expect(progression_in("Major ii-V-I", "Gb").changes.map(&:short_name)).to eq(%w[Abm7 Db7 Gbmaj7])
+    expect(progression_in("Minor ii-V-I", "A").changes.map(&:short_name)).to eq(%w[Bm7b5 E7alt Am6])
+    expect(progression_in("Tritone Sub Turnaround", "Db").chords.map(&:short_name)).to eq(%w[Dbmaj7 E7 Ebm7 D7])
     expect(progression_in("Coltrane Changes", "Eb").changes.map(&:lead_sheet_symbol)).to eq(%w[Fm7 Gb7 Bmaj7 D7 Gmaj7 Bb7 Ebmaj7])
     expect(progression_in("Bird Blues", "F").changes.map(&:lead_sheet_symbol).first(8)).to eq(%w[Fmaj7 Em7b5 A7 Dm7 G7 Cm7 F7 Bb7])
     expect(progression_in("Minor Blues", "C").changes.map(&:lead_sheet_symbol)).to eq(%w[Cm7 Fm7 Cm7 Ab7 G7alt Cm7 Dm7b5 G7alt])

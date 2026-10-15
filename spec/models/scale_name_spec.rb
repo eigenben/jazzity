@@ -20,19 +20,19 @@ RSpec.describe ScaleName do
   end
 
   it "reads scales in sharp and flat keys typed in lowercase" do
-    expect(target_of("f# melodic minor").title).to eq("The F# Melodic Minor Scale")
-    expect(target_of("Bb major scale").title).to eq("The Bb Major Scale")
+    expect(target_of("f# melodic minor").title).to eq("F# Melodic Minor Scale")
+    expect(target_of("Bb major scale").title).to eq("Bb Major Scale")
   end
 
   it "takes a spelled-out major or minor to mean the scale" do
-    expect(target_of("C major").title).to eq("The C Major Scale")
+    expect(target_of("C major").title).to eq("C Major Scale")
     expect(target_of("C minor").title).to eq("C Aeolian")
   end
 
   it "knows a few other common names" do
     expect(target_of("G altered scale").title).to eq("G Super Locrian")
-    expect(target_of("C jazz minor").title).to eq("The C Melodic Minor Scale")
-    expect(target_of("half-whole").title).to eq("The Diminished Scale")
+    expect(target_of("C jazz minor").title).to eq("C Melodic Minor Scale")
+    expect(target_of("half-whole").title).to eq("Diminished Scale")
   end
 
   it "reads a name without a key" do

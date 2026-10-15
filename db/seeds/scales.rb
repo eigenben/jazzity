@@ -1,4 +1,4 @@
-Scale.create!(:name => 'Major', :specify_tones => "u 2 3 4 5 6 7", :information => "The major scale and its modes is the most commonly-used scale in western music.").tap do |s|
+Scale.create!(:name => 'Major', :specify_tones => "u 2 3 4 5 6 7", :information => "The major scale and its modes are the most commonly used scales in western music.").tap do |s|
   s.modes.create!(:mode => 1, :name => 'Ionian')
   s.modes.create!(:mode => 2, :name => 'Dorian')
   s.modes.create!(:mode => 3, :name => 'Phrygian')

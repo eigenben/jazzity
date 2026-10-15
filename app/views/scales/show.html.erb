@@ -10,7 +10,7 @@
   <% end %>
 <% end %>
 
-<%= render "shared/title", eyebrow: @mode.main? ? "Scale" : "Mode #{@mode.mode} of #{@scale.title.delete_prefix("The ")}", title: @mode.main? ? @scale.title.delete_prefix("The ") : @mode.title,
+<%= render "shared/title", eyebrow: @mode.main? ? "Scale" : "Mode #{@mode.mode} of #{@scale.title}", title: @mode.main? ? @scale.title : @mode.title,
       accent: @mode.notes.first, key_path: ->(key) { in_key(key, @scale, (@mode unless @mode.main?)) } %>
 
 <% chords, hands = playback_for(@mode) %>

@@ -23,12 +23,12 @@ RSpec.describe VoiceLeader do
     5.times { expect(voice("Dm7 G7 Cmaj7").map(&:notes)).to eq(two_five_one.map(&:notes)) }
   end
 
-  it "defaults to rootless Type I/II voicings" do
-    expect(two_five_one.map { |voiced| voiced.voicing.voicing_family.name }.uniq).to eq(["4-Note Rootless (Type I/II)"])
+  it "defaults to rootless Type A/B voicings" do
+    expect(two_five_one.map { |voiced| voiced.voicing.voicing_family.name }.uniq).to eq(["4-Note Rootless (Type A/B)"])
   end
 
-  it "alternates Type I and II through a ii-V-I so the voices move by step" do
-    expect(two_five_one.map(&:name)).to eq(["Type II", "Type I", "Type II"])
+  it "alternates Type A and B through a ii-V-I so the voices move by step" do
+    expect(two_five_one.map(&:name)).to eq(["Type B", "Type A", "Type B"])
     expect(two_five_one.map(&:notes)).to eq([%w[C/4 E/4 F/4 A/4], %w[B/3 D/4 F/4 A/4], %w[B/3 D/4 E/4 G/4]])
   end
 
@@ -80,7 +80,7 @@ RSpec.describe VoiceLeader do
     voiced = voice("Cmaj Fmaj7")
 
     expect(voiced.first.voicing.voicing_family.name).to eq("Triads")
-    expect(voiced.last.voicing.voicing_family.name).to eq("4-Note Rootless (Type I/II)")
+    expect(voiced.last.voicing.voicing_family.name).to eq("4-Note Rootless (Type A/B)")
     expect(voiced.first).to be_over_root
   end
 
@@ -91,10 +91,10 @@ RSpec.describe VoiceLeader do
   end
 
   it "uses a voicing picked for a chord and voice-leads the rest from it" do
-    type_i = chords("Dm7").first.voicings.find_by!(name: "Type I")
-    voiced = voice("Dm7 G7 Cmaj7", overrides: {"0" => type_i.id.to_s})
+    type_a = chords("Dm7").first.voicings.find_by!(name: "Type A")
+    voiced = voice("Dm7 G7 Cmaj7", overrides: {"0" => type_a.id.to_s})
 
-    expect(voiced.map(&:name)).to eq(["Type I", "Type II", "Type I"])
+    expect(voiced.map(&:name)).to eq(["Type A", "Type B", "Type A"])
   end
 
   it "ignores picks that aren't voicings of the chord" do

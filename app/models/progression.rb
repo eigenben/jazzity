@@ -12,6 +12,11 @@ class Progression < ActiveRecord::Base
   has_many :variants, class_name: 'Progression', foreign_key: 'variant_of_id'
   has_many :components, -> { order('progression_components.position') }, class_name: 'ProgressionComponent', dependent: :destroy
 
+  # Names that already say what kind of thing they are, so "Progression"
+  # isn't added to their titles: "Rhythm Changes in F", not "Rhythm Changes
+  # Progression in F", but still "Major ii-V-I Progression in F".
+  SELF_DESCRIBING = /\b(Cadence|Turnaround|Changes|Blues|Form|AABA|Vamp|Chain|Cliché|Dominants)\b/
+
   scope :full_tune, -> { where(full_tune: true) }
   scope :partial, -> { where(full_tune: false) }
 
@@ -25,11 +30,8 @@ class Progression < ActiveRecord::Base
   end
 
   def title
-    if key
-      "#{name} Progression in #{key}"
-    else
-      "#{name} Progression"
-    end
+    title = name.match?(SELF_DESCRIBING) ? name : "#{name} Progression"
+    key ? "#{title} in #{key}" : title
   end
 
   def component_index_offsets

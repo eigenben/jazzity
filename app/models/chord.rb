@@ -23,15 +23,12 @@ class Chord < ActiveRecord::Base
     name
   end
 
+  # The symbol as players write it, on a lead sheet or anywhere else: a
+  # plain letter for a major triad and "m" for minor, as in C, Dm7 and F#m7b5.
   def short_name
-    "#{key || Key.default}#{primary_symbol}"
-  end
-
-  # The symbol as it's written over the staff on a lead sheet: a plain letter
-  # for a major triad and "m" for minor, as in C, Dm7 and F#m7b5.
-  def lead_sheet_symbol
     "#{key || Key.default}#{primary_symbol.to_s.sub(/\Amaj\z/, "").sub(/\Amin/, "m")}"
   end
+  alias_method :lead_sheet_symbol, :short_name
 
   def title
     if key
