@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0f2d63"/>
-  <ellipse cx="32" cy="34" rx="15" ry="10.5" transform="rotate(-24 32 34)" fill="#d9a441"/>
-  <ellipse cx="32" cy="34" rx="7.5" ry="4.6" transform="rotate(-50 32 34)" fill="#0f2d63"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#0f2d63"/><g transform="translate(18.46 15.51) scale(0.72)"><path d="M48 10H70" stroke="#d9a441" stroke-width="10"/><path d="M64 10V50C64 62 56 70 40 76" fill="none" stroke="#d9a441" stroke-width="12"/><ellipse cx="34" cy="78" rx="17" ry="12" transform="rotate(-22 34 78)" fill="#d9a441"/></g></svg>

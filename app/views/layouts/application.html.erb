@@ -8,7 +8,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap">
@@ -19,7 +21,7 @@
   <body>
     <header class="masthead">
       <div class="masthead-inner">
-        <%= link_to root_path, class: "wordmark" do %>Jazzity<% end %>
+        <%= link_to root_path, class: "wordmark" do %><%= render "shared/logo_mark" %>Jazzity<% end %>
         <nav class="primary-nav" aria-label="Sections">
           <%= navigation_link_to "Chords", chords_path, [ChordsController, VoicingsController] %>
           <%= navigation_link_to "Scales", scales_path, [ScalesController, ModesController] %>

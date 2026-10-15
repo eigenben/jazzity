@@ -155,11 +155,22 @@ a:hover {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
   font: 800 2rem/1 var(--font-display);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--brass);
   text-decoration: none;
+}
+
+/* The mark stands 1.45 times the height of the capitals, centred on them. */
+.logo-mark {
+  flex: none;
+  height: 1.16em;
+  width: auto;
+  aspect-ratio: 56 / 88;
 }
 
 .wordmark:hover {

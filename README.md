@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/logo/lockup-reversed.svg">
+  <img src="docs/logo/lockup.svg" alt="Jazzity" height="60">
+</picture>
+
 # Jazzity
 
 [![CI](https://github.com/eigenben/jazzity/actions/workflows/ci.yml/badge.svg)](https://github.com/eigenben/jazzity/actions/workflows/ci.yml)
