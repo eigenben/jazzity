@@ -19,9 +19,9 @@ class Scale < ActiveRecord::Base
 
   def title
     if key
-      "The #{key} #{name} Scale"
+      "#{key} #{name} Scale"
     else
-      "The #{name} Scale"
+      "#{name} Scale"
     end
   end
 

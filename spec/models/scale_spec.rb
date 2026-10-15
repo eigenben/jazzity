@@ -26,8 +26,8 @@ RSpec.describe Scale, type: :model do
   end
 
   it "includes the key in its title" do
-    expect(described_class["Eb Major"].title).to eq("The Eb Major Scale")
-    expect(described_class["Major"].title).to eq("The Major Scale")
+    expect(described_class["Eb Major"].title).to eq("Eb Major Scale")
+    expect(described_class["Major"].title).to eq("Major Scale")
   end
 
   it "exposes the first mode as its main mode" do

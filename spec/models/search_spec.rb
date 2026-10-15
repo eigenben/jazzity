@@ -23,7 +23,7 @@ RSpec.describe Search do
 
     it "goes to scales and modes named with a key" do
       expect(title_of("dorian D")).to eq("D Dorian")
-      expect(title_of("C major")).to eq("The C Major Scale")
+      expect(title_of("C major")).to eq("C Major Scale")
       expect(title_of("Ab Lydian Augmented")).to eq("Ab Lydian Augmented")
     end
 
@@ -50,8 +50,8 @@ RSpec.describe Search do
     end
 
     it "goes to the only progression a name matches" do
-      expect(title_of("rhythm changes")).to eq("Rhythm Changes Progression")
-      expect(title_of("jazz blues in F")).to eq("Jazz Blues Progression in F")
+      expect(title_of("rhythm changes")).to eq("Rhythm Changes")
+      expect(title_of("jazz blues in F")).to eq("Jazz Blues in F")
     end
 
     it "corrects misspelled words" do

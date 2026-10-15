@@ -7,7 +7,7 @@ RSpec.describe "Voicing pages", type: :request do
   end
 
   it "writes a rootless voicing over its root, with the chord symbol" do
-    get "/keys/Eb/chords/major-7/voicings/type-i"
+    get "/keys/Eb/chords/major-7/voicings/type-a"
 
     expect(staff_chords).to eq([{"symbol" => "Ebmaj7", "bass" => ["Eb/2"], "treble" => ["G/4", "Bb/4", "D/5", "F/5"]}])
     expect(response.body).to include("Right hand")

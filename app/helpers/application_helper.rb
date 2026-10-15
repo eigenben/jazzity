@@ -57,7 +57,7 @@ module ApplicationHelper
   # The families offered for voicing a progression, with a short label and a
   # line saying how each is played.
   VOICING_FAMILIES = {
-    "4-Note Rootless (Type I/II)" => ["Rootless", "Four-note rootless voicings in their two forms, with the 3rd or the 7th on the bottom, played over the root."],
+    "4-Note Rootless (Type A/B)" => ["Rootless", "Four-note rootless voicings in their two forms, with the 3rd or the 7th on the bottom, played over the root."],
     "Rootless 3-Note Shells" => ["Shells", "Three-note rootless voicings: the 3rd and 7th with one more tone, played over the root."],
     "Guide Tones" => ["Guide tones", "Just the 3rd and 7th, the notes that define each chord, played over the root."],
     "Rooted Guide Tones" => ["Rooted shells", "The root, 3rd and 7th in the left hand, as bebop pianists comped."],

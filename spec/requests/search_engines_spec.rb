@@ -15,7 +15,7 @@ RSpec.describe "Search engines", type: :request do
     get "/sitemap.xml"
 
     locations = Nokogiri::XML(response.body).remove_namespaces!.css("loc").map { |loc| URI(loc.text).path }
-    expect(locations).to include("/", "/chords/major-7", "/keys/F%23/chords/major-7", "/keys/Eb/chords/major-7/voicings/type-i",
+    expect(locations).to include("/", "/chords/major-7", "/keys/F%23/chords/major-7", "/keys/Eb/chords/major-7/voicings/type-a",
       "/keys/Bb/scales/major/modes/dorian", "/keys/Bb/progressions/rhythm-changes", "/progressions/rhythm-changes/practice")
     expect(locations).not_to include(a_string_starting_with("/keys/C/"))
     expect(locations).to eq(locations.uniq)

@@ -37,7 +37,7 @@ RSpec.describe PlayerHelper, type: :helper do
     end
 
     it "gives a voicing in each hand, as on its staff" do
-      voicing = Chord["Dm7"].voicings.find_by!(name: "Type I").in_key_of(Key["D"])
+      voicing = Chord["Dm7"].voicings.find_by!(name: "Type A").in_key_of(Key["D"])
       chords, hands = helper.playback_for(voicing)
 
       expect(chords.first).to include(:left => [38], :right => [65, 69, 72, 76])
