@@ -1843,10 +1843,35 @@ a:hover {
 
 /* From the reference: picks as record covers, in midnight, brass and white */
 
+/* Nine picks fill three rows of three; with fewer columns, rows stay full. */
 .covers {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
+}
+
+.covers > li:nth-child(n + 7) {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .covers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .covers > li:nth-child(-n + 8) {
+    display: flex;
+  }
+}
+
+@media (min-width: 60rem) {
+  .covers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .covers > li:nth-child(n) {
+    display: flex;
+  }
 }
 
 .covers > li {
@@ -1860,9 +1885,8 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2.5rem;
-  min-height: 16rem;
-  padding: 1.75rem;
+  gap: 1.25rem;
+  padding: 1.5rem;
   border: 2px solid var(--ink);
   border-radius: var(--radius);
   background: var(--surface);
