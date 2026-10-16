@@ -1,18 +1,18 @@
-# Pages load scripts only from the app, with a nonce for the importmap's
-# inline scripts, and fonts from Google Fonts (VexFlow's music fonts are
-# data: URIs). Styles allow inline attributes, which the piano keyboard
-# and VexFlow's SVG use. See https://guides.rubyonrails.org/security.html#content-security-policy-header
+# Pages load scripts only from the app and Umami, with a nonce for the
+# importmap's inline scripts, and fonts from Google Fonts (VexFlow's music
+# fonts are data: URIs). Styles allow inline attributes, which the piano
+# keyboard and VexFlow's SVG use. See https://guides.rubyonrails.org/security.html#content-security-policy-header
 Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.base_uri :self
-    policy.connect_src :self
+    policy.connect_src :self, config.x.umami_url
     policy.font_src :self, :data, "https://fonts.gstatic.com"
     policy.form_action :self
     policy.frame_ancestors :none
     policy.img_src :self, :data
     policy.object_src :none
-    policy.script_src :self
+    policy.script_src :self, config.x.umami_url
     policy.style_src :self, :unsafe_inline, "https://fonts.googleapis.com"
   end
 

@@ -18,6 +18,11 @@ module Jazzity
 
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Page views are counted by our own Umami. The tracking script is only
+    # added where a website id is set, which is production.
+    config.x.umami_url = "https://metrics.jazzity.com"
+    config.x.umami_website_id = nil
+
     # A 404 is rendered by the app, with search; anything else gets the
     # static page in public/, since the app may be what's broken.
     config.exceptions_app = lambda do |env|

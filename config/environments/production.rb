@@ -21,6 +21,8 @@ Rails.application.configure do
   config.silence_healthcheck_path = "/up"
   config.active_support.report_deprecations = false
 
+  config.x.umami_website_id = "b1bf3627-90f9-4f3f-8e00-280ab1155d05"
+
   config.cache_store = :memory_store
   config.i18n.fallbacks = true
   config.active_record.dump_schema_after_migration = false

@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <% if (umami_website_id = Rails.configuration.x.umami_website_id) %>
+      <%= javascript_include_tag "#{Rails.configuration.x.umami_url}/script.js", defer: true, nonce: true, data: {website_id: umami_website_id} %>
+    <% end %>
     <%= yield :head %>
   </head>
 
