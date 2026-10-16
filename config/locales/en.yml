@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+  support:
+    array:
+      # "C, E and G", without a comma before the "and".
+      last_word_connector: " and "

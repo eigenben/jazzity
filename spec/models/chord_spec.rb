@@ -72,4 +72,48 @@ RSpec.describe Chord, type: :model do
       expect(half_diminished.clone.in_key_of("Db")).not_to be_readable
     end
   end
+
+  describe "#degrees" do
+    it "pairs each note with what it is to the root" do
+      expect(described_class["Eb7"].degrees).to eq([["Eb", "root"], ["G", "major 3rd"], ["Bb", "5th"], ["Db", "minor 7th"]])
+    end
+  end
+
+  describe "#guide_tones" do
+    it "is the 3rd and 7th, or the 3rd and 6th of a 6th chord" do
+      expect(described_class["Ebmaj9"].guide_tones).to eq([["G", "major 3rd"], ["D", "major 7th"]])
+      expect(described_class["Fm6"].guide_tones).to eq([["Ab", "minor 3rd"], ["D", "6th"]])
+    end
+
+    it "is nil for a chord without both" do
+      expect(described_class["C"].guide_tones).to be_nil
+      expect(described_class["G7sus4"].guide_tones).to be_nil
+    end
+  end
+
+  describe "#tritone_substitute" do
+    it "is the dominant 7th a tritone away" do
+      expect(described_class["Eb7"].tritone_substitute.short_name).to eq("A7")
+      expect(described_class["G7alt"].tritone_substitute.short_name).to eq("Db7")
+    end
+
+    it "is nil for a chord that isn't a dominant" do
+      expect(described_class["Dm7"].tritone_substitute).to be_nil
+    end
+  end
+
+  describe "#roles" do
+    it "finds the progressions the chord is played in, in the key that puts it there" do
+      roles = described_class["Eb7"].roles.transform_values(&:title)
+
+      expect(roles).to include("V7" => "Major ii-V Progression in Ab", "bII7" => "Tritone Sub ii-V-I Progression in D")
+      expect(roles.values).to eq(roles.values.uniq)
+    end
+
+    it "spells the progression's key so the chord keeps its name" do
+      described_class["F#m7"].roles.each_value do |progression|
+        expect(progression.chords.map(&:short_name)).to include("F#m7")
+      end
+    end
+  end
 end

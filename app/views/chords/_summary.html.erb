@@ -15,7 +15,8 @@
       </div>
     <% end %>
   </dl>
-  <% if @chord.information.present? %>
-    <div class="prose"><%= text_to_html @chord.information %></div>
+  <% about = (render "chords/about", chord: @chord if local_assigns[:about]) %>
+  <% if @chord.information.present? || about.present? %>
+    <div class="prose"><%= text_to_html @chord.information if @chord.information.present? %><%= about %></div>
   <% end %>
 <% end %>

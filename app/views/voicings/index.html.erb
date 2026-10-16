@@ -1,4 +1,5 @@
-<%= render "chords/header", key_path: ->(key) { in_key(key, @chord, :voicings) } %>
+<% page_description "All #{@voicings.size} piano voicings of #{@chord.short_name} (#{@chord.title}): #{@voicings.map(&:name).to_sentence}, each on the staff and keyboard, ready to play." %>
+<%= render "chords/header", page_title: "All #{@chord.short_name} Voicings", key_path: ->(key) { in_key(key, @chord, :voicings) } %>
 
 <%= render "chords/summary" %>
 

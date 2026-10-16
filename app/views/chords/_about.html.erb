@@ -1,0 +1,19 @@
+<%# What a chord is made of and how it's used, written from the chord itself: its tones, its guide tones, its tritone substitute and the progressions it turns up in. %>
+<% notes, degrees = chord.degrees.transpose %>
+<p><%= with_key(chord).title %>, written <%= chord.short_name %>, is built from <%= notes.to_sentence %>: the <%= degrees.to_sentence %>.</p>
+<% if (guide_tones = chord.guide_tones) %>
+  <p>
+    Its <%= guide_tones.map { |_, degree| degree.split.last }.to_sentence %>, <%= guide_tones.map(&:first).to_sentence %>, are its guide tones:
+    they say what kind of chord it is, so voicings are built around them and the root is often left to the bass.
+    <% if (substitute = chord.tritone_substitute) %>
+      <%= link_to substitute.short_name, in_key(substitute.key, substitute) %>, a tritone away, has the same two notes the other way up,
+      so it can stand in for <%= chord.short_name %> as its tritone substitute.
+    <% end %>
+  </p>
+<% end %>
+<% if (roles = chord.roles.first(6)).any? %>
+  <p>
+    In the progressions here, <%= chord.short_name %> is
+    <%= to_sentence(roles.map { |numeral, progression| safe_join(["the ", roman_numeral(numeral), " of the ", link_to(progression.title, in_key(progression.key, progression))]) }) %>.
+  </p>
+<% end %>

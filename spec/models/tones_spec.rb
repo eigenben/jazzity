@@ -67,4 +67,22 @@ RSpec.describe Tones do
     expect(major_triad.intervals).to eq([4, 3])
     expect(major_triad.interval_names).to eq(["M3", "m3"])
   end
+
+  describe "#degree_names" do
+    it "names each tone by what it is to the root" do
+      expect(tones_for("u", "3", "5", "b7").degree_names).to eq(["root", "major 3rd", "5th", "minor 7th"])
+      expect(tones_for("u", "b3", "b5", "bb7").degree_names).to eq(["root", "minor 3rd", "flat 5th", "diminished 7th"])
+    end
+
+    it "names a 6th and a 4th as tensions only over a 7th and a 3rd" do
+      expect(tones_for("u", "3", "5", "6").degree_names).to eq(["root", "major 3rd", "5th", "6th"])
+      expect(tones_for("u", "3", "5", "b7", "9", "13").degree_names.last).to eq("13th")
+      expect(tones_for("u", "4", "5", "b7").degree_names.second).to eq("4th")
+      expect(tones_for("u", "b3", "5", "b7", "9", "11").degree_names.last).to eq("11th")
+    end
+
+    it "names a voicing's tones by the chord they come from" do
+      expect(tones_for("3", "b7", "13").degree_names(within: tones_for("u", "3", "5", "b7"))).to eq(["major 3rd", "minor 7th", "13th"])
+    end
+  end
 end

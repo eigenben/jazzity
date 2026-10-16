@@ -8,7 +8,8 @@ feature "Home" do
   scenario "Sharing a link to a page" do
     visit "/chords/major-7"
 
-    expect(page).to have_css("meta[property='og:title'][content='Major 7']", visible: false)
+    expect(page).to have_css("meta[property='og:title'][content='Cmaj7 Chord (C Major 7)']", visible: false)
+    expect(page).to have_css("meta[property='og:description'][content^='Cmaj7 chord (C Major 7): the notes C E G B']", visible: false)
     expect(page).to have_css("meta[property='og:url'][content$='/chords/major-7']", visible: false)
     expect(page).to have_css("meta[property='og:image'][content^='http'][content$='/og.png']", visible: false)
     expect(File).to exist(Rails.public_path.join("og.png"))

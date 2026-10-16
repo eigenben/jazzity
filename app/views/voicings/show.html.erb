@@ -1,9 +1,10 @@
-<% content_for :title, @voicing.title %>
+<% content_for :title, voicing_page_title(@voicing) %>
 
 <%= render "shared/title", eyebrow: "Voicing of #{@chord.title}", title: @voicing.name, subtitle: link_to("Back to #{@chord.short_name}", in_key(@chord.key, @chord)),
       key_path: ->(key) { in_key(key, @chord, @voicing) }, readable: ->(key) { @chord.clone.in_key_of(key).readable? } %>
 
 <% voiced = @voicing.voiced %>
+<% page_description voicing_description(@voicing, voiced) %>
 <%= tag.section class: "feature feature-split", data: player_data(:chord, [voiced.to_playback], shortcut: true) do %>
   <%= render "players/controls", play_label: "Play voicing" %>
   <%= voicing_staff(@voicing, class: "staff-large") %>
@@ -24,4 +25,5 @@
       <dd><%= @voicing.voicing_family %></dd>
     </div>
   </dl>
+  <div class="prose"><%= render "voicings/about", voicing: @voicing %></div>
 <% end %>

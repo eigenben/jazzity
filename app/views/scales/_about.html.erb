@@ -1,0 +1,15 @@
+<%# How a mode relates to its scale, for scales with more than one: the parent scale lists its modes, and a mode says which scale it's played from. %>
+<% if scale.modes.many? %>
+  <% if mode.main? %>
+    <% others = scale.modes.reject(&:main?).map { |other| other.clone.in_key_of(scale.key || Key.default) } %>
+    <p>
+      Its modes play the same notes from another degree:
+      <%= to_sentence(others.map { |other| safe_join([link_to(other.title, in_key(scale.key, scale, other)), " from the #{other.mode.ordinalize}"]) }) %>.
+    </p>
+  <% else %>
+    <p>
+      <%= with_key(mode).title %> is the <%= mode.mode.ordinalize %> mode of the <%= link_to with_key(scale).title, in_key(scale.key, scale) %>:
+      its notes, <%= scale.notes.join(" ") %>, played from <%= mode.notes.first %>.
+    </p>
+  <% end %>
+<% end %>

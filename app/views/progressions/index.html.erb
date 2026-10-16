@@ -1,4 +1,5 @@
-<% content_for :title, ["Progressions", ("in #{@key}" if @key)].compact.join(" ") %>
+<% content_for :title, ["Jazz Chord Progressions", ("in #{@key}" if @key)].compact.join(" ") %>
+<% page_description "Jazz chord progressions#{" in #{@key}" if @key}: ii-V-Is, turnarounds, blues, rhythm changes and other tune forms, each as a lead sheet, voice-led on the staff and ready to play." %>
 
 <%= render "shared/title", eyebrow: "Reference", title: ["Progressions", ("in #{@key}" if @key)].compact.join(" "), subtitle: "Cadences, turnarounds, chains of ii-Vs, blues and tune forms, each written in roman numerals and voice-led in any key.",
       key_path: ->(key) { polymorphic_path(in_key(key, :progressions)) } %>

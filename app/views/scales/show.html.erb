@@ -1,4 +1,5 @@
-<% content_for :title, @mode.title %>
+<% content_for :title, mode_page_title(@mode) %>
+<% page_description mode_description(@mode) %>
 
 <% if @scale.modes.many? %>
   <% content_for :title_nav do %>
@@ -32,8 +33,9 @@
       <dd class="notes"><%= @mode.interval_names.join(" ") %></dd>
     </div>
   </dl>
-  <% if @mode.information.present? %>
-    <div class="prose"><%= text_to_html @mode.information %></div>
+  <% about = render "scales/about", mode: @mode, scale: @scale %>
+  <% if @mode.information.present? || about.present? %>
+    <div class="prose"><%= text_to_html @mode.information if @mode.information.present? %><%= about %></div>
   <% end %>
 <% end %>
 

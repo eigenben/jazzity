@@ -1,6 +1,7 @@
+<% page_description chord_description(@chord) %>
 <%= render "chords/header", key_path: ->(key) { in_key(key, @chord) } %>
 
-<%= render "chords/summary" %>
+<%= render "chords/summary", about: true %>
 
 <section class="group" aria-labelledby="scales-heading">
   <h2 class="section-heading" id="scales-heading">Scales that fit</h2>

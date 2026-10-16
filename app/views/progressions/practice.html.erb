@@ -1,4 +1,5 @@
 <% content_for :title, "#{@progression.name} in all 12 keys" %>
+<% page_description "A printable practice sheet: #{@progression.name} in all 12 keys on one page, with #{voicing_family_label(voicing_family).downcase} voicings, #{practice_order_description(@order)}. #{@progression.summary}" %>
 
 <%= render "shared/title", eyebrow: "Practice sheet", title: "#{@progression.name} in all 12 keys",
       subtitle: "#{voicing_family_label(voicing_family)} voicings · #{practice_order_description(@order).upcase_first}" %>

@@ -1,4 +1,5 @@
 <% content_for :title, @progression.title %>
+<% page_description progression_description(@progression) %>
 
 <%= render "shared/title", eyebrow: @progression.progression_family.to_s.presence || "Progression", title: @progression.title, subtitle: @progression.summary,
       key_path: ->(key) { polymorphic_path(in_key(key, @progression), voicing_params) } %>

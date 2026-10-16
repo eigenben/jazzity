@@ -24,4 +24,13 @@ RSpec.describe Voicing, type: :model do
       expect(voicing.tones.in_key_of(Key["D"]).notes).to eq(%w[D G C F A])
     end
   end
+
+  describe "#degrees" do
+    it "names each note by what it is to the chord's root" do
+      voicing = Chord["Eb7"].voicings.find_by!(name: "Type A").in_key_of(Key["Eb"])
+
+      expect(voicing.degrees).to eq([["G", "major 3rd"], ["Bb", "5th"], ["Db", "minor 7th"], ["F", "9th"]])
+      expect(voicing).to be_rootless
+    end
+  end
 end

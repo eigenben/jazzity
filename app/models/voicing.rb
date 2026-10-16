@@ -31,6 +31,15 @@ class Voicing < ActiveRecord::Base
     chord.in_key_of(key)
   end
 
+  # Each note with what it is to the chord's root, see Chord#degrees.
+  def degrees
+    notes.zip(tones.degree_names(within: chord.tones))
+  end
+
+  def rootless?
+    degrees.none? { |_, degree| degree == "root" }
+  end
+
   # This voicing played on its chord, over the root when it's rootless.
   def voiced
     VoiceLeader.new([chord_in_key], family: voicing_family, overrides: {0 => self}).voiced_chords.first

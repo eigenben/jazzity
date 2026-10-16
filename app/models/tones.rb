@@ -97,6 +97,36 @@ class Tones
     intervals.map { |step| Key::Intervals.invert[step] }
   end
 
+  # What each tone of a chord or voicing is to its root, by its letter
+  # offset and semitones, as players name chord tones.
+  DEGREE_NAMES = {
+    [0, 0] => "root", [1, 1] => "flat 9th", [1, 2] => "9th", [1, 3] => "sharp 9th",
+    [2, 3] => "minor 3rd", [2, 4] => "major 3rd", [3, 5] => "4th", [3, 6] => "sharp 11th",
+    [4, 6] => "flat 5th", [4, 7] => "5th", [4, 8] => "sharp 5th", [5, 8] => "flat 6th", [5, 9] => "6th",
+    [6, 9] => "diminished 7th", [6, 10] => "minor 7th", [6, 11] => "major 7th"
+  }.freeze
+
+  # The names a 4th takes over a 3rd and a 6th over a 7th, as tensions.
+  TENSION_NAMES = {[3, 5] => "11th", [5, 8] => "flat 13th", [5, 9] => "13th"}.freeze
+
+  # The name of each tone, in order, as DEGREE_NAMES has it. A 4th is an
+  # 11th when the chord (`within`, for a voicing) has a 3rd, and a 6th a
+  # 13th when it has a 7th, so C7sus4 has a 4th and Cm11 an 11th, C6 a 6th
+  # and C13 a 13th.
+  def degree_names(within: self)
+    @tones.sort_by(&:position).map do |tone|
+      degree = [tone.letter_index % 7, tone.tone % 12]
+      tension = within.letter?(degree.first == 3 ? 2 : 6) && TENSION_NAMES[degree]
+      tension || DEGREE_NAMES[degree]
+    end
+  end
+
+  protected
+
+  def letter?(letter_index)
+    @tones.any? { |tone| tone.letter_index % 7 == letter_index }
+  end
+
   private
 
   def spell(tone, relative_letter)

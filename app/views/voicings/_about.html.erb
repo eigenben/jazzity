@@ -1,0 +1,23 @@
+<%# What a voicing is made of, written from the voicing itself: its notes and what each is to the chord, whether it leaves the root out, its family and the family's other voicings of the chord. %>
+<% chord = voicing.chord %>
+<% notes, degrees = voicing.degrees.transpose %>
+<p>
+  The <%= voicing.name %> voicing of <%= chord.short_name %> stacks <%= notes.to_sentence %> from the bottom up: the <%= degrees.to_sentence %> of the chord.
+  <% if voicing.rootless? %>
+    It leaves out the root, <%= chord.key || Key.default %>, for the left hand or the bass player to take.
+  <% end %>
+</p>
+<% family = voicing.voicing_family %>
+<% others = chord.voicings.select { |other| other.voicing_family_id == voicing.voicing_family_id && other.id != voicing.id } %>
+<% if family %>
+  <p>
+    <% if (description = voicing_family_description(family)) %>
+      It's one of the <%= family %> voicings: <%= description.downcase_first %>
+    <% else %>
+      It's one of the <%= family %> voicings.
+    <% end %>
+    <% if others.any? %>
+      The <%= others.one? ? "other" : "others" %> for <%= chord.short_name %> <%= others.one? ? "is" : "are" %> <%= to_sentence(others.map { |other| link_to(other.name, in_key(chord.key, chord, other)) }) %>.
+    <% end %>
+  </p>
+<% end %>
