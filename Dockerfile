@@ -5,7 +5,7 @@
 #   docker build -t jazzity .
 #   docker run -p 3000:80 -e RAILS_FORCE_SSL=false jazzity
 
-ARG RUBY_VERSION=4.0.2
+ARG RUBY_VERSION=4.0.9
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /rails

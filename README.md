@@ -53,7 +53,7 @@ Sound comes from `app/javascript/audio.js`, a small electric piano built from We
 
 ## Getting started
 
-You need Ruby 4.0.2 (see `.ruby-version`).
+You need Ruby 4.0.9 (see `.ruby-version`).
 
 ```bash
 git clone https://github.com/eigenben/jazzity.git
